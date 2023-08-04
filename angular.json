@@ -21,13 +21,20 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/custom.css",
+              "src/switch.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -83,16 +90,21 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/favicon.ico"
             ],
             "styles": [
-              "src/styles.css"
+              "@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.css",
+              "src/custom.css",
+              "src/switch.css"
             ],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "a42de5d8-85fc-4332-a708-5304345f3a7f"
   }
 }
