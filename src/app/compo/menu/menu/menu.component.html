@@ -9,6 +9,31 @@
             <button mat-menu-item routerLink="gerer_personnages">Gérer les personnages</button>
         </mat-menu>
 
-        <button mat-button (click)="openDialog()">Importation de données</button>
+        <button mat-button (click)="openDialogImport()">Importation de données</button>
+        <button mat-button (click)="openDialogExport()">Exportation de données</button>
+
+        <span class="example-spacer"></span>
+        <button mat-button [matMenuTriggerFor]="menuLogin">Login</button>
+        <mat-menu #menuLogin="matMenu" xPosition="before" [hasBackdrop]="false">
+            <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+                <form [formGroup]="formLogin" class="ms-2" (ngSubmit)="submit()">
+                    <mat-form-field>
+                        <mat-label>Username</mat-label>
+                        <input matInput placeholder="Username" formGroupName="username">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" placeholder="Password" formGroupName="password">
+                        <button mat-icon-button matSuffix (click)="hide=!hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+                    <button mat-button type="submit">Login</button>
+                </form>
+            </div>
+
+        </mat-menu>
+
     </mat-toolbar-row>
 </mat-toolbar>
