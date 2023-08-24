@@ -1,8 +1,7 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -11,14 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DetailSeriesComponent } from './compo/detail-series/detail-series.component';
+import { HomeComponent } from './compo/home/home.component';
 import { ExportDialogComponent } from './compo/menu/export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './compo/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './compo/menu/menu/menu.component';
-import { HomeComponent } from './compo/home/home.component';
 
 
 @NgModule({
@@ -44,7 +44,8 @@ import { HomeComponent } from './compo/home/home.component';
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
