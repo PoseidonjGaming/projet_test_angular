@@ -1,22 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { MatButtonModule, MatIconButton } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MenuComponent } from './compo/menu/menu/menu.component';
-import { ImportDialogComponent } from './compo/menu/import-dialog/import-dialog.component';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { DetailSeriesComponent } from './compo/detail-series/detail-series.component';
 import { ExportDialogComponent } from './compo/menu/export-dialog/export-dialog.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { ImportDialogComponent } from './compo/menu/import-dialog/import-dialog.component';
+import { MenuComponent } from './compo/menu/menu/menu.component';
+import { HomeComponent } from './compo/home/home.component';
 
 
 @NgModule({
@@ -24,7 +26,9 @@ import { MatIcon, MatIconModule } from '@angular/material/icon';
     AppComponent,
     MenuComponent,
     ImportDialogComponent,
-    ExportDialogComponent
+    ExportDialogComponent,
+    DetailSeriesComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
