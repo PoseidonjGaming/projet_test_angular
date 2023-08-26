@@ -14,11 +14,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DetailSeriesComponent } from './compo/detail-series/detail-series.component';
-import { HomeComponent } from './compo/home/home.component';
-import { ExportDialogComponent } from './compo/menu/export-dialog/export-dialog.component';
-import { ImportDialogComponent } from './compo/menu/import-dialog/import-dialog.component';
-import { MenuComponent } from './compo/menu/menu/menu.component';
+import { DetailSeriesComponent } from './components/detail-series/detail-series.component';
+import { HomeComponent } from './components/home/home.component';
+import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
+import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
+import { MenuComponent } from './components/menu/menu/menu.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { MenuComponent } from './compo/menu/menu/menu.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

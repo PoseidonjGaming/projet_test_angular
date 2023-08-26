@@ -1,22 +1,30 @@
-<div class="row">
-    <div class="col-4">
-        <mat-card class="m-2">
-            <mat-card-header>
-                <mat-card-title>Shiba Inu</mat-card-title>
-            </mat-card-header>
-            <img mat-card-image src="">
-            <mat-card-content>
-                <p>
-                    The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                    A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                    bred for hunting.
-                </p>
-            </mat-card-content>
-            <mat-card-actions>
-                <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button>
-            </mat-card-actions>
-        </mat-card>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <mat-card class="m-2" *ngFor="let serie of series">
+                <mat-card-header>
+                    <mat-card-title>{{serie.nom}}</mat-card-title>
+                </mat-card-header>
+                <img *ngIf="serie.affiche" class="mx-2" mat-card-image
+                    src="http://localhost:8081/series/load?filename={{serie.affiche}}">
+                <mat-card-content>
+                    <p *ngIf="slicedResume else fullResume" class="mt-2">
+                        {{serie.resume.slice(0,512)}}
+                        <button mat-button color="primary" (click)="slicedResume=!slicedResume">Voir plus</button>
+                    </p>
+                    <ng-template #fullResume>
+                        <p>
+                            {{serie.resume}}
+                            <button mat-button color="primary" (click)="slicedResume=!slicedResume">Voir moins</button>
+                        </p>
 
+                    </ng-template>
+                </mat-card-content>
+                <mat-card-actions>
+                    <a type="button" mat-button [routerLink]="['/detail', serie.id]">LIKE</a>
+                </mat-card-actions>
+            </mat-card>
+
+        </div>
     </div>
 </div>
