@@ -1,4 +1,7 @@
-import { NgModule } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import fr from '@angular/common/locales/fr';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -19,8 +22,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
-import { HttpClientModule } from '@angular/common/http';
 
+registerLocaleData(fr);
 
 @NgModule({
   declarations: [
@@ -49,7 +52,11 @@ import { HttpClientModule } from '@angular/common/http';
     MatCardModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: LOCALE_ID, useValue: 'fr'
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

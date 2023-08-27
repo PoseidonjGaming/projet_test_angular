@@ -4,11 +4,17 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService<ENTITY>{
+export class ApiService<E>{
 
-  constructor(private httpClient: HttpClient) { }
+  protected API_BASE_URL = 'http://localhost:8081'
 
-  getAll(type: string) {
-    return this.httpClient.get<ENTITY[]>(`http://localhost:8081/${type}/list`)
+  constructor(protected httpClient: HttpClient) { }
+
+  getAll(type: String) {
+    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list`)
+  }
+
+  getById(type: String, id: string) {
+    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 }

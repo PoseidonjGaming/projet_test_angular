@@ -1,1 +1,36 @@
-<p>detail-series works!</p>
+<div class="container-fluid">
+    <div class="row" *ngIf="series">
+        <div class="col-4">
+            <img *ngIf="series.affiche" ngClass="img-fluid" class="m-2"
+                src="http://localhost:8081/series/load?filename={{series.affiche}}" alt="">
+        </div>
+        <div class="col">
+            <div class="row m-2">
+                <p><b>Nom:</b> {{series.nom}}</p>
+                <p><b>Première diffusion le </b>{{series.dateDiff | date:'shortDate': undefined: locale}}</p>
+                <p><b>Resume:</b> <br>{{series.resume}}</p>
+            </div>
+            <div class="container-fluid">
+                <div class="row">
+                    <mat-accordion *ngFor="let episodeSaisoned of episodes; index as indexSaison">
+                        <mat-expansion-panel *ngFor="let episode of episodeSaisoned; index as indexEpisode">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{series.nom}} Saison {{indexSaison+1}}, Episode {{indexEpisode+1}}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{episode.nom}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <p><b>Nom</b>: {{episode.nom}}</p>
+                            <p><b>Première diffusion le </b>{{episode.datePremDiff | date:'shortDate': undefined: locale}}</p>
+                            <p><b>Resume:</b> <br>{{episode.resume}}</p>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

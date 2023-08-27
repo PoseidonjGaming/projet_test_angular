@@ -8,5 +8,5 @@ export class Series {
     resume: String = ''
     affiche: String = ''
     urlBa: String = ''
-    saisonsIds: Saison[] = []
+    saisonsIds: number[] = []
 }
