@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,17 +11,21 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { SeriesComponent } from './components/admin/series/series.component';
 import { DetailSeriesComponent } from './components/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 registerLocaleData(fr);
 
@@ -32,7 +36,8 @@ registerLocaleData(fr);
     ImportDialogComponent,
     ExportDialogComponent,
     DetailSeriesComponent,
-    HomeComponent
+    HomeComponent,
+    SeriesComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,18 @@ registerLocaleData(fr);
     MatInputModule,
     MatIconModule,
     MatCardModule,
-    HttpClientModule
+    MatTableModule,
+    MatListModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:4200"],
+        disallowedRoutes: ["localhost:4200/admin/"],
+      }
+    })
   ],
   providers: [
     {
@@ -60,3 +76,7 @@ registerLocaleData(fr);
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function tokenGetter(request?: HttpRequest<any> | undefined): string | Promise<string | null> | null {
+  return localStorage.getItem('jToken');
+}

@@ -3,10 +3,10 @@ import { Saison } from "./saison.model"
 
 export class Series {
     id: number = 0
-    nom: String = ''
+    nom: string = ''
     dateDiff: Date = new Date()
-    resume: String = ''
-    affiche: String = ''
-    urlBa: String = ''
+    resume: string = ''
+    affiche: string = ''
+    urlBa: string = ''
     saisonsIds: number[] = []
 }

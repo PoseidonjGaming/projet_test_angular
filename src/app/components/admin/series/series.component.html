@@ -1,0 +1,96 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col mat-elevation-z8 p-2 m-2">
+                    <form *ngIf="formSeries" class="mt-2" [formGroup]="formSeries">
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Id</mat-label>
+                                <input matInput type="number" formControlName="id" name="id" id="id" readonly="">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Nom</mat-label>
+                                <input matInput type="text" formControlName="nom" name="nom" id="nom" placeholder="Nom">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Resumé</mat-label>
+                                <textarea matInput formControlName="resume" name="resume" id="resume"
+                                    placeholder="Il était un fois..."></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Affiche</mat-label>
+                                <input matInput type="text" formControlName="affiche" name="affiche" id="affiche"
+                                    placeholder="affiche">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Bande annonce</mat-label>
+                                <input matInput type="text" formControlName="urlBa" name="urlBa" id="urlBa"
+                                    placeholder="Lien de la bande annonce">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <button mat-raised-button color="primary" class="col m-2"
+                                (click)="submit()">Enregistrer</button>
+                            <button mat-raised-button color="primary" class="col m-2" (click)="add()">Ajouter à la
+                                liste</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col mat-elevation-z8 m-2">
+                    <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la liste</button>
+                    <mat-list>
+                        <mat-list-item *ngFor="let series of toAddSeries; index as index">
+                            <p class="d-flex justify-content-center align-items-center">{{series.nom}}
+                                <button mat-raised-button color="warn" class="col ms-2" (click)="remove(index)">Supprimer
+                                    de la liste</button>
+                            </p>
+
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col m-2">
+            <table mat-table [dataSource]="series" class="mat-elevation-z8">
+                <ng-container matColumnDef="nom">
+                    <th mat-header-cell *matHeaderCellDef> Nom </th>
+                    <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+                </ng-container>
+                <ng-container matColumnDef="dateDiff">
+                    <th mat-header-cell *matHeaderCellDef> Date de diffusion </th>
+                    <td mat-cell *matCellDef="let element"> {{element.dateDiff | date:'shortDate': undefined: locale}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="affiche">
+                    <th mat-header-cell *matHeaderCellDef> Affiche </th>
+                    <td mat-cell *matCellDef="let element"> {{element.affiche}} </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Affiche </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" class="me-2"
+                            (click)="populate(element)">Modier</button>
+                        <button mat-raised-button color="warn">Supprimer</button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            </table>
+        </div>
+    </div>
+</div>
