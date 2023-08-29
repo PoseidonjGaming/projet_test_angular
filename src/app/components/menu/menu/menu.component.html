@@ -18,25 +18,27 @@
         <ng-template #none>
             <button mat-button (click)="logout()">Logout</button>
         </ng-template>
-        <mat-menu #menuLogin="matMenu" xPosition="before" [hasBackdrop]="false">
-            <div (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
-                <form [formGroup]="formLogin" class="ms-2" (ngSubmit)="submit()">
+        <mat-menu #menuLogin="matMenu" xPosition="before" [overlapTrigger]="false">
+            <form [formGroup]="formLogin" class="ms-2" (ngSubmit)="submit()" (keydown.tab)="$event.stopPropagation()">
+                <mat-toolbar-row class="mt-2" (click)="$event.stopPropagation(); false;">
                     <mat-form-field>
                         <mat-label>Username</mat-label>
                         <input matInput placeholder="Username" formControlName="username">
                     </mat-form-field>
+                </mat-toolbar-row>
+                <mat-toolbar-row (click)="$event.stopPropagation(); false;">
                     <mat-form-field>
                         <mat-label>Password</mat-label>
-                        <input matInput type="password" placeholder="Password" formControlName="password">
+                        <input matInput type="{{hide ? 'password' : 'text'}}" placeholder="Password"
+                            formControlName="password">
                         <button mat-icon-button matSuffix (click)="hide=!hide" [attr.aria-label]="'Hide password'"
                             [attr.aria-pressed]="hide">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                     </mat-form-field>
-                    <button mat-button type="submit">Login</button>
-                </form>
-            </div>
-
+                </mat-toolbar-row>
+                <button mat-button type="submit">Login</button>
+            </form>
         </mat-menu>
 
     </mat-toolbar-row>
