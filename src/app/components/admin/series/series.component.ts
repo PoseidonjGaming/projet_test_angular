@@ -1,13 +1,12 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, forkJoin } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
 import { SeriesService } from 'src/app/service/series/series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
-import { timer, combineLatest } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
 import { AfficheDialogComponent } from './affiche-dialog/affiche-dialog.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-series',
@@ -38,7 +37,6 @@ export class SeriesComponent implements OnInit {
     @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit(): void {
-    this.sub?.unsubscribe()
     this.sub = this.service.getAll('series').subscribe((d: Series[]) => this.series = d)
   }
 
@@ -47,7 +45,6 @@ export class SeriesComponent implements OnInit {
       this.service.save('series', this.formSeries.value as Series).subscribe(() => {
         this.ngOnInit()
       })
-
     }
 
   }
@@ -69,8 +66,6 @@ export class SeriesComponent implements OnInit {
   }
 
   saves() {
-    this.sub?.unsubscribe()
-
     forkJoin([
       this.service.saves('series', this.toAddSeries),
       this.service.saveFiles(this.files)
