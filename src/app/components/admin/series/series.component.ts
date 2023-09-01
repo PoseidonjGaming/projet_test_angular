@@ -69,7 +69,6 @@ export class SeriesComponent implements OnInit {
   }
 
   saves() {
-
     this.service.saveFiles(this.files).pipe(
       mergeMap(() => this.service.saves('series', this.toAddSeries)),
       mergeMap(() => this.service.getAll('series'))

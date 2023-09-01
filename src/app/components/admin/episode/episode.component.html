@@ -42,6 +42,9 @@
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
+
+                        </div>
+                        <div class="row">
                             <mat-form-field>
                                 <mat-label>Saison</mat-label>
                                 <mat-select formControlName="saisonId" name="saisonId" id="saisonId">
@@ -52,8 +55,11 @@
                             </mat-form-field>
                         </div>
                         <div class="row">
+                            <mat-checkbox formControlName="isNewSaison">Nouvelle saison?</mat-checkbox>
+                        </div>
+                        <div class="row">
                             <button mat-raised-button type="submit" color="primary" class="col m-2">Enregistrer</button>
-                            <button mat-raised-button type="reset" color="primary" class="col m-2" >
+                            <button mat-raised-button type="reset" color="primary" class="col m-2">
                                 Reset
                             </button>
                             <button mat-raised-button type="button" color="primary" class="col m-2"

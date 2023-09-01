@@ -1,4 +1,7 @@
-export class Episode {
+import { Base } from "./base.model"
+
+export class Episode extends Base {
+    
     id: number = 0
     nom: String = ''
     resume: String = ''

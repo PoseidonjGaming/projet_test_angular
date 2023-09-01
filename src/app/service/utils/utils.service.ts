@@ -14,6 +14,6 @@ export class UtilsService {
       let control = form.get(e)
       if (control)
         control.setValue(entity[e])
-    })  
+    })
   }
 }
