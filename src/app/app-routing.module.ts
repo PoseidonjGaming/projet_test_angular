@@ -4,12 +4,14 @@ import { DetailSeriesComponent } from './components/detail-series/detail-series.
 import { HomeComponent } from './components/home/home.component';
 import { SeriesComponent } from './components/admin/series/series.component';
 import { SuperAdminGuard } from './guards/superAdmin/super-admin.guard';
+import { EpisodeComponent } from './components/admin/episode/episode.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent }, 
+  { path: '', component: HomeComponent },
   {
-    path: 'admin', children: [
-      { path: 'series', component: SeriesComponent, canActivate: [SuperAdminGuard]}
+    path: 'admin', canActivate: [SuperAdminGuard], children: [
+      { path: 'series', component: SeriesComponent, },
+      { path: 'episodes', component: EpisodeComponent }
     ]
   },
   { path: 'detail/series/:id', component: DetailSeriesComponent }

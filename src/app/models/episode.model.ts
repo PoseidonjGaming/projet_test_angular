@@ -4,4 +4,5 @@ export class Episode {
     resume: String = ''
     datePremDiff: Date = new Date()
     saisonId: number = 0
+    seriesId: number = 0
 }

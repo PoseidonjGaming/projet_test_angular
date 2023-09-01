@@ -32,6 +32,7 @@ import { ImportDialogComponent } from './components/menu/import-dialog/import-di
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 registerLocaleData(fr);
 
@@ -68,6 +69,7 @@ registerLocaleData(fr);
     MatSnackBarModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSelectModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
