@@ -1,7 +1,8 @@
 
-import { Saison } from "./saison.model"
+import { Base } from "./base.model"
 
-export class Series {
+export class Series extends Base{
+   
     id: number = 0
     nom: string = ''
     dateDiff: Date = new Date()

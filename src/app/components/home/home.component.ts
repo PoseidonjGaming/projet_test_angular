@@ -1,6 +1,6 @@
-import { Component, OnInit, Type } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Series } from 'src/app/models/series.model';
-import { ApiService } from 'src/app/service/api.service';
+import { SeriesService } from 'src/app/service/series/series.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   series: Series[] = []
   slicedResume: boolean = true;
 
-  constructor(private service: ApiService<Series>) { }
+  constructor(private service: SeriesService) { }
 
   ngOnInit(): void {
     this.service.getAll('series').subscribe((d: Series[]) => this.series = d)

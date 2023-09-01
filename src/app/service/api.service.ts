@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Series } from '../models/series.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,14 @@ export class ApiService<E>{
   }
 
   saves(type: string, dtos: E[]) {
-    return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves/`, dtos)
+    return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
+  }
+
+  save(type: string, dto: E): Observable<any> {
+    return this.httpClient.post(`${this.API_BASE_URL}/${type}/save`, dto)
+  }
+
+  delete(type: String, id: String) {
+    return this.httpClient.delete(`${this.API_BASE_URL}/${type}/delete/${id}`)
   }
 }

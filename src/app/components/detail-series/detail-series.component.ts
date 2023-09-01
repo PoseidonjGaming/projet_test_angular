@@ -4,9 +4,9 @@ import { mergeMap } from 'rxjs';
 import { Episode } from 'src/app/models/episode.model';
 import { Saison } from 'src/app/models/saison.model';
 import { Series } from 'src/app/models/series.model';
-import { ApiService } from 'src/app/service/api.service';
 import { ApiEpisodeService } from 'src/app/service/episode/api-episode.service';
 import { ApiSaisonService } from 'src/app/service/saison/api-saison.service';
+import { SeriesService } from 'src/app/service/series/series.service';
 
 @Component({
   selector: 'app-detail-series',
@@ -18,7 +18,7 @@ export class DetailSeriesComponent implements OnInit {
   saisons: Saison[] = []
   episodes: Episode[][] = []
 
-  constructor(private service: ApiService<Series>,
+  constructor(private service: SeriesService,
     private saisonService: ApiSaisonService,
     private episodeService: ApiEpisodeService,
     private route: ActivatedRoute,
@@ -44,7 +44,7 @@ export class DetailSeriesComponent implements OnInit {
               if (!temp.includes(e) && e.saisonId == this.saisons[index].id)
                 temp.push(e)
             })
-            this.episodes.push(temp)            
+            this.episodes.push(temp)
           }
         })
       }

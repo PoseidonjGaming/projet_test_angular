@@ -8,6 +8,7 @@ import { CredentialService } from 'src/app/service/credential/credential.service
 import { Credential } from 'src/app/models/credential.model';
 import { TokenService } from 'src/app/service/token/token.service';
 import jwtDecode from 'jwt-decode';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-menu',
@@ -24,9 +25,12 @@ export class MenuComponent implements OnInit {
     password: new FormControl('', [Validators.required])
   })
 
-  constructor(public dialog: MatDialog, private service: CredentialService, private tokenService: TokenService) { }
+  constructor(public dialog: MatDialog,
+    private service: CredentialService,
+    private tokenService: TokenService,
+    private jwt: JwtHelperService) { }
   ngOnInit(): void {
-    this.isLogged = this.tokenService.isExist();
+    this.isLogged = this.tokenService.isExist() && this.jwt.isTokenExpired(this.tokenService.getToken());
   }
 
   openDialogImport() {

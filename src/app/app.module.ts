@@ -1,5 +1,5 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule, HttpRequest } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,6 +26,9 @@ import { ExportDialogComponent } from './components/menu/export-dialog/export-di
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { JwtModule } from '@auth0/angular-jwt';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AfficheDialogComponent } from './components/admin/series/affiche-dialog/affiche-dialog.component';
 
 registerLocaleData(fr);
 
@@ -37,7 +40,8 @@ registerLocaleData(fr);
     ExportDialogComponent,
     DetailSeriesComponent,
     HomeComponent,
-    SeriesComponent
+    SeriesComponent,
+    AfficheDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +61,7 @@ registerLocaleData(fr);
     MatCardModule,
     MatTableModule,
     MatListModule,
+    MatSnackBarModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -71,6 +76,9 @@ registerLocaleData(fr);
   providers: [
     {
       provide: LOCALE_ID, useValue: 'fr'
+    },
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
     }
   ],
   bootstrap: [AppComponent]
