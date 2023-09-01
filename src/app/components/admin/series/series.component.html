@@ -3,7 +3,7 @@
         <div class="col">
             <div class="row">
                 <div class="col mat-elevation-z8 p-2 m-2">
-                    <form *ngIf="formSeries" class="mt-2" [formGroup]="formSeries">
+                    <form id="form" *ngIf="formSeries" class="mt-2" [formGroup]="formSeries" (ngSubmit)="submit()">
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Id</mat-label>

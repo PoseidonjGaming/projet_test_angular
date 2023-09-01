@@ -2,7 +2,7 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, forkJoin } from 'rxjs';
+import { Subscription, forkJoin, mergeMap } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
 import { SeriesService } from 'src/app/service/series/series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
@@ -28,8 +28,6 @@ export class SeriesComponent implements OnInit {
     urlBa: new FormControl('')
   })
 
-  sub?: Subscription
-
   constructor(private service: SeriesService,
     private utilService: UtilsService,
     public dialog: MatDialog,
@@ -37,13 +35,17 @@ export class SeriesComponent implements OnInit {
     @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit(): void {
-    this.sub = this.service.getAll('series').subscribe((d: Series[]) => this.series = d)
+    this.service.getAll('series').subscribe((d: Series[]) => this.series = d)
   }
 
   submit() {
     if (this.formSeries.valid) {
-      this.service.save('series', this.formSeries.value as Series).subscribe(() => {
-        this.ngOnInit()
+      this.service.save('series', this.formSeries.value as Series).pipe(
+        mergeMap(() => this.service.getAll('series'))
+      ).subscribe((dtos: Series[]) => {
+        var resetForm = <HTMLFormElement>document.getElementById('form');
+        resetForm.reset();
+        this.series = dtos
       })
     }
 
@@ -56,7 +58,8 @@ export class SeriesComponent implements OnInit {
   add() {
     if (this.formSeries.valid) {
       this.toAddSeries.push(this.formSeries.value as Series)
-      this.formSeries.reset()
+      var resetForm = <HTMLFormElement>document.getElementById('form');
+      resetForm.reset();
     }
 
   }
@@ -66,18 +69,23 @@ export class SeriesComponent implements OnInit {
   }
 
   saves() {
-    forkJoin([
-      this.service.saves('series', this.toAddSeries),
-      this.service.saveFiles(this.files)
-    ]).subscribe(() => {
+
+    this.service.saveFiles(this.files).pipe(
+      mergeMap(() => this.service.saves('series', this.toAddSeries)),
+      mergeMap(() => this.service.getAll('series'))
+    ).subscribe((dtos: Series[]) => {
       this.toAddSeries = []
-      this.ngOnInit()
+      this.series = dtos
     })
+
   }
 
   deletes(series: Series) {
-    this.sub?.unsubscribe()
-    this.service.delete('series', series.id.toString()).subscribe(() => this.ngOnInit())
+    this.service.delete('series', series.id.toString()).pipe(
+      mergeMap(() => this.service.getAll('series'))
+    ).subscribe((dtos: Series[]) => {
+      this.series = dtos
+    })
   }
 
   setAffiche(event: any) {

@@ -17,7 +17,7 @@ export class SeriesService extends ApiService<Series> {
     return this.httpClient.post(`${this.API_BASE_URL}/series/save/files`, formData)
   }
 
-  saveSeries(series: Series, file: File) {
+  saveWithFile(series: Series, file: File) {
     let formData = new FormData()
 
     let headers = new HttpHeaders()
