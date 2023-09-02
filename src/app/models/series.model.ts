@@ -3,10 +3,10 @@ import { Base } from "./base.model"
 export class Series extends Base{
    
     id: number = 0
-    nom: string = ''
-    dateDiff: Date = new Date()
-    resume: string = ''
-    affiche: string = ''
-    urlBa: string = ''
+    name: string = ''
+    releaseDate: Date = new Date()
+    summary: string = ''
+    poster: string = ''
+    trailerUrl: string = ''
     saisonsIds: number[] = []
 }

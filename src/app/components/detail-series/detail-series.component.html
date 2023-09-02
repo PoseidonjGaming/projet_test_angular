@@ -1,14 +1,14 @@
 <div class="container-fluid">
     <div class="row" *ngIf="series">
         <div class="col-4">
-            <img *ngIf="series.affiche" ngClass="img-fluid" class="m-2"
-                src="http://localhost:8081/series/load?filename={{series.affiche}}" alt="">
+            <img *ngIf="series.poster" ngClass="img-fluid" class="m-2"
+                src="http://localhost:8081/series/load?filename={{series.poster}}" alt="">
         </div>
         <div class="col">
             <div class="row m-2">
-                <p><b>Nom:</b> {{series.nom}}</p>
-                <p><b>Première diffusion le </b>{{series.dateDiff | date:'shortDate': undefined: locale}}</p>
-                <p><b>Resume:</b> <br>{{series.resume}}</p>
+                <p><b>name:</b> {{series.name}}</p>
+                <p><b>Première diffusion le </b>{{series.releaseDate | date:'shortDate': undefined: locale}}</p>
+                <p><b>summary:</b> <br>{{series.summary}}</p>
             </div>
             <div class="container-fluid">
                 <div class="row">
@@ -16,15 +16,16 @@
                         <mat-expansion-panel *ngFor="let episode of episodeSaisoned; index as indexEpisode">
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                    {{series.nom}} Saison {{indexSaison+1}}, Episode {{indexEpisode+1}}
+                                    {{series.name}} Saison {{indexSaison+1}}, Episode {{indexEpisode+1}}
                                 </mat-panel-title>
                                 <mat-panel-description>
-                                    {{episode.nom}}
+                                    {{episode.name}}
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
-                            <p><b>Nom</b>: {{episode.nom}}</p>
-                            <p><b>Première diffusion le </b>{{episode.datePremDiff | date:'shortDate': undefined: locale}}</p>
-                            <p><b>Resume:</b> <br>{{episode.resume}}</p>
+                            <p><b>name</b>: {{episode.name}}</p>
+                            <p><b>Première diffusion le </b>{{episode.releaseDate | date:'shortDate': undefined:
+                                locale}}</p>
+                            <p><b>summary:</b> <br>{{episode.summary}}</p>
                         </mat-expansion-panel>
                     </mat-accordion>
 

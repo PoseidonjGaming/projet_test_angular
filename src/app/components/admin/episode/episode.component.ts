@@ -4,11 +4,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mergeMap } from 'rxjs';
 import { Episode } from 'src/app/models/episode.model';
-import { Saison } from 'src/app/models/saison.model';
+import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiEpisodeService } from 'src/app/service/episode/api-episode.service';
-import { ApiSaisonService } from 'src/app/service/saison/api-saison.service';
-import { SeriesService } from 'src/app/service/series/series.service';
+import { ApiSeasonService } from 'src/app/service/season/api-season.service';
+import { ApiSeriesService } from 'src/app/service/series/series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 
 @Component({
@@ -20,23 +20,23 @@ export class EpisodeComponent implements OnInit {
   episodes: Episode[] = []
   toAddEpisodes: Episode[] = []
   series: Series[] = []
-  saisons: Saison[] = []
+  saisons: Season[] = []
 
-  columns = ['nom', 'datePremDiff', 'action']
+  columns = ['name', 'releaseDate', 'action']
 
   formEpisode = new FormGroup({
     id: new FormControl(0),
-    nom: new FormControl('', [Validators.required]),
-    resume: new FormControl(''),
-    datePremDiff: new FormControl(new Date()),
-    saisonId: new FormControl(0, [Validators.required, Validators.min(1)]),
+    name: new FormControl('', [Validators.required]),
+    summary: new FormControl(''),
+    releaseDate: new FormControl(new Date()),
+    seasonId: new FormControl(0, [Validators.required, Validators.min(1)]),
     seriesId: new FormControl(0, [Validators.required, Validators.min(1)]),
     isNewSaison: new FormControl(false)
   })
 
   constructor(private service: ApiEpisodeService,
-    private seriesService: SeriesService,
-    private saisonService: ApiSaisonService,
+    private seriesService: ApiSeriesService,
+    private saisonService: ApiSeasonService,
     private utilService: UtilsService,
     public dialog: MatDialog,
     private snack: MatSnackBar,
@@ -67,7 +67,7 @@ export class EpisodeComponent implements OnInit {
   }
 
   getSaisons(series: Series) {
-    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Saison[]) => this.saisons = dtos)
+    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.saisons = dtos)
   }
 
   add() {
@@ -78,12 +78,11 @@ export class EpisodeComponent implements OnInit {
 
   submit() {
     if (this.formEpisode.valid) {
-      
       if (this.formEpisode.controls.isNewSaison.value) {
-        this.saisonService.save('saison', new Saison(this.formEpisode.controls.seriesId.value!, this.saisons.length + 1)).pipe(
+        this.saisonService.save('saison', new Season(this.formEpisode.controls.seriesId.value!, this.saisons.length + 1)).pipe(
           mergeMap(() => this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)),
-          mergeMap((dtos: Saison[]) => {
-            this.formEpisode.controls.saisonId.setValue(dtos.slice(-1)[0].id)
+          mergeMap((dtos: Season[]) => {
+            this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save('episode', this.setValue(new Episode()))
           }),
           mergeMap(() => this.service.getAll('episode'))
@@ -91,10 +90,21 @@ export class EpisodeComponent implements OnInit {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
-          var resetForm = <HTMLFormElement>document.getElementById('form');
-          resetForm.reset();
+
         })
       }
+      else {
+        this.service.save('episode', this.setValue(new Episode())).pipe(
+          mergeMap(() => this.service.getAll('episode'))
+        ).subscribe((dtos: Episode[]) => {
+          this.episodes = dtos
+          const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
+          this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+        })
+      }
+
+      var resetForm = <HTMLFormElement>document.getElementById('form');
+      resetForm.reset();
     }
 
   }

@@ -1,16 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Saison } from 'src/app/models/saison.model';
+import { Season } from 'src/app/models/season.model';
 import { ApiService } from '../api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiSaisonService extends ApiService<Saison>{
+export class ApiSeasonService extends ApiService<Season>{
 
   constructor(httpClient: HttpClient) { super(httpClient) }
 
   getBySeriesId(id: string) {
-    return this.httpClient.get<Saison[]>(`${this.API_BASE_URL}/saison/bySeries/${id}`)
+    return this.httpClient.get<Season[]>(`${this.API_BASE_URL}/season/bySeries/${id}`)
   }
 }

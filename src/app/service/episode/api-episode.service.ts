@@ -10,7 +10,7 @@ export class ApiEpisodeService extends ApiService<Episode>{
 
   constructor(httpClient: HttpClient) { super(httpClient) }
 
-  getBySaisonIdIn(id: string[]) {
+  betBySeasonIdIn(id: string[]) {
     return this.httpClient.get<Episode[]>(`${this.API_BASE_URL}/episode/bySaisons/${id}`)
   }
 }

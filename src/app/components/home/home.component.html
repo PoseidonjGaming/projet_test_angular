@@ -3,19 +3,20 @@
         <div class="col-4">
             <mat-card class="m-2" *ngFor="let serie of series">
                 <mat-card-header>
-                    <mat-card-title>{{serie.nom}}</mat-card-title>
+                    <mat-card-title>{{serie.name}}</mat-card-title>
                 </mat-card-header>
-                <img *ngIf="serie.affiche" class="mx-2" mat-card-image
-                    src="http://localhost:8081/series/load?filename={{serie.affiche}}">
+                <img *ngIf="serie.poster" class="mx-2" mat-card-image
+                    src="http://localhost:8081/series/load?filename={{serie.poster}}">
                 <mat-card-content>
-                    <p *ngIf="slicedResume && serie.resume else fullResume" class="mt-2">
-                        {{serie.resume.slice(0,512)}}
-                        <button mat-button color="primary" (click)="slicedResume=!slicedResume">Voir plus</button>
+                    <p *ngIf="slicedsummary && serie.summary else fullsummary" class="mt-2">
+                        {{serie.summary.slice(0,512)}}
+                        <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir plus</button>
                     </p>
-                    <ng-template #fullResume>
+                    <ng-template #fullsummary>
                         <p>
-                            {{serie.resume}}
-                            <button mat-button color="primary" (click)="slicedResume=!slicedResume">Voir moins</button>
+                            {{serie.summary}}
+                            <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
+                                moins</button>
                         </p>
 
                     </ng-template>

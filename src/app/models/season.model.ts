@@ -1,14 +1,14 @@
 import { Base } from "./base.model";
 
-export class Saison extends Base {
+export class Season extends Base {
     id: number = 0
     seriesId: number = 0
-    numero: number = 1;
+    number: number = 1;
     episodesIds: number[] = [];
 
-    constructor(seriesId: number, numero: number) {
+    constructor(seriesId: number, number: number) {
         super()
         this.seriesId = seriesId
-        this.numero = numero
+        this.number = number
     }
 }

@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, forkJoin, mergeMap } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
-import { SeriesService } from 'src/app/service/series/series.service';
+import { ApiSeriesService } from 'src/app/service/series/series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 import { AfficheDialogComponent } from './affiche-dialog/affiche-dialog.component';
 
@@ -17,18 +17,18 @@ export class SeriesComponent implements OnInit {
   series: Series[] = []
   toAddSeries: Series[] = []
   files: File[] = []
-  columns = ['nom', 'dateDiff', 'affiche', 'action']
+  columns = ['name', 'releaseDate', 'poster', 'action']
 
   formSeries = new FormGroup({
     id: new FormControl(0),
-    nom: new FormControl('', [Validators.required]),
-    dateDiff: new FormControl(new Date()),
-    resume: new FormControl(''),
-    affiche: new FormControl(''),
-    urlBa: new FormControl('')
+    name: new FormControl('', [Validators.required]),
+    releaseDate: new FormControl(new Date()),
+    summary: new FormControl(''),
+    poster: new FormControl(''),
+    trailerUrl: new FormControl('')
   })
 
-  constructor(private service: SeriesService,
+  constructor(private service: ApiSeriesService,
     private utilService: UtilsService,
     public dialog: MatDialog,
     private snack: MatSnackBar,
@@ -92,13 +92,13 @@ export class SeriesComponent implements OnInit {
 
     if (!this.files.find((f: File) => file.name === f.name)) {
       this.files.push(file)
-      this.formSeries.controls.affiche.setValue(file.name)
+      this.formSeries.controls.poster.setValue(file.name)
     }
 
   }
 
   openAfficheDialog() {
-    const file = this.files.find((value: File) => value.name === this.formSeries.controls.affiche.value)
+    const file = this.files.find((value: File) => value.name === this.formSeries.controls.poster.value)
     if (file)
       this.dialog.open(AfficheDialogComponent, {
         data: file,

@@ -12,22 +12,23 @@
                         </div>
                         <div class="row">
                             <mat-form-field>
-                                <mat-label>Nom</mat-label>
-                                <input matInput type="text" formControlName="nom" name="nom" id="nom" placeholder="Nom">
+                                <mat-label>name</mat-label>
+                                <input matInput type="text" formControlName="name" name="name" id="name"
+                                    placeholder="name">
                             </mat-form-field>
                         </div>
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Resumé</mat-label>
-                                <textarea matInput formControlName="resume" name="resume" id="resume"
+                                <textarea matInput formControlName="summary" name="summary" id="summary"
                                     placeholder="Il était un fois..." cdkTextareaAutosize></textarea>
                             </mat-form-field>
                         </div>
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Date de diffusion</mat-label>
-                                <input matInput [matDatepicker]="picker" formControlName="datePremDiff"
-                                    name="datePremDiff" id="datePremDiff" (click)="picker.open()">
+                                <input matInput [matDatepicker]="picker" formControlName="releaseDate"
+                                    name="releaseDate" id="releaseDate" (click)="picker.open()">
                                 <mat-datepicker #picker></mat-datepicker>
                                 <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                             </mat-form-field>
@@ -38,7 +39,7 @@
                                 <mat-select formControlName="seriesId" name="seriesId" id="seriesId">
                                     <mat-option *ngFor="let serie of series" [value]="serie.id"
                                         (onSelectionChange)="getSaisons(serie)">
-                                        {{serie.nom}}
+                                        {{serie.name}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -47,9 +48,9 @@
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Saison</mat-label>
-                                <mat-select formControlName="saisonId" name="saisonId" id="saisonId">
+                                <mat-select formControlName="seasonId" name="seasonId" id="seasonId">
                                     <mat-option *ngFor="let saison of saisons" [value]="saison.id">
-                                        {{saison.numero}}
+                                        {{saison.number}}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -73,7 +74,7 @@
                     <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la liste</button>
                     <mat-list>
                         <mat-list-item *ngFor="let series of toAddEpisodes; index as index">
-                            <p class="d-flex justify-content-center align-items-center">{{series.nom}}
+                            <p class="d-flex justify-content-center align-items-center">{{series.name}}
                                 <button mat-raised-button color="warn" class="col ms-2"
                                     (click)="remove(index)">Supprimer
                                     de la liste</button>
@@ -87,9 +88,9 @@
         <div class="col mt-2 me-2">
             <div class="row">
                 <table mat-table [dataSource]="episodes" class="mat-elevation-z8">
-                    <ng-container matColumnDef="nom">
-                        <th mat-header-cell *matHeaderCellDef> Nom </th>
-                        <td mat-cell *matCellDef="let element"> {{element.nom}} </td>
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                     </ng-container>
 
                     <ng-container matColumnDef="action">
@@ -101,9 +102,9 @@
                         </td>
                     </ng-container>
 
-                    <ng-container matColumnDef="datePremDiff">
+                    <ng-container matColumnDef="releaseDate">
                         <th mat-header-cell *matHeaderCellDef> Date de diffusion </th>
-                        <td mat-cell *matCellDef="let element"> {{element.datePremDiff | date:'shortDate': undefined:
+                        <td mat-cell *matCellDef="let element"> {{element.releaseDate | date:'shortDate': undefined:
                             locale}}
                         </td>
                     </ng-container>

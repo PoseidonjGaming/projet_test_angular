@@ -2,11 +2,11 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { mergeMap } from 'rxjs';
 import { Episode } from 'src/app/models/episode.model';
-import { Saison } from 'src/app/models/saison.model';
+import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiEpisodeService } from 'src/app/service/episode/api-episode.service';
-import { ApiSaisonService } from 'src/app/service/saison/api-saison.service';
-import { SeriesService } from 'src/app/service/series/series.service';
+import { ApiSeasonService } from 'src/app/service/season/api-season.service';
+import { ApiSeriesService } from 'src/app/service/series/series.service';
 
 @Component({
   selector: 'app-detail-series',
@@ -15,11 +15,11 @@ import { SeriesService } from 'src/app/service/series/series.service';
 })
 export class DetailSeriesComponent implements OnInit {
   series?: Series
-  saisons: Saison[] = []
+  saisons: Season[] = []
   episodes: Episode[][] = []
 
-  constructor(private service: SeriesService,
-    private saisonService: ApiSaisonService,
+  constructor(private service: ApiSeriesService,
+    private saisonService: ApiSeasonService,
     private episodeService: ApiEpisodeService,
     private route: ActivatedRoute,
     @Inject(LOCALE_ID) public locale: string) { }
@@ -33,15 +33,15 @@ export class DetailSeriesComponent implements OnInit {
             this.series = d
             return this.saisonService.getBySeriesId(d.id.toString())
           }),
-          mergeMap((d: Saison[]) => {
+          mergeMap((d: Season[]) => {
             this.saisons = d
-            return this.episodeService.getBySaisonIdIn(d.map(e => e.seriesId.toString()))
+            return this.episodeService.betBySeasonIdIn(d.map(e => e.seriesId.toString()))
           })
         ).subscribe((d: Episode[]) => {
           for (let index = 0; index < this.saisons.length; index++) {
             let temp: Episode[] = []
             d.forEach((e: Episode) => {
-              if (!temp.includes(e) && e.saisonId == this.saisons[index].id)
+              if (!temp.includes(e) && e.seasonId == this.saisons[index].id)
                 temp.push(e)
             })
             this.episodes.push(temp)

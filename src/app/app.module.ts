@@ -33,6 +33,7 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { ActorComponent } from './components/admin/actor/actor.component';
 
 registerLocaleData(fr);
 
@@ -46,7 +47,8 @@ registerLocaleData(fr);
     HomeComponent,
     SeriesComponent,
     AfficheDialogComponent,
-    EpisodeComponent
+    EpisodeComponent,
+    ActorComponent
   ],
   imports: [
     BrowserModule,
