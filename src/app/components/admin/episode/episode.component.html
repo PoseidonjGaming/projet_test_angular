@@ -73,8 +73,8 @@
                 <div class="col mat-elevation-z8 m-2">
                     <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la liste</button>
                     <mat-list>
-                        <mat-list-item *ngFor="let series of toAddEpisodes; index as index">
-                            <p class="d-flex justify-content-center align-items-center">{{series.name}}
+                        <mat-list-item *ngFor="let episode of toAddEpisodes; index as index">
+                            <p class="d-flex justify-content-center align-items-center">{{episode.name}}
                                 <button mat-raised-button color="warn" class="col ms-2"
                                     (click)="remove(index)">Supprimer
                                     de la liste</button>
