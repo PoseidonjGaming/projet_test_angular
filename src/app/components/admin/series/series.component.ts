@@ -46,6 +46,8 @@ export class SeriesComponent implements OnInit {
         var resetForm = <HTMLFormElement>document.getElementById('form');
         resetForm.reset();
         this.series = dtos
+        const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
+        this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
       })
     }
 
@@ -75,6 +77,7 @@ export class SeriesComponent implements OnInit {
     ).subscribe((dtos: Series[]) => {
       this.toAddSeries = []
       this.series = dtos
+      this.snack.open(`Séries modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
     })
 
   }
