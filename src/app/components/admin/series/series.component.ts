@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription, forkJoin, mergeMap } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
-import { ApiSeriesService } from 'src/app/service/series/series.service';
+import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 import { AfficheDialogComponent } from './affiche-dialog/affiche-dialog.component';
 

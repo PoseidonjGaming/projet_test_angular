@@ -8,7 +8,7 @@ import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiEpisodeService } from 'src/app/service/episode/api-episode.service';
 import { ApiSeasonService } from 'src/app/service/season/api-season.service';
-import { ApiSeriesService } from 'src/app/service/series/series.service';
+import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Series } from 'src/app/models/series.model';
-import { ApiSeriesService } from 'src/app/service/series/series.service';
+import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 
 @Component({
   selector: 'app-home',
