@@ -2,7 +2,7 @@ import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Subscription, forkJoin, mergeMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';

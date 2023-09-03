@@ -3,9 +3,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/commo
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -14,14 +16,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ActorComponent } from './components/admin/actor/actor.component';
+import { CharacterComponent } from './components/admin/character/character.component';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
 import { AfficheDialogComponent } from './components/admin/series/affiche-dialog/affiche-dialog.component';
 import { SeriesComponent } from './components/admin/series/series.component';
@@ -31,9 +37,6 @@ import { ExportDialogComponent } from './components/menu/export-dialog/export-di
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatSelectModule } from '@angular/material/select';
-import { ActorComponent } from './components/admin/actor/actor.component';
 
 registerLocaleData(fr);
 
@@ -48,7 +51,8 @@ registerLocaleData(fr);
     SeriesComponent,
     AfficheDialogComponent,
     EpisodeComponent,
-    ActorComponent
+    ActorComponent,
+    CharacterComponent
   ],
   imports: [
     BrowserModule,
@@ -72,6 +76,8 @@ registerLocaleData(fr);
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    MatAutocompleteModule,
+    MatTabsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

@@ -1,0 +1,117 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col mat-elevation-z8 ms-2 mt-2">
+            <mat-tab-group>
+                <mat-tab label="Acteurs">
+                    <mat-list role="list">
+                        <mat-list-item *ngFor="let actor of this.formCharacter.controls.actors.value; index as index"
+                            role="listitem">
+                            {{actor['firstname']}} {{actor['lastname']}}
+                            <button type="button" mat-raised-button color="warn"
+                                (click)="removeFromList(this.formCharacter.controls.actors.value!,index)">Supprimer</button>
+                        </mat-list-item>
+                    </mat-list>
+                </mat-tab>
+                <mat-tab label="Séries">
+                    <mat-list role="list">
+                        <mat-list-item *ngFor="let series of this.formCharacter.controls.series.value; index as index"
+                            role="listitem">
+                            {{series['name']}}
+                            <button type="button" mat-raised-button color="warn"
+                                (click)="removeFromList(this.formCharacter.controls.series.value!,index)">Supprimer</button>
+                        </mat-list-item>
+                    </mat-list></mat-tab>
+            </mat-tab-group>
+
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col mat-elevation-z8 p-2 m-2">
+                    <form *ngIf="formCharacter" id="form" class="mt-2" [formGroup]="formCharacter"
+                        (ngSubmit)="submit()">
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Id</mat-label>
+                                <input matInput type="number" formControlName="id" name="id" id="id" readonly="">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Nom</mat-label>
+                                <input matInput type="text" formControlName="name" name="name" id="name"
+                                    placeholder="Nom">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Acteurs</mat-label>
+                                <mat-select formControlName="actors" multiple>
+                                    <mat-option *ngFor="let actor of actors" [value]="actor">
+                                        {{actor.firstname}} {{actor.lastname}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Séries</mat-label>
+                                <mat-select formControlName="series" multiple>
+                                    <mat-option *ngFor="let serie of series" [value]="serie">
+                                        {{serie.name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <button mat-raised-button type="submit" color="primary" class="col m-2">Enregistrer</button>
+                            <button mat-raised-button type="reset" color="primary" class="col m-2">
+                                Reset
+                            </button>
+                            <button mat-raised-button type="button" color="primary" class="col m-2" (click)="add()">
+                                Ajouter à la liste
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mat-elevation-z8 m-2">
+                    <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la liste</button>
+                    <mat-list>
+                        <mat-list-item *ngFor="let character of toAddCharacters; index as index">
+                            <p class="d-flex justify-content-center align-items-center">{{character.name}}
+                                <button mat-raised-button color="warn" class="col ms-2"
+                                    (click)="removeFromList(toAddCharacters,index)">Supprimer
+                                    de la liste</button>
+                            </p>
+
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </div>
+        <div class="col mt-2 me-2">
+            <div class="row">
+                <table mat-table [dataSource]="characters" class="mat-elevation-z8">
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Nom </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef> Action </th>
+                        <td mat-cell *matCellDef="let element">
+                            <button mat-raised-button color="accent" class="me-2"
+                                (click)="populate(element)">Modier</button>
+                            <button mat-raised-button color="warn" (click)="deletes(element)">Supprimer</button>
+                        </td>
+                    </ng-container>
+
+
+                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

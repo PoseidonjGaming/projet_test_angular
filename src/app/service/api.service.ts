@@ -20,6 +20,10 @@ export class ApiService<E>{
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 
+  search(type: String, term: String) {
+    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/search?term=${term}`)
+  }
+
   saves(type: string, dtos: E[]) {
     return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
   }

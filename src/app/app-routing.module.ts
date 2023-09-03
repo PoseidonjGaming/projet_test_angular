@@ -6,6 +6,7 @@ import { SeriesComponent } from './components/admin/series/series.component';
 import { SuperAdminGuard } from './guards/superAdmin/super-admin.guard';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
 import { ActorComponent } from './components/admin/actor/actor.component';
+import { CharacterComponent } from './components/admin/character/character.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
     path: 'admin', canActivate: [SuperAdminGuard], children: [
       { path: 'series', component: SeriesComponent, },
       { path: 'episodes', component: EpisodeComponent },
-      { path: 'actor', component: ActorComponent }
+      { path: 'actor', component: ActorComponent },
+      { path: 'character', component: CharacterComponent }
     ]
   },
   { path: 'detail/series/:id', component: DetailSeriesComponent }
