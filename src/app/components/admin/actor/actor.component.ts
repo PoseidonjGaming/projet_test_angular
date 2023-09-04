@@ -36,7 +36,11 @@ export class ActorComponent implements OnInit {
     if (this.formActor.valid) {
       this.service.save('actor', this.setValue()).pipe(
         mergeMap(() => this.service.getAll('actor'))
-      ).subscribe((dtos: Actor[]) => this.actors = dtos)
+      ).subscribe((dtos: Actor[]) => {
+        this.actors = dtos
+        var resetForm = <HTMLFormElement>document.getElementById('form');
+        resetForm.reset();
+      })
     }
   }
 
