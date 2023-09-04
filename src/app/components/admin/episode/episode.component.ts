@@ -29,7 +29,7 @@ export class EpisodeComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     summary: new FormControl(''),
     releaseDate: new FormControl(new Date()),
-    seasonId: new FormControl(0, [Validators.required, Validators.min(1)]),
+    seasonId: new FormControl(0),
     seriesId: new FormControl(0, [Validators.required, Validators.min(1)]),
     isNewSaison: new FormControl(false)
   })
