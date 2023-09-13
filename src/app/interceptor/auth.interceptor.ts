@@ -9,14 +9,15 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { TokenService } from '../service/token/token.service';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private tokenService: TokenService, public snackBar: MatSnackBar) { }
+  constructor(private tokenService: TokenService, public snackBar: MatSnackBar, private jwtHelper: JwtHelperService) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    if (this.tokenService.isExist()) {
+    if (this.tokenService.isExist() && !this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
       request = request.clone({
         setHeaders: {
           'Authorization': 'Bearer ' + this.tokenService.getToken(),
@@ -31,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
         },
         error: (e: HttpErrorResponse) => {
           console.log(e);
-          
+
           this.error(e.status)
         }
       })

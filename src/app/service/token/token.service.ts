@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import jwtDecode from 'jwt-decode';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
+
   
+  
+  private menu: Subject<string> = new Subject()
 
   constructor() { }
 
@@ -39,5 +43,13 @@ export class TokenService {
 
   setToken(token: string) {
     localStorage.setItem('jToken', token)
+  }
+
+  subscribeRole() {
+    return this.menu.asObservable()
+  }
+
+  nextRole() {
+    this.menu.next((this.getToken()) ? this.getRole() : 'default')
   }
 }

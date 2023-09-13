@@ -16,7 +16,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-
+  private rolesAdmin=['ROLE_super_admin']
   hide = true;
   isLogged: boolean = false
 
@@ -29,8 +29,13 @@ export class MenuComponent implements OnInit {
     private service: CredentialService,
     private tokenService: TokenService,
     private jwt: JwtHelperService) { }
+
+
   ngOnInit(): void {
-    this.isLogged = this.tokenService.isExist() && this.jwt.isTokenExpired(this.tokenService.getToken());
+    this.tokenService.subscribeRole().subscribe((d)=>{
+      this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
+    })
+    this.tokenService.nextRole()
   }
 
   openDialogImport() {
@@ -44,15 +49,13 @@ export class MenuComponent implements OnInit {
     if (this.formLogin.valid) {
       this.service.authenticate(this.formLogin.value as Credential).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
-        this.isLogged = true
+        this.tokenService.nextRole() 
       })
     }
-
   }
 
   logout() {
     this.tokenService.logout();
-    this.isLogged = false
-    window.location.reload()
+    this.tokenService.nextRole()
   }
 }
