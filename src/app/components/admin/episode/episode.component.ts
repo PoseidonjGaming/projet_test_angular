@@ -29,8 +29,8 @@ export class EpisodeComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     summary: new FormControl(''),
     releaseDate: new FormControl(new Date()),
-    seasonId: new FormControl(0),
-    seriesId: new FormControl(0, [Validators.required, Validators.min(1)]),
+    seasonId: new FormControl(0,),
+    seriesId: new FormControl(1, [Validators.required, Validators.min(1)]),
     isNewSaison: new FormControl(false)
   })
 
@@ -79,8 +79,12 @@ export class EpisodeComponent implements OnInit {
   submit() {
     if (this.formEpisode.valid) {
       if (this.formEpisode.controls.isNewSaison.value) {
-        this.saisonService.save('saison', new Season(this.formEpisode.controls.seriesId.value!, this.saisons.length + 1)).pipe(
-          mergeMap(() => this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)),
+        this.saisonService.save('season', new Season(this.formEpisode.controls.seriesId.value!, this.saisons.length + 1)).pipe(
+          mergeMap(() => {
+            console.log(this.formEpisode.controls.seriesId.value);
+
+            return this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)
+          }),
           mergeMap((dtos: Season[]) => {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save('episode', this.setValue(new Episode()))
@@ -90,6 +94,8 @@ export class EpisodeComponent implements OnInit {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+          var resetForm = <HTMLFormElement>document.getElementById('form');
+          resetForm.reset();
 
         })
       }
@@ -103,10 +109,8 @@ export class EpisodeComponent implements OnInit {
         })
       }
 
-      var resetForm = <HTMLFormElement>document.getElementById('form');
-      resetForm.reset();
-    }
 
+    }
   }
 
   saves() {
