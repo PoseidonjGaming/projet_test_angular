@@ -12,9 +12,9 @@
                         </div>
                         <div class="row">
                             <mat-form-field>
-                                <mat-label>name</mat-label>
+                                <mat-label>Nom</mat-label>
                                 <input matInput type="text" formControlName="name" name="name" id="name"
-                                    placeholder="name">
+                                    placeholder="Nom">
                             </mat-form-field>
                         </div>
                         <div class="row">
@@ -49,7 +49,7 @@
                             <mat-form-field>
                                 <mat-label>Saison</mat-label>
                                 <mat-select formControlName="seasonId" name="seasonId" id="seasonId">
-                                    <mat-option *ngFor="let saison of saisons" [value]="saison.id">
+                                    <mat-option *ngFor="let saison of seasons" [value]="saison.id">
                                         {{saison.number}}
                                     </mat-option>
                                 </mat-select>

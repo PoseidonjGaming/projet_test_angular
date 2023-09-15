@@ -20,7 +20,7 @@ export class EpisodeComponent implements OnInit {
   episodes: Episode[] = []
   toAddEpisodes: Episode[] = []
   series: Series[] = []
-  saisons: Season[] = []
+  seasons: Season[] = []
 
   columns = ['name', 'releaseDate', 'action']
 
@@ -64,10 +64,11 @@ export class EpisodeComponent implements OnInit {
       this.episodes = dtos
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
     })
+
   }
 
   getSaisons(series: Series) {
-    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.saisons = dtos)
+    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
   }
 
   add() {
@@ -79,12 +80,8 @@ export class EpisodeComponent implements OnInit {
   submit() {
     if (this.formEpisode.valid) {
       if (this.formEpisode.controls.isNewSaison.value) {
-        this.saisonService.save('season', new Season(this.formEpisode.controls.seriesId.value!, this.saisons.length + 1)).pipe(
-          mergeMap(() => {
-            console.log(this.formEpisode.controls.seriesId.value);
-
-            return this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)
-          }),
+        this.saisonService.save('season', new Season(this.formEpisode.controls.seriesId.value!, this.seasons.length + 1)).pipe(
+          mergeMap(() => this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)),
           mergeMap((dtos: Season[]) => {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save('episode', this.setValue(new Episode()))
@@ -96,7 +93,7 @@ export class EpisodeComponent implements OnInit {
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
           var resetForm = <HTMLFormElement>document.getElementById('form');
           resetForm.reset();
-
+          this.seasons = []
         })
       }
       else {
@@ -106,6 +103,8 @@ export class EpisodeComponent implements OnInit {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+          var resetForm = <HTMLFormElement>document.getElementById('form');
+          resetForm.reset();
         })
       }
 
