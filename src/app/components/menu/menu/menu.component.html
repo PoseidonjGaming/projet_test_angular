@@ -19,27 +19,32 @@
 
         <button *ngIf="!isLogged else none" mat-button [matMenuTriggerFor]="menuLogin">Login</button>
         <ng-template #none>
-            <button mat-button (click)="logout()">Logout</button>
+            <button mat-button [matMenuTriggerFor]="menuUser">{{username}}</button>
+            <mat-menu #menuUser="matMenu">
+                <button mat-menu-item routerLink="/profile">Profile</button>
+                <button mat-menu-item (click)="logout()">Logout</button>
+            </mat-menu>
         </ng-template>
         <mat-menu #menuLogin="matMenu" xPosition="before" [overlapTrigger]="false">
-            <form [formGroup]="formLogin" class="ms-2" (ngSubmit)="submit()" (keydown.tab)="$event.stopPropagation()">
-                <mat-toolbar-row class="mt-2" (click)="$event.stopPropagation(); false;">
+            <form [formGroup]="formLogin" class="container-fluid" (ngSubmit)="submit()"
+                (keydown.tab)="$event.stopPropagation()">
+                <div class="row" (click)="$event.stopPropagation(); false;">
                     <mat-form-field>
                         <mat-label>Username</mat-label>
                         <input matInput placeholder="Username" formControlName="username">
                     </mat-form-field>
-                </mat-toolbar-row>
-                <mat-toolbar-row (click)="$event.stopPropagation(); false;">
+                </div>
+                <div class="row" (click)="$event.stopPropagation(); false;">
                     <mat-form-field>
                         <mat-label>Password</mat-label>
                         <input matInput type="{{hide ? 'password' : 'text'}}" placeholder="Password"
-                            formControlName="password">
+                            formControlName="password" >
                         <button mat-icon-button matSuffix (click)="hide=!hide" [attr.aria-label]="'Hide password'"
-                            [attr.aria-pressed]="hide">
+                            [attr.aria-pressed]="hide" type="button" (keypress.enter)="$event.stopPropagation(); false;">
                             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
                     </mat-form-field>
-                </mat-toolbar-row>
+                </div>
                 <button mat-button type="submit">Login</button>
             </form>
         </mat-menu>

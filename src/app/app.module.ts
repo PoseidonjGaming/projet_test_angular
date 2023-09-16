@@ -37,6 +37,7 @@ import { ExportDialogComponent } from './components/menu/export-dialog/export-di
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { ProfileComponent } from './components/profile/profile.component';
 
 registerLocaleData(fr);
 
@@ -52,7 +53,8 @@ registerLocaleData(fr);
     AfficheDialogComponent,
     EpisodeComponent,
     ActorComponent,
-    CharacterComponent
+    CharacterComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

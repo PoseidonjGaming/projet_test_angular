@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
-import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
-import { CredentialService } from 'src/app/service/credential/credential.service';
-import { Credential } from 'src/app/models/credential.model';
-import { TokenService } from 'src/app/service/token/token.service';
-import jwtDecode from 'jwt-decode';
+import { MatDialog } from '@angular/material/dialog';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Credential } from 'src/app/models/credential.model';
+import { CredentialService } from 'src/app/service/credential/credential.service';
+import { TokenService } from 'src/app/service/token/token.service';
+import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
+import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
 
 @Component({
   selector: 'app-menu',
@@ -16,9 +14,10 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   styleUrls: ['./menu.component.css']
 })
 export class MenuComponent implements OnInit {
-  private rolesAdmin=['ROLE_super_admin']
+  private rolesAdmin = ['ROLE_super_admin']
   hide = true;
   isLogged: boolean = false
+  username?: string
 
   formLogin = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -32,10 +31,13 @@ export class MenuComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.tokenService.subscribeRole().subscribe((d)=>{
+    this.tokenService.subscribeRole().subscribe((d) => {
       this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
     })
     this.tokenService.nextRole()
+    if (this.tokenService.isExist()) {
+      this.username=this.tokenService.getClaims().sub
+    }
   }
 
   openDialogImport() {
@@ -49,7 +51,7 @@ export class MenuComponent implements OnInit {
     if (this.formLogin.valid) {
       this.service.authenticate(this.formLogin.value as Credential).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
-        this.tokenService.nextRole() 
+        this.tokenService.nextRole()
       })
     }
   }

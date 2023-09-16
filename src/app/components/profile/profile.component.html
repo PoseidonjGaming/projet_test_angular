@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row mat-elevation-z8 m-2">
+        <div class="col m-2">
+            <form [formGroup]="formUser" (ngSubmit)="submit()">
+                <div class="row">
+                    <mat-form-field>
+                        <mat-label>Username</mat-label>
+                        <input matInput type="text" formControlName="username" name="username" id="username"
+                            placeholder="Username">
+                        <mat-error *ngFor="let error of errors(formUser.controls.username)">
+                            {{error}}
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field>
+                        <mat-label>Ancien mot de passe</mat-label>
+                        <input matInput type="text" formControlName="currentPassword" name="currentPassword"
+                            id="currentPassword" placeholder="Ancien mot de passe">
+                        <mat-error>
+                            {{formUser.controls.currentPassword.getError('same')}}
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field>
+                        <mat-label>Nouveau mot de passe</mat-label>
+                        <input matInput type="text" formControlName="password" name="password" id="password"
+                            placeholder="Nouveau mot de passe">
+                        <mat-error>
+                            <p *ngFor="let error of errors(formUser.controls.password)">{{error}}</p>
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <mat-form-field>
+                        <mat-label>Confirmez le nouveau mot de passe</mat-label>
+                        <input matInput type="text" formControlName="confirmPassword" name="confirmPassword"
+                            id="confirmPassword" placeholder="Confirmez le nouveau mot de passe">
+                        <mat-error>
+                            Les mots de passe ne correspondent pas
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="row">
+                    <button mat-raised-button color="primary" type="submit">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

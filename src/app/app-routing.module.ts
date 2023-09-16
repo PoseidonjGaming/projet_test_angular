@@ -7,6 +7,7 @@ import { SuperAdminGuard } from './guards/superAdmin/super-admin.guard';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
 import { ActorComponent } from './components/admin/actor/actor.component';
 import { CharacterComponent } from './components/admin/character/character.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
       { path: 'character', component: CharacterComponent }
     ]
   },
-  { path: 'detail/series/:id', component: DetailSeriesComponent }
+  { path: 'detail/series/:id', component: DetailSeriesComponent },
+  { path: 'profile', component: ProfileComponent }
 ];
 
 @NgModule({
