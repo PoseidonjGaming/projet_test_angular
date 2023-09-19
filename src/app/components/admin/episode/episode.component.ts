@@ -1,5 +1,6 @@
 import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mergeMap } from 'rxjs';
@@ -40,8 +41,7 @@ export class EpisodeComponent implements OnInit {
     private utilService: UtilsService,
     public dialog: MatDialog,
     private snack: MatSnackBar,
-    @Inject(LOCALE_ID) public locale: string
-  ) {
+    @Inject(LOCALE_ID) public locale: string) {
   }
 
 
@@ -49,7 +49,9 @@ export class EpisodeComponent implements OnInit {
     this.service.getAll('episode').subscribe((episodes: Episode[]) => {
       this.episodes = episodes
     })
-    this.seriesService.getAll('series').subscribe((dtos: Series[]) => this.series = dtos);
+    this.seriesService.getAll('series').subscribe((dtos: Series[]) => {
+      this.series = dtos
+    });
 
   }
 
@@ -134,6 +136,7 @@ export class EpisodeComponent implements OnInit {
       if (control)
         episode[e] = control.value
     })
+    episode.releaseDate.setHours(1)
     return episode
   }
 }

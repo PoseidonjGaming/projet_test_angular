@@ -40,7 +40,7 @@ export class SeriesComponent implements OnInit {
 
   submit() {
     if (this.formSeries.valid) {
-      this.service.save('series', this.formSeries.value as Series).pipe(
+      this.service.save('series', this.setValue(new Series())).pipe(
         mergeMap(() => this.service.getAll('series'))
       ).subscribe((dtos: Series[]) => {
         var resetForm = <HTMLFormElement>document.getElementById('form');
@@ -59,7 +59,7 @@ export class SeriesComponent implements OnInit {
 
   add() {
     if (this.formSeries.valid) {
-      this.toAddSeries.push(this.formSeries.value as Series)
+      this.toAddSeries.push(this.setValue(new Series()))
       var resetForm = <HTMLFormElement>document.getElementById('form');
       resetForm.reset();
     }
@@ -109,5 +109,15 @@ export class SeriesComponent implements OnInit {
       });
     else
       this.snack.open("Aucune affiche n'a été sélectionnée", "Fermer", { duration: 5 * 1000 })
+  }
+
+  setValue(series: Series) {
+    Object.keys(series).forEach((e) => {
+      const control = this.formSeries.get(e)
+      if (control)
+        series[e] = control.value
+    })
+    series.releaseDate.setHours(1)
+    return series
   }
 }
