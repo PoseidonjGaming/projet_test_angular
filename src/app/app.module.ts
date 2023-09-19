@@ -7,7 +7,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -38,6 +39,7 @@ import { ImportDialogComponent } from './components/menu/import-dialog/import-di
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { MatChipsModule } from '@angular/material/chips';
 
 registerLocaleData(fr);
 
@@ -80,6 +82,8 @@ registerLocaleData(fr);
     MatSelectModule,
     MatAutocompleteModule,
     MatTabsModule,
+    MatSidenavModule,
+    MatChipsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
