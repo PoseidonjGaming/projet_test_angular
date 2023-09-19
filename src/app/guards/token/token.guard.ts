@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { TokenService } from 'src/app/service/token/token.service';
@@ -7,7 +7,7 @@ import { TokenService } from 'src/app/service/token/token.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TokenGuard implements CanActivate {
+export class TokenGuard  {
 
   protected role?: string
 

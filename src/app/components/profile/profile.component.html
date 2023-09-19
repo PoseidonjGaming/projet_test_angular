@@ -1,26 +1,25 @@
 <div class="container-fluid">
-    <div class="row mat-elevation-z8 m-2">
-        <div class="col m-2">
-            <form [formGroup]="formUser" (ngSubmit)="submit()">
+    <div class="row m-2">
+        <div class="col mat-elevation-z8 m-2">
+            <img [src]="file64" style="max-width: 60vh;">
+        </div>
+        <div class="col mat-elevation-z8 m-2">
+            <form class="p-2" [formGroup]="formUser" (ngSubmit)="submit()">
                 <div class="row">
                     <mat-form-field>
                         <mat-label>Username</mat-label>
                         <input matInput type="text" formControlName="username" name="username" id="username"
                             placeholder="Username">
-                        <mat-error *ngFor="let error of errors(formUser.controls.username)">
-                            {{error}}
-                        </mat-error>
-
                     </mat-form-field>
+                </div>
+                <div class="row mb-2">
+                    <input type="file" (change)="setAvatar($event);" accept="image/png, image/jpeg">
                 </div>
                 <div class="row">
                     <mat-form-field>
                         <mat-label>Ancien mot de passe</mat-label>
                         <input matInput type="text" formControlName="currentPassword" name="currentPassword"
                             id="currentPassword" placeholder="Ancien mot de passe">
-                        <mat-error>
-                            {{formUser.controls.currentPassword.getError('same')}}
-                        </mat-error>
                     </mat-form-field>
                 </div>
                 <div class="row">
@@ -28,8 +27,8 @@
                         <mat-label>Nouveau mot de passe</mat-label>
                         <input matInput type="text" formControlName="password" name="password" id="password"
                             placeholder="Nouveau mot de passe">
-                        <mat-error>
-                            <p *ngFor="let error of errors(formUser.controls.password)">{{error}}</p>
+                        <mat-error *ngIf="formUser.controls.password.hasError('same')">
+                            {{formUser.controls.password.errors!['same']}}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -38,8 +37,8 @@
                         <mat-label>Confirmez le nouveau mot de passe</mat-label>
                         <input matInput type="text" formControlName="confirmPassword" name="confirmPassword"
                             id="confirmPassword" placeholder="Confirmez le nouveau mot de passe">
-                        <mat-error>
-                            Les mots de passe ne correspondent pas
+                        <mat-error *ngIf="formUser.controls.confirmPassword.hasError('notSame')">
+                            {{formUser.controls.confirmPassword.errors!['notSame']}}
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -49,5 +48,4 @@
             </form>
         </div>
     </div>
-
 </div>

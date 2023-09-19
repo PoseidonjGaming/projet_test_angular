@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Credential } from 'src/app/models/credential.model';
 import { User } from 'src/app/models/user.model';
 import { ApiService } from 'src/app/service/api.service';
 import { TokenService } from 'src/app/service/token/token.service';
-import { Password } from 'src/app/validators/passwordValidator';
+import { UtilsService } from 'src/app/service/utils/utils.service';
+import { Password } from 'src/app/validators/passwordValidator.validator';
 
 @Component({
   selector: 'app-profile',
@@ -13,29 +13,46 @@ import { Password } from 'src/app/validators/passwordValidator';
 })
 export class ProfileComponent implements OnInit {
 
+  file64?: string | null | ArrayBuffer
+  file?: File
+  user = new User()
 
   formUser = new FormGroup({
-    username: new FormControl(),
+    id: new FormControl(null),
+    username: new FormControl(''),
     currentPassword: new FormControl(null),
     password: new FormControl(null),
     confirmPassword: new FormControl(null)
   })
 
-  constructor(private tokenService: TokenService, private service: ApiService<User>) { }
+  constructor(private tokenService: TokenService,
+    private service: ApiService<User>,
+    private utils: UtilsService) {
+    this.formUser.controls.confirmPassword.addValidators(Password.checkNew(this.formUser.controls.password))
+    this.formUser.controls.password.addValidators(Password.checkOld(this.formUser.controls.currentPassword))
+  }
 
 
   ngOnInit(): void {
     this.service.search('user', this.tokenService.getClaims().sub).subscribe((dtos: User[]) => {
-      this.formUser.controls.username.setValue(dtos[0].username)
+      this.utils.populate(dtos[0], this.formUser)
+      this.file64 = `htts://localhost:8081/file/load/${dtos[0].avatarFile}`
     })
   }
 
   submit() {
-    console.log(this.formUser.valid);
+    console.log(this.file);
 
   }
 
-  errors(ctrl: FormControl): string[] {
-    return ctrl.errors ? Object.keys(ctrl.errors).map(err => ctrl.getError(err)).filter(err => err != null) : [];
+  setAvatar(event: any) {
+    let reader = new FileReader();
+
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      this.file64 = e.target?.result
+    }
+    reader.readAsDataURL(event.target.files[0])
+
+    this.file = event.target.files[0]
   }
 }

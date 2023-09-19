@@ -7,7 +7,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -36,8 +36,8 @@ import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
-import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 registerLocaleData(fr);
 
@@ -93,7 +93,7 @@ registerLocaleData(fr);
   ],
   providers: [
     {
-      provide: LOCALE_ID, useValue: 'fr'
+      provide: LOCALE_ID, useValue: 'fr-FR'
     },
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
