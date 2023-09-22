@@ -28,4 +28,12 @@ export class ApiSeriesService extends ApiService<Series> {
       headers: headers
     })
   }
+
+  filteredSearch(filter: any) {
+    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/filteredSearch`, filter)
+  }
+
+  getByCategoryIds(ids: any) {
+    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/byCategories`,ids)
+  }
 }

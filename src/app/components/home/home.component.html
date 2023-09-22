@@ -1,7 +1,7 @@
 <div class="container-fluid">
-    <!-- <div class="row">
+    <div class="row">
         <div class="col-4" *ngFor="let serie of series">
-            <mat-card class="m-2">
+            <mat-card class="m-2" style="width: 20vw;">
                 <mat-card-header>
                     <mat-card-title>{{serie.name}}</mat-card-title>
                 </mat-card-header>
@@ -9,12 +9,12 @@
                     src="http://localhost:8081/series/load?filename={{serie.poster}}">
                 <mat-card-content>
                     <p *ngIf="slicedsummary && serie.summary else fullsummary" class="mt-2">
-                        {{serie.summary.slice(0,512)}}
+                        {{serie.summary.slice(0,256)}}...
                         <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
                             plus</button>
                     </p>
                     <ng-template #fullsummary>
-                        <p>
+                        <p class="mt-2">
                             {{serie.summary}}
                             <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
                                 moins</button>
@@ -27,39 +27,5 @@
                 </mat-card-actions>
             </mat-card>
         </div>
-    </div> -->
-    <div class="row">
-        <mat-drawer-container style="height: 100vh;" [hasBackdrop]="hasBackdrop.value">
-            <mat-drawer #drawer [mode]="mode.value">
-                <div class="row">
-                    <mat-chip-listbox class="mat-mdc-chip-set-stacked" aria-label="Fish selection">
-                        <mat-chip-option value="test" color="primary">One fish</mat-chip-option>
-                        <mat-chip-option value="test" color="primary">Two fish</mat-chip-option>
-                        <mat-chip-option color="accent" value="test">Accent fish</mat-chip-option>
-                        <mat-chip-option color="warn" value="test">Warn fish</mat-chip-option>
-                    </mat-chip-listbox>
-                </div>
-
-            </mat-drawer>
-            <mat-drawer-content>
-                <mat-form-field>
-                    <mat-label>Sidenav mode</mat-label>
-                    <mat-select #mode value="side">
-                        <mat-option value="side">Side</mat-option>
-                        <mat-option value="over">Over</mat-option>
-                        <mat-option value="push">Push</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Has backdrop</mat-label>
-                    <mat-select #hasBackdrop>
-                        <mat-option>Unset</mat-option>
-                        <mat-option [value]="true">True</mat-option>
-                        <mat-option [value]="false">False</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
-            </mat-drawer-content>
-        </mat-drawer-container>
     </div>
 </div>

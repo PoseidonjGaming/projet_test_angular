@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
           obs.next(res)
         },
         error: (e: HttpErrorResponse) => {
-          console.log(e);
+          console.log(e.message);
 
           this.error(e.status)
         }

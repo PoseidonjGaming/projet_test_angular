@@ -7,6 +7,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -39,7 +40,7 @@ import { ImportDialogComponent } from './components/menu/import-dialog/import-di
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { MatChipsModule } from '@angular/material/chips';
+import { SearchComponent } from './components/search/search.component';
 
 registerLocaleData(fr);
 
@@ -56,7 +57,8 @@ registerLocaleData(fr);
     EpisodeComponent,
     ActorComponent,
     CharacterComponent,
-    ProfileComponent
+    ProfileComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,

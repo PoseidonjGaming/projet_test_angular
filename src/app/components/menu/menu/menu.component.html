@@ -1,10 +1,11 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
         <button mat-button routerLink="/">Les Séries</button>
+        <button mat-button routerLink="/search">Recherche</button>
         <div *ngIf="isLogged">
             <button mat-button [matMenuTriggerFor]="menuAdmin">Menu</button>
             <mat-menu #menuAdmin="matMenu">
-                <a mat-menu-item routerLink="/admin/series">Gérer les séries</a>
+                <button mat-menu-item routerLink="/admin/series">Gérer les séries</button>
                 <button mat-menu-item routerLink="/admin/episodes">Gérer les épisodes</button>
                 <button mat-menu-item routerLink="/admin/actor">Gérer les acteurs</button>
                 <button mat-menu-item routerLink="/admin/character">Gérer les personnages</button>

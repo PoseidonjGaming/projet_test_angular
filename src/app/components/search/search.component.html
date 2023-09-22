@@ -1,0 +1,70 @@
+<mat-drawer-container style="height: 95vh;" [hasBackdrop]="true">
+    <mat-drawer #drawer mode="push">
+        <div class="container-fluid">
+            <form [formGroup]="formSearch" (ngSubmit)="submit()">
+                <div class="row" style="width: 15vw;">
+                    <mat-chip-listbox multiple="true" formControlName="ids" class="mat-mdc-chip-set-stacked"
+                        aria-label="Fish selection">
+                        <mat-chip-option *ngFor="let category of categories" [value]="category.id"
+                            color="accent">{{category.name}}</mat-chip-option>
+                    </mat-chip-listbox>
+                </div>
+                <div class="row m-2">
+                    <button type="submit" mat-raised-button color="primary">Filtrer</button>
+                    <button type="button" mat-raised-button (click)="reset()">Reset</button>
+                </div>
+            </form>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <button mat-raised-button (click)="panel(drawer)">
+            <ng-container *ngIf="!isOpened else none">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+            </ng-container>
+            <ng-template #none>
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </ng-template>
+
+        </button>
+        <div class="container-fluid">
+            <form [formGroup]="formSearch" (ngSubmit)="submit()">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-4 ">
+                        <div class="row">
+                            <mat-form-field>
+                                <mat-label>Recherche</mat-label>
+                                <input matInput type="text" formControlName="term" name="term" id="term"
+                                    placeholder="Rechercher une série">
+                            </mat-form-field>
+                        </div>
+                        <div class="row">
+                            <button mat-raised-button color="primary">Rechercher</button>
+                            <button type="button" mat-raised-button (click)="reset()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="row">
+                <p>Séries trouvée: {{series.length}}</p>
+                <div class="col-4" *ngFor="let serie of series">
+                    <mat-card class="m-2" style="width: 20vw;">
+                        <mat-card-header>
+                            <mat-card-title>{{serie.name}}</mat-card-title>
+                        </mat-card-header>
+                        <img *ngIf="serie.poster" mat-card-image
+                            src="http://localhost:8081/series/load?filename={{serie.poster}}">
+                        <mat-card-content>
+                            <p class="mt-2">
+                                {{serie.summary.slice(0,256)}}
+                            </p>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <a type="button" mat-button [routerLink]="['/detail/series', serie.id]">Voir les Détail</a>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>
