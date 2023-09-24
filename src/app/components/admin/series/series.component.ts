@@ -27,6 +27,8 @@ export class SeriesComponent implements OnInit {
   columns = ['name', 'releaseDate', 'action']
   notification: number = 0
 
+  @ViewChild('tableToAdd') tableToAdd: MatTable<Series> | undefined
+
   formSeries = new FormGroup({
     id: new FormControl(0),
     name: new FormControl(null, [Validators.required]),
@@ -39,8 +41,6 @@ export class SeriesComponent implements OnInit {
   })
   //#endregion
   
-  @ViewChild('tableToAdd') tableToAdd: MatTable<Series> | undefined
-
 
   constructor(private service: ApiSeriesService,
     private categoryService: ApiService<Category>,
@@ -66,7 +66,7 @@ export class SeriesComponent implements OnInit {
       var resetForm = <HTMLFormElement>document.getElementById('form');
       resetForm.reset();
 
-      this.updateTable(this.tableToAdd!, this.toAddSeries)
+      this.utilService.updateTable(this.tableToAdd!, this.toAddSeries)
 
       this.notification++
     }
@@ -75,7 +75,7 @@ export class SeriesComponent implements OnInit {
 
   remove(index: number) {
     this.toAddSeries.splice(index, 1)
-    this.updateTable(this.tableToAdd!, this.toAddSeries)
+    this.utilService.updateTable(this.tableToAdd!, this.toAddSeries)
   }
 
   saves() {
@@ -185,11 +185,6 @@ export class SeriesComponent implements OnInit {
     })
     series.releaseDate.setHours(1)
     return series
-  }
-
-  updateTable(table: MatTable<Series>, list: Series[]) {
-    table.dataSource = list
-    table.renderRows()
   }
 
   updateNotif(event: number) {
