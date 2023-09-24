@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private service: ApiSeriesService) { }
 
   ngOnInit(): void {
-    this.service.getAll('series').subscribe((d: Series[]) => this.series = d)
+    this.service.getAll().subscribe((d: Series[]) => this.series = d)
 
   }
 }

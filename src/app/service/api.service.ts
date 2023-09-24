@@ -9,15 +9,22 @@ import { Observable } from 'rxjs';
 export class ApiService<E>{
 
   protected API_BASE_URL = 'http://localhost:8081'
+  protected type: string = ''
 
   constructor(protected httpClient: HttpClient) { }
 
-  getAll(type: String) {
+  getAll(type?: String) {
+    if (!type)
+      type = this.type
     return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list`)
   }
 
   getById(type: String, id: string) {
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
+  }
+
+  getByIds(ids: number[], type?: String) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
   search(type: String, term: String) {

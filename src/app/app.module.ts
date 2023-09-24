@@ -1,3 +1,8 @@
+import {
+  CdkDrag,
+  CdkDropList,
+  CdkDropListGroup
+} from '@angular/cdk/drag-drop';
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
@@ -39,9 +44,9 @@ import { ExportDialogComponent } from './components/menu/export-dialog/export-di
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
 import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { SearchComponent } from './components/search/search.component';
-
+import { AuthInterceptor } from './interceptor/auth.interceptor';
+import { MatBadgeModule } from '@angular/material/badge';
 registerLocaleData(fr);
 
 @NgModule({
@@ -86,6 +91,10 @@ registerLocaleData(fr);
     MatTabsModule,
     MatSidenavModule,
     MatChipsModule,
+    MatBadgeModule,
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,    
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,

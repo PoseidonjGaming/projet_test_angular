@@ -8,7 +8,10 @@ import { ApiService } from '../api.service';
 })
 export class ApiSeriesService extends ApiService<Series> {
 
-  constructor(httpclient: HttpClient) { super(httpclient) }
+  constructor(httpclient: HttpClient) {
+    super(httpclient)
+    this.type='series'
+  }
 
   saveFiles(files: File[]) {
     let formData = new FormData();

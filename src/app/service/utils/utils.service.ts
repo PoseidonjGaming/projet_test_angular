@@ -17,5 +17,12 @@ export class UtilsService {
     })
   }
 
+  update<E extends Base>(entity: E, form: FormGroup) {
+    Object.keys(form.controls).forEach((e: string) => {
+      console.log(e);
+      
+    })
+  }
+
 
 }
