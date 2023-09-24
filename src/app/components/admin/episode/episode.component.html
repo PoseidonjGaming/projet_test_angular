@@ -13,7 +13,7 @@
                     </ng-template>
                     <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la
                         liste</button>
-                    <table #tableToAddEpisodes mat-table [dataSource]="toAddEpisodes" class="mat-elevation-z8">
+                    <table #tableToAddEpisodes mat-table [dataSource]="toAddEpisodes">
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef> name </th>
                             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -41,7 +41,7 @@
                     </table>
                 </mat-tab>
                 <mat-tab label="Episode">
-                    <form id="form" class="mt-2" [formGroup]="formEpisode" (ngSubmit)="submit()">
+                    <form id="form" class="mt-2 p-2" [formGroup]="formEpisode" (ngSubmit)="submit()">
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Id</mat-label>
@@ -110,33 +110,31 @@
             </mat-tab-group>
         </div>
         <div class="col mt-2 me-2">
-            <div class="row">
-                <table mat-table [dataSource]="episodes" class="mat-elevation-z8">
-                    <ng-container matColumnDef="name">
-                        <th mat-header-cell *matHeaderCellDef> name </th>
-                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                    </ng-container>
+            <table mat-table [dataSource]="episodes" class="mat-elevation-z8">
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                </ng-container>
 
-                    <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef> Affiche </th>
-                        <td mat-cell *matCellDef="let element">
-                            <button mat-raised-button color="accent" class="me-2"
-                                (click)="populate(element)">Modier</button>
-                            <button mat-raised-button color="warn" (click)="deletes(element)">Supprimer</button>
-                        </td>
-                    </ng-container>
+                <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef> Affiche </th>
+                    <td mat-cell *matCellDef="let element">
+                        <button mat-raised-button color="accent" class="me-2"
+                            (click)="populate(element)">Modier</button>
+                        <button mat-raised-button color="warn" (click)="deletes(element)">Supprimer</button>
+                    </td>
+                </ng-container>
 
-                    <ng-container matColumnDef="releaseDate">
-                        <th mat-header-cell *matHeaderCellDef> Date de diffusion </th>
-                        <td mat-cell *matCellDef="let element"> {{element.releaseDate | date:'shortDate': undefined:
-                            locale}}
-                        </td>
-                    </ng-container>
+                <ng-container matColumnDef="releaseDate">
+                    <th mat-header-cell *matHeaderCellDef> Date de diffusion </th>
+                    <td mat-cell *matCellDef="let element"> {{element.releaseDate | date:'shortDate': undefined:
+                        locale}}
+                    </td>
+                </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="columns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-                </table>
-            </div>
+                <tr mat-header-row *matHeaderRowDef="columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+            </table>
         </div>
     </div>
 </div>
