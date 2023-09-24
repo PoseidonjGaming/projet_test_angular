@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
 import { mergeMap } from 'rxjs';
 import { Actor } from 'src/app/models/actor.model';
 import { ApiService } from 'src/app/service/api.service';
@@ -15,6 +16,9 @@ export class ActorComponent implements OnInit {
   actors: Actor[] = []
   toAddActors: Actor[] = []
   columns = ['firstname', 'lastname', 'action']
+  notification = 0
+
+  @ViewChild('tableToAddActors') table: MatTable<Actor> | undefined
 
   formActor = new FormGroup({
     id: new FormControl(0),
@@ -55,7 +59,10 @@ export class ActorComponent implements OnInit {
   add() {
     if (this.formActor.valid) {
       this.toAddActors.push(this.setValue())
+      this.utils.updateTable(this.table!)
       this.utils.reset()
+      this.formActor.controls.id.setValue(0)
+      this.notification++
     }
 
   }
@@ -68,6 +75,7 @@ export class ActorComponent implements OnInit {
 
   remove(index: number) {
     this.toAddActors.splice(index, 1)
+    this.utils.updateTable(this.table!)
   }
 
   setValue() {
@@ -78,6 +86,11 @@ export class ActorComponent implements OnInit {
         actor[e] = control.value
     })
     return actor
+  }
+
+  updateNotification(event: number) {
+    if (event == 0)
+      this.notification = 0
   }
 
 }
