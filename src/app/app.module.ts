@@ -47,6 +47,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { MatBadgeModule } from '@angular/material/badge';
+import { CategoryComponent } from './components/admin/category/category.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -63,7 +64,8 @@ registerLocaleData(fr);
     ActorComponent,
     CharacterComponent,
     ProfileComponent,
-    SearchComponent
+    SearchComponent,
+    CategoryComponent
   ],
   imports: [
     BrowserModule,

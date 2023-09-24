@@ -9,6 +9,7 @@ import { ActorComponent } from './components/admin/actor/actor.component';
 import { CharacterComponent } from './components/admin/character/character.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
+import { CategoryComponent } from './components/admin/category/category.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -17,7 +18,8 @@ const routes: Routes = [
       { path: 'series', component: SeriesComponent, },
       { path: 'episodes', component: EpisodeComponent },
       { path: 'actor', component: ActorComponent },
-      { path: 'character', component: CharacterComponent }
+      { path: 'character', component: CharacterComponent },
+      { path: 'category', component: CategoryComponent }
     ]
   },
   { path: 'detail/series/:id', component: DetailSeriesComponent },
