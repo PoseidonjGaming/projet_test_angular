@@ -3,10 +3,11 @@
         <div class="col">
             <div class="row">
                 <div class="col mat-elevation-z8 p-2 m-2">
-                    <mat-tab-group (selectedIndexChange)="updateNotif($event)" selectedIndex="1">
+                    <mat-tab-group dynamicHeight (selectedIndexChange)="updateNotif($event)" selectedIndex="1">
                         <mat-tab>
                             <ng-template mat-tab-label>
-                                <span *ngIf="notification>0 else none" [matBadge]="notification" matBadgeOverlap="false">Séries en
+                                <span *ngIf="notification>0 else none" [matBadge]="notification"
+                                    matBadgeOverlap="false">Séries en
                                     attente</span>
                                 <ng-template #none>
                                     <span>Séries en attente</span>

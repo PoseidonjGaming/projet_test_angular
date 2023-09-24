@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
 import { Base } from 'src/app/models/base.model';
 
 @Injectable({
@@ -20,9 +21,15 @@ export class UtilsService {
   update<E extends Base>(entity: E, form: FormGroup) {
     Object.keys(form.controls).forEach((e: string) => {
       console.log(e);
-      
+
     })
   }
+
+  updateTable<E extends Base>(table: MatTable<E>, list: E[]) {
+    table.dataSource = list
+    table.renderRows()
+  }
+
 
 
 }

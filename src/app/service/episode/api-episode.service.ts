@@ -8,9 +8,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ApiEpisodeService extends ApiService<Episode>{
 
-  constructor(httpClient: HttpClient) { super(httpClient) }
+  constructor(httpClient: HttpClient) {
+    super(httpClient)
+    this.type='episode'
+  }
 
-  betBySeasonIdIn(id: string[]) {
+  getBySeasonIdIn(id: string[]) {
     return this.httpClient.get<Episode[]>(`${this.API_BASE_URL}/episode/bySeasons/${id}`)
   }
 }

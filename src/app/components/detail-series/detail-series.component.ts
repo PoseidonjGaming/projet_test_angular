@@ -36,7 +36,7 @@ export class DetailSeriesComponent implements OnInit {
           mergeMap((d: Season[]) => {
             this.saisons = d
             console.log(d);
-            return this.episodeService.betBySeasonIdIn((d.length == 0) ? ['0,'] : d.map(e => e.seriesId.toString()))
+            return this.episodeService.getBySeasonIdIn((d.length == 0) ? ['0,'] : d.map(e => e.seriesId.toString()))
           })
         ).subscribe((d: Episode[]) => {
           for (let index = 0; index < this.saisons.length; index++) {

@@ -1,9 +1,10 @@
-import { Component, Inject, LOCALE_ID, OnInit } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { mergeMap } from 'rxjs';
+import { MatTable } from '@angular/material/table';
+import { combineLatest, mergeMap } from 'rxjs';
 import { Episode } from 'src/app/models/episode.model';
 import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
@@ -18,10 +19,15 @@ import { UtilsService } from 'src/app/service/utils/utils.service';
   styleUrls: ['./episode.component.css']
 })
 export class EpisodeComponent implements OnInit {
+
+  //#region properties
   episodes: Episode[] = []
   toAddEpisodes: Episode[] = []
   series: Series[] = []
   seasons: Season[] = []
+  notification: number = 0
+
+  @ViewChild('tableToAddEpisodes') table: MatTable<Episode> | undefined
 
   columns = ['name', 'releaseDate', 'action']
 
@@ -34,6 +40,7 @@ export class EpisodeComponent implements OnInit {
     seriesId: new FormControl(1, [Validators.required, Validators.min(1)]),
     isNewSaison: new FormControl(false)
   })
+  //#endregion
 
   constructor(private service: ApiEpisodeService,
     private seriesService: ApiSeriesService,
@@ -46,38 +53,16 @@ export class EpisodeComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.service.getAll('episode').subscribe((episodes: Episode[]) => {
-      this.episodes = episodes
+    combineLatest([
+      this.service.getAll(),
+      this.seriesService.getAll()
+    ]).subscribe(([episodeDtos, seriesDtos]) => {
+      this.episodes = episodeDtos
+      this.series = seriesDtos
     })
-    this.seriesService.getAll('series').subscribe((dtos: Series[]) => {
-      this.series = dtos
-    });
-
   }
 
-  populate(episode: Episode) {
-    this.utilService.populate(episode, this.formEpisode)
-  }
-
-  deletes(episode: Episode) {
-    this.service.delete('episode', episode.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('episode'))
-    ).subscribe((dtos: Episode[]) => {
-      this.episodes = dtos
-      this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
-    })
-
-  }
-
-  getSaisons(series: Series) {
-    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
-  }
-
-  add() {
-    if (this.formEpisode.valid) {
-      this.toAddEpisodes.push(this.setValue(new Episode()))
-    }
-  }
+  //#region episode
 
   submit() {
     if (this.formEpisode.valid) {
@@ -105,14 +90,44 @@ export class EpisodeComponent implements OnInit {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
-          var resetForm = <HTMLFormElement>document.getElementById('form');
-          resetForm.reset();
+          this.reset()
         })
       }
 
 
     }
   }
+
+  populate(episode: Episode) {
+    this.utilService.populate(episode, this.formEpisode)
+  }
+
+  deletes(episode: Episode) {
+    this.service.delete('episode', episode.id.toString()).pipe(
+      mergeMap(() => this.service.getAll('episode'))
+    ).subscribe((dtos: Episode[]) => {
+      this.episodes = dtos
+      this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
+    })
+
+  }
+
+  getSaisons(series: Series) {
+    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
+  }
+
+  add() {
+    this.formEpisode.markAllAsTouched()
+    if (this.formEpisode.valid) {
+      this.toAddEpisodes.push(this.setValue(new Episode()))
+      this.reset()
+
+      this.utilService.updateTable(this.table!, this.toAddEpisodes)
+      this.notification++
+    }
+  }
+
+
 
   saves() {
     this.service.saves('episode', this.toAddEpisodes).pipe(
@@ -128,6 +143,7 @@ export class EpisodeComponent implements OnInit {
 
   remove(index: number) {
     this.toAddEpisodes.splice(index, 1)
+    this.utilService.updateTable(this.table!, this.toAddEpisodes)
   }
 
   setValue(episode: Episode) {
@@ -138,5 +154,18 @@ export class EpisodeComponent implements OnInit {
     })
     episode.releaseDate.setHours(1)
     return episode
+  }
+
+  updateNotification(event: number) {
+    if (event == 0)
+      this.notification = 0
+  }
+
+  private reset() {
+    var resetForm = <HTMLFormElement>document.getElementById('form');
+    resetForm.reset();
+
+    this.formEpisode.controls.releaseDate.setValue(new Date())
+    this.formEpisode.controls.seriesId.setValue(1)
   }
 }
