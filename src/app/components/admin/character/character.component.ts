@@ -71,8 +71,7 @@ export class CharacterComponent implements OnInit {
       mergeMap(() => this.service.getAll('character'))
     ).subscribe((dtos: Character[]) => {
       this.characters = dtos
-      var resetForm = <HTMLFormElement>document.getElementById('form');
-      resetForm.reset();
+      this.utils.reset()
     })
 
   }
@@ -88,8 +87,7 @@ export class CharacterComponent implements OnInit {
 
   add() {
     this.toAddCharacters.push(this.setValues())
-    var resetForm = <HTMLFormElement>document.getElementById('form');
-    resetForm.reset();
+    this.utils.reset()
   }
 
 

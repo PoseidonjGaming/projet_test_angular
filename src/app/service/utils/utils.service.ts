@@ -18,18 +18,15 @@ export class UtilsService {
     })
   }
 
-  update<E extends Base>(entity: E, form: FormGroup) {
-    Object.keys(form.controls).forEach((e: string) => {
-      console.log(e);
-
-    })
-  }
-
-  updateTable<E extends Base>(table: MatTable<E>, list: E[]) {
-    table.dataSource = list
+  updateTable<E extends Base>(table: MatTable<E>) {
     table.renderRows()
   }
 
+  reset() {
+    var resetForm = <HTMLFormElement>document.getElementById('form');
+    resetForm.reset();
+  }
 
+  
 
 }

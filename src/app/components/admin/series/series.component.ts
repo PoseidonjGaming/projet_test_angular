@@ -40,7 +40,7 @@ export class SeriesComponent implements OnInit {
     seasonsIds: new FormControl()
   })
   //#endregion
-  
+
 
   constructor(private service: ApiSeriesService,
     private categoryService: ApiService<Category>,
@@ -63,10 +63,9 @@ export class SeriesComponent implements OnInit {
   add() {
     if (this.formSeries.valid) {
       this.toAddSeries.push(this.setValue(new Series()))
-      var resetForm = <HTMLFormElement>document.getElementById('form');
-      resetForm.reset();
+      this.utilService.reset()
 
-      this.utilService.updateTable(this.tableToAdd!, this.toAddSeries)
+      this.utilService.updateTable(this.tableToAdd!)
 
       this.notification++
     }
@@ -75,7 +74,7 @@ export class SeriesComponent implements OnInit {
 
   remove(index: number) {
     this.toAddSeries.splice(index, 1)
-    this.utilService.updateTable(this.tableToAdd!, this.toAddSeries)
+    this.utilService.updateTable(this.tableToAdd!)
   }
 
   saves() {
@@ -130,7 +129,7 @@ export class SeriesComponent implements OnInit {
     })
   }
   //#endregion
- 
+
   //#region Categories
   drop(event: CdkDragDrop<Category[]>) {
     if (event.previousContainer === event.container) {
@@ -154,7 +153,7 @@ export class SeriesComponent implements OnInit {
 
   }
   //#endregion
-  
+
   //#region other
   submit() {
     if (this.formSeries.valid) {
@@ -163,8 +162,7 @@ export class SeriesComponent implements OnInit {
       this.service.save('series', this.setValue(new Series())).pipe(
         mergeMap(() => this.service.getAll('series'))
       ).subscribe((dtos: Series[]) => {
-        var resetForm = <HTMLFormElement>document.getElementById('form');
-        resetForm.reset();
+        this.utilService.reset()
         this.series = dtos
         const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
         this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
@@ -193,5 +191,5 @@ export class SeriesComponent implements OnInit {
 
   }
   //#endregion
-  
+
 }

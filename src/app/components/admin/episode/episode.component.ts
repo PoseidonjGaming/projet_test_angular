@@ -78,8 +78,7 @@ export class EpisodeComponent implements OnInit {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
-          var resetForm = <HTMLFormElement>document.getElementById('form');
-          resetForm.reset();
+          this.reset()
           this.seasons = []
         })
       }
@@ -128,7 +127,7 @@ export class EpisodeComponent implements OnInit {
       this.toAddEpisodes.push(this.setValue(new Episode()))
       this.reset()
 
-      this.utilService.updateTable(this.table!, this.toAddEpisodes)
+      this.utilService.updateTable(this.table!)
       this.notification++
     }
   }
@@ -147,7 +146,7 @@ export class EpisodeComponent implements OnInit {
 
   remove(index: number) {
     this.toAddEpisodes.splice(index, 1)
-    this.utilService.updateTable(this.table!, this.toAddEpisodes)
+    this.utilService.updateTable(this.table!)
   }
 
   updateNotification(event: number) {
@@ -166,11 +165,10 @@ export class EpisodeComponent implements OnInit {
     episode.releaseDate.setHours(1)
     return episode
   }
-  
+
 
   private reset() {
-    var resetForm = <HTMLFormElement>document.getElementById('form');
-    resetForm.reset();
+    this.utilService.reset()
 
     this.formEpisode.controls.releaseDate.setValue(new Date())
     this.formEpisode.controls.seriesId.setValue(1)

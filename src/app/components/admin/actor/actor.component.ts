@@ -38,8 +38,7 @@ export class ActorComponent implements OnInit {
         mergeMap(() => this.service.getAll('actor'))
       ).subscribe((dtos: Actor[]) => {
         this.actors = dtos
-        var resetForm = <HTMLFormElement>document.getElementById('form');
-        resetForm.reset();
+        this.utils.reset()
       })
     }
   }
@@ -56,8 +55,7 @@ export class ActorComponent implements OnInit {
   add() {
     if (this.formActor.valid) {
       this.toAddActors.push(this.setValue())
-      var resetForm = <HTMLFormElement>document.getElementById('form');
-      resetForm.reset();
+      this.utils.reset()
     }
 
   }

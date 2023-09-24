@@ -11,6 +11,8 @@
                             <span>Episodes en attente</span>
                         </ng-template>
                     </ng-template>
+                    <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la
+                        liste</button>
                     <table #tableToAddEpisodes mat-table [dataSource]="toAddEpisodes" class="mat-elevation-z8">
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef> name </th>
