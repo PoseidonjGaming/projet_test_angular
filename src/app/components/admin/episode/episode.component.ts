@@ -98,6 +98,14 @@ export class EpisodeComponent implements OnInit {
     }
   }
 
+  getSaisons(series: Series) {
+    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
+  }
+
+  //#endregion
+
+
+  //#region tableEpisodes
   populate(episode: Episode) {
     this.utilService.populate(episode, this.formEpisode)
   }
@@ -111,11 +119,9 @@ export class EpisodeComponent implements OnInit {
     })
 
   }
+  //#endregion
 
-  getSaisons(series: Series) {
-    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
-  }
-
+  //#region toAddEpisodes
   add() {
     this.formEpisode.markAllAsTouched()
     if (this.formEpisode.valid) {
@@ -126,8 +132,6 @@ export class EpisodeComponent implements OnInit {
       this.notification++
     }
   }
-
-
 
   saves() {
     this.service.saves('episode', this.toAddEpisodes).pipe(
@@ -146,6 +150,13 @@ export class EpisodeComponent implements OnInit {
     this.utilService.updateTable(this.table!, this.toAddEpisodes)
   }
 
+  updateNotification(event: number) {
+    if (event == 0)
+      this.notification = 0
+  }
+  //#endregion
+
+  //#region other
   setValue(episode: Episode) {
     Object.keys(episode).forEach((e) => {
       const control = this.formEpisode.get(e)
@@ -155,11 +166,7 @@ export class EpisodeComponent implements OnInit {
     episode.releaseDate.setHours(1)
     return episode
   }
-
-  updateNotification(event: number) {
-    if (event == 0)
-      this.notification = 0
-  }
+  
 
   private reset() {
     var resetForm = <HTMLFormElement>document.getElementById('form');
@@ -168,4 +175,12 @@ export class EpisodeComponent implements OnInit {
     this.formEpisode.controls.releaseDate.setValue(new Date())
     this.formEpisode.controls.seriesId.setValue(1)
   }
+  //#endregion
+
+
+
+
+
+
+
 }
