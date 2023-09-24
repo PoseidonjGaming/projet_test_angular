@@ -18,6 +18,8 @@ import { MatTable, MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./series.component.css']
 })
 export class SeriesComponent implements OnInit {
+
+  //#region properties
   series: Series[] = []
   toAddSeries: Series[] = []
   categories: Category[] = []
@@ -35,7 +37,8 @@ export class SeriesComponent implements OnInit {
     categories: new FormControl(this.categories),
     seasonsIds: new FormControl()
   })
-
+  //#endregion
+  
   @ViewChild('tableToAdd') tableToAdd: MatTable<Series> | undefined
 
 
@@ -56,32 +59,7 @@ export class SeriesComponent implements OnInit {
     })
   }
 
-  submit() {
-    if (this.formSeries.valid) {
-      let series = this.setValue(new Series())
-      series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
-      this.service.save('series', this.setValue(new Series())).pipe(
-        mergeMap(() => this.service.getAll('series'))
-      ).subscribe((dtos: Series[]) => {
-        var resetForm = <HTMLFormElement>document.getElementById('form');
-        resetForm.reset();
-        this.series = dtos
-        const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
-        this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
-      })
-    }
-
-
-
-  }
-
-  populate(series: Series) {
-    this.utilService.populate(series, this.formSeries)
-    this.formSeries.controls.categories.setValue(this.categories.filter((category: Category) => series.categoryIds.includes(category.id)))
-    this.categories = this.categories.filter((category: Category) => !series.categoryIds.includes(category.id))
-
-  }
-
+  //#region toAddSeries
   add() {
     if (this.formSeries.valid) {
       this.toAddSeries.push(this.setValue(new Series()))
@@ -111,16 +89,10 @@ export class SeriesComponent implements OnInit {
     })
 
   }
+  //#endregion
 
-  deletes(series: Series) {
-    this.service.delete('series', series.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('series'))
-    ).subscribe((dtos: Series[]) => {
-      this.series = dtos
-    })
-  }
-
-  setAffiche(event: any) {
+  //#region poster
+  setPoster(event: any) {
     let file = event.target.files[0] as File
 
     if (!this.files.find((f: File) => file.name === f.name)) {
@@ -130,7 +102,7 @@ export class SeriesComponent implements OnInit {
 
   }
 
-  openAfficheDialog() {
+  openPosterDialog() {
     const file = this.files.find((value: File) => value.name === this.formSeries.controls.poster.value)
     if (file)
       this.dialog.open(AfficheDialogComponent, {
@@ -140,19 +112,26 @@ export class SeriesComponent implements OnInit {
     else
       this.snack.open("Aucune affiche n'a été sélectionnée", "Fermer", { duration: 5 * 1000 })
   }
+  //#endregion
 
-  setValue(series: Series) {
-    Object.keys(series).forEach((e) => {
-      const control = this.formSeries.get(e)
-      if (control && e !== 'releaseDate')
-        series[e] = control.value
-      else if (control && e === 'releaseDate')
-        series[e] = new Date(control?.value)
-    })
-    series.releaseDate.setHours(1)
-    return series
+  //#region tableSeries
+  populate(series: Series) {
+    this.utilService.populate(series, this.formSeries)
+    this.formSeries.controls.categories.setValue(this.categories.filter((category: Category) => series.categoryIds.includes(category.id)))
+    this.categories = this.categories.filter((category: Category) => !series.categoryIds.includes(category.id))
+
   }
 
+  deletes(series: Series) {
+    this.service.delete('series', series.id.toString()).pipe(
+      mergeMap(() => this.service.getAll('series'))
+    ).subscribe((dtos: Series[]) => {
+      this.series = dtos
+    })
+  }
+  //#endregion
+ 
+  //#region Categories
   drop(event: CdkDragDrop<Category[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -174,6 +153,39 @@ export class SeriesComponent implements OnInit {
 
 
   }
+  //#endregion
+  
+  //#region other
+  submit() {
+    if (this.formSeries.valid) {
+      let series = this.setValue(new Series())
+      series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
+      this.service.save('series', this.setValue(new Series())).pipe(
+        mergeMap(() => this.service.getAll('series'))
+      ).subscribe((dtos: Series[]) => {
+        var resetForm = <HTMLFormElement>document.getElementById('form');
+        resetForm.reset();
+        this.series = dtos
+        const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
+        this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+      })
+    }
+
+
+
+  }
+
+  setValue(series: Series) {
+    Object.keys(series).forEach((e) => {
+      const control = this.formSeries.get(e)
+      if (control && e !== 'releaseDate')
+        series[e] = control.value
+      else if (control && e === 'releaseDate')
+        series[e] = new Date(control?.value)
+    })
+    series.releaseDate.setHours(1)
+    return series
+  }
 
   updateTable(table: MatTable<Series>, list: Series[]) {
     table.dataSource = list
@@ -185,4 +197,6 @@ export class SeriesComponent implements OnInit {
       this.notification = 0
 
   }
+  //#endregion
+  
 }
