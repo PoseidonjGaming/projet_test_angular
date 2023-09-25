@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatTable } from '@angular/material/table';
+import { MatTab } from '@angular/material/tabs';
 import { mergeMap } from 'rxjs';
 import { Actor } from 'src/app/models/actor.model';
+import { Base } from 'src/app/models/base.model';
 import { Character } from 'src/app/models/character.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiActorService } from 'src/app/service/actor/api-actor.service';
@@ -24,6 +27,7 @@ export class CharacterComponent implements OnInit {
 
 
   columns = ['name', 'action']
+  actorsColumns = ['firstname', 'lastname', 'action']
 
   private arrayNumber: number[] = []
 
@@ -91,8 +95,9 @@ export class CharacterComponent implements OnInit {
   }
 
 
-  removeFromList(list: any[], index: number) {
+  removeFromList<E extends Base>(list: any[], index: number, table: MatTable<E>) {
     list.splice(index, 1)
+    table.renderRows()
   }
 
   deletes(character: Character) {
