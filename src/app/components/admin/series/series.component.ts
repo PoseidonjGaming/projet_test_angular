@@ -26,6 +26,7 @@ export class SeriesComponent implements OnInit {
   files: File[] = []
   columns = ['name', 'releaseDate', 'action']
   notification: number = 0
+  toAddIndex = -1
 
   @ViewChild('tableToAdd') tableToAdd: MatTable<Series> | undefined
 
@@ -62,11 +63,15 @@ export class SeriesComponent implements OnInit {
   //#region toAddSeries
   add() {
     if (this.formSeries.valid) {
-      this.toAddSeries.push(this.setValue(new Series()))
+      if (this.toAddIndex != -1) {
+        this.toAddSeries[this.toAddIndex] = this.setValue(new Series())
+        this.toAddIndex = 0
+      } else {
+        this.toAddSeries.push(this.setValue(new Series()))
+      }
+
       this.utilService.reset()
-
       this.utilService.updateTable(this.tableToAdd!)
-
       this.notification++
     }
 
@@ -119,6 +124,9 @@ export class SeriesComponent implements OnInit {
     this.formSeries.controls.categories.setValue(this.categories.filter((category: Category) => series.categoryIds.includes(category.id)))
     this.categories = this.categories.filter((category: Category) => !series.categoryIds.includes(category.id))
 
+    if (series.id == 0) {
+      this.toAddIndex = this.toAddSeries.indexOf(series)
+    }
   }
 
   deletes(series: Series) {
