@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { MatTab } from '@angular/material/tabs';
-import { mergeMap } from 'rxjs';
+import { combineLatest, mergeMap } from 'rxjs';
 import { Actor } from 'src/app/models/actor.model';
 import { Base } from 'src/app/models/base.model';
 import { Character } from 'src/app/models/character.model';
@@ -21,10 +21,13 @@ export class CharacterComponent implements OnInit {
 
   characters: Character[] = []
   toAddCharacters: Character[] = []
+  notification = 0
+  toAddIndex = -1
 
   actors: Actor[] = []
   series: Series[] = []
 
+  @ViewChild('tableToAddCharacter') table: MatTable<Character> | undefined
 
   columns = ['name', 'action']
   actorsColumns = ['firstname', 'lastname', 'action']
@@ -46,9 +49,15 @@ export class CharacterComponent implements OnInit {
     private utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.actorService.getAll('actor').subscribe((dtos: Actor[]) => this.actors = dtos)
-    this.seriesService.getAll('series').subscribe((dtos: Series[]) => this.series = dtos)
-    this.service.getAll('character').subscribe((dtos: Character[]) => this.characters = dtos)
+    combineLatest([
+      this.actorService.getAll(),
+      this.seriesService.getAll(),
+      this.service.getAll('character')
+    ]).subscribe(([actorDtos, seriesDtos, characterDtos]) => {
+      this.actors = actorDtos
+      this.series = seriesDtos
+      this.characters = characterDtos
+    })
   }
 
   populate(character: Character) {
@@ -67,6 +76,10 @@ export class CharacterComponent implements OnInit {
     })
     this.formCharacter.controls.series.setValue(tempSeries)
     this.formCharacter.controls.actors.setValue(tempActors)
+
+    if (character.id == 0)
+      this.toAddIndex = this.toAddCharacters.indexOf(character)
+
   }
 
   submit() {
@@ -90,8 +103,15 @@ export class CharacterComponent implements OnInit {
   }
 
   add() {
-    this.toAddCharacters.push(this.setValues())
+    if (this.toAddIndex != -1) {
+      this.toAddCharacters[this.toAddIndex] = this.setValues()
+    }
+    else {
+      this.toAddCharacters.push(this.setValues())
+    }
+    this.notification++
     this.utils.reset()
+    this.table?.renderRows()
   }
 
 
@@ -119,4 +139,8 @@ export class CharacterComponent implements OnInit {
     return character
   }
 
+  updateNotification(event: number) {
+    if (event == 0)
+      this.notification = 0
+  }
 }
