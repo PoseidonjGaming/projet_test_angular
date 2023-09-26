@@ -121,8 +121,13 @@ export class SeriesComponent implements OnInit {
   //#region tableSeries
   populate(series: Series) {
     this.utilService.populate(series, this.formSeries)
-    this.formSeries.controls.categories.setValue(this.categories.filter((category: Category) => series.categoryIds.includes(category.id)))
-    this.categories = this.categories.filter((category: Category) => !series.categoryIds.includes(category.id))
+
+
+    this.categoryService.getAll('category').subscribe((dtos: Category[]) => {
+      this.formSeries.controls.categories.setValue(dtos.filter((category: Category) => series.categoryIds.includes(category.id)))
+      this.categories = dtos.filter((category: Category) => !series.categoryIds.includes(category.id))
+    })
+    console.log(this.categories, this.formSeries.controls.categories.value);
 
     if (series.id == 0) {
       this.toAddIndex = this.toAddSeries.indexOf(series)
@@ -167,7 +172,9 @@ export class SeriesComponent implements OnInit {
     if (this.formSeries.valid) {
       let series = this.setValue(new Series())
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
-      this.service.save('series', this.setValue(new Series())).pipe(
+      console.log(series);
+
+      this.service.save('series', series).pipe(
         mergeMap(() => this.service.getAll('series'))
       ).subscribe((dtos: Series[]) => {
         this.utilService.reset()
