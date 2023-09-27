@@ -36,7 +36,7 @@ export class MenuComponent implements OnInit {
     })
     this.tokenService.nextRole()
     if (this.tokenService.isExist()) {
-      this.username=this.tokenService.getClaims().sub
+      this.username = this.tokenService.getClaims().sub
     }
   }
 

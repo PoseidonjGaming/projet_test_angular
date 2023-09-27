@@ -103,6 +103,8 @@ export class SeriesComponent implements OnInit {
       this.files.push(file)
       this.formSeries.controls.poster.setValue(file.name as string)
     }
+    console.log(this.files);
+    
 
   }
 
@@ -173,7 +175,6 @@ export class SeriesComponent implements OnInit {
       let series = this.setValue(new Series())
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
       console.log(series);
-
       this.service.save('series', series).pipe(
         mergeMap(() => this.service.getAll('series'))
       ).subscribe((dtos: Series[]) => {

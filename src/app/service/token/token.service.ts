@@ -7,8 +7,6 @@ import { Subject } from 'rxjs';
 })
 export class TokenService {
 
-  
-  
   private menu: Subject<string> = new Subject()
 
   constructor() { }
