@@ -104,7 +104,7 @@ export class SeriesComponent implements OnInit {
       this.formSeries.controls.poster.setValue(file.name as string)
     }
     console.log(this.files);
-    
+
 
   }
 
@@ -123,8 +123,6 @@ export class SeriesComponent implements OnInit {
   //#region tableSeries
   populate(series: Series) {
     this.utilService.populate(series, this.formSeries)
-
-
     this.categoryService.getAll('category').subscribe((dtos: Category[]) => {
       this.formSeries.controls.categories.setValue(dtos.filter((category: Category) => series.categoryIds.includes(category.id)))
       this.categories = dtos.filter((category: Category) => !series.categoryIds.includes(category.id))
@@ -175,14 +173,25 @@ export class SeriesComponent implements OnInit {
       let series = this.setValue(new Series())
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
       console.log(series);
-      this.service.save('series', series).pipe(
-        mergeMap(() => this.service.getAll('series'))
-      ).subscribe((dtos: Series[]) => {
-        this.utilService.reset()
-        this.series = dtos
-        const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
-        this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
-      })
+      if (this.files.length > 0) {
+        this.service.saveWithFile(series, this.files[0]).pipe(
+          mergeMap(() => this.service.getAll())
+        ).subscribe((dtos: Series[]) => {
+          this.utilService.reset()
+          this.series = dtos
+          const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
+          this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+        })
+      } else {
+        this.service.save('series', series).pipe(
+          mergeMap(() => this.service.getAll())
+        ).subscribe((dtos: Series[]) => {
+          this.utilService.reset()
+          this.series = dtos
+          const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
+          this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
+        })
+      }
     }
 
 
