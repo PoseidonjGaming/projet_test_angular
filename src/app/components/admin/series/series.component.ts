@@ -98,7 +98,8 @@ export class SeriesComponent implements OnInit {
   //#region poster
   setPoster(event: any) {
     let file = event.target.files[0] as File
-
+    console.log(file.name);
+    
     if (!this.files.find((f: File) => file.name === f.name)) {
       this.files.push(file)
       this.formSeries.controls.poster.setValue(file.name as string)
