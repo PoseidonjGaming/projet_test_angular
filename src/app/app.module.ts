@@ -38,7 +38,7 @@ import { CharacterComponent } from './components/admin/character/character.compo
 import { EpisodeComponent } from './components/admin/episode/episode.component';
 import { AfficheDialogComponent } from './components/admin/series/affiche-dialog/affiche-dialog.component';
 import { SeriesComponent } from './components/admin/series/series.component';
-import { DetailSeriesComponent } from './components/detail-series/detail-series.component';
+import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './components/menu/import-dialog/import-dialog.component';
@@ -48,6 +48,7 @@ import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CategoryComponent } from './components/admin/category/category.component';
+import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -65,7 +66,8 @@ registerLocaleData(fr);
     CharacterComponent,
     ProfileComponent,
     SearchComponent,
-    CategoryComponent
+    CategoryComponent,
+    DetailActorComponent
   ],
   imports: [
     BrowserModule,
@@ -96,7 +98,7 @@ registerLocaleData(fr);
     MatBadgeModule,
     CdkDropListGroup,
     CdkDropList,
-    CdkDrag,    
+    CdkDrag,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
