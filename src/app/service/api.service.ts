@@ -19,11 +19,15 @@ export class ApiService<E>{
     return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list`)
   }
 
-  getById(type: String, id: string) {
+  getById(id: string, type?: String,) {
+    if (!type)
+      type = this.type
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 
   getByIds(ids: number[], type?: String) {
+    if (!type)
+      type = this.type
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 

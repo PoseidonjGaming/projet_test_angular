@@ -10,4 +10,5 @@ export class Series extends Base {
     trailerUrl: string = ''
     seasonsIds: number[] = []
     categoryIds: number[] = []
+    characterIds: number[] = []
 }

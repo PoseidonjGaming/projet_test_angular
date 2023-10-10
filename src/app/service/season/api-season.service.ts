@@ -8,7 +8,10 @@ import { ApiService } from '../api.service';
 })
 export class ApiSeasonService extends ApiService<Season>{
 
-  constructor(httpClient: HttpClient) { super(httpClient) }
+  constructor(httpClient: HttpClient) {
+    super(httpClient)
+    this.type='season'
+  }
 
   getBySeriesId(id: string) {
     return this.httpClient.get<Season[]>(`${this.API_BASE_URL}/season/bySeries/${id}`)

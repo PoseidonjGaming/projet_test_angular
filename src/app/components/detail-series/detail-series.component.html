@@ -6,9 +6,13 @@
         </div>
         <div class="col">
             <div class="row m-2">
-                <p><b>name:</b> {{series.name}}</p>
+                <p><b>Nom:</b> {{series.name}}</p>
                 <p><b>Première diffusion le </b>{{series.releaseDate | date:'shortDate': undefined: locale}}</p>
-                <p><b>summary:</b> <br>{{series.summary}}</p>
+                <p><b>Résumé:</b> <br>{{series.summary}}</p>
+                <p><b>Personnages:</b> </p>
+                <p *ngFor="let character of characters">
+                    <b>{{character.name}}</b>: {{character.actor?.firstname}} {{character.actor?.lastname}}
+                </p>
             </div>
             <div class="container-fluid">
                 <div class="row">
