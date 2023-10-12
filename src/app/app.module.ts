@@ -49,6 +49,7 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CategoryComponent } from './components/admin/category/category.component';
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 registerLocaleData(fr);
 
 @NgModule({
@@ -96,6 +97,7 @@ registerLocaleData(fr);
     MatSidenavModule,
     MatChipsModule,
     MatBadgeModule,
+    MatButtonToggleModule,
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,
