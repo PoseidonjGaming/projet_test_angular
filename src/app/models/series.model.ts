@@ -11,4 +11,8 @@ export class Series extends Base {
     seasonsIds: number[] = []
     categoryIds: number[] = []
     characterIds: number[] = []
+    nextMovieId: number = 0
+    previousMovieId: number = 0
+    nextSeriesId: number = 0
+    previousSeriesId: number = 0
 }

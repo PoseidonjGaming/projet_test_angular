@@ -1,5 +1,26 @@
-<div class="container-fluid">
-    <div class="row" *ngIf="series">
+<div class="container-fluid" *ngIf="series">
+    <div class="row">
+        <button *ngIf="series.previousSeriesId!=0" mat-button class="col" [routerLink]="['/detail/series', series.previousSeriesId]">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            <span>Série précendente</span>
+        </button>
+        <button mat-button class="col">
+            <span>Prochaine série</span>
+            <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
+        </button>
+    </div>
+    <div class="row">
+        <button *ngIf="series.nextSeriesId!=0" mat-button class="col" [routerLink]="['/detail/series', series.nextSeriesId]">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+            <span>Film précendent</span>
+        </button>
+        <button *ngIf="series.nextMovieId!=0" mat-button class="col" [routerLink]="['/detail/movie', series.nextMovieId]">
+            <span>Prochain film</span>
+            <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
+        </button>
+
+    </div>
+    <div class="row">
         <div class="col-4">
             <img *ngIf="series.poster" ngClass="img-fluid" class="m-2"
                 src="http://localhost:8081/series/load?filename={{series.poster}}" alt="">
@@ -11,7 +32,7 @@
                 <p><b>Résumé:</b> <br>{{series.summary}}</p>
                 <p><b>Personnages:</b> </p>
                 <p *ngFor="let character of characters">
-                    <b>{{character.name}}</b>: <a *ngIf="character.actor"
+                    {{character.name}}: <a *ngIf="character.actor"
                         [routerLink]="['/detail/actor', character.actor.id]">{{character.actor.firstname}}
                         {{character.actor.lastname}}</a>
                 </p>
