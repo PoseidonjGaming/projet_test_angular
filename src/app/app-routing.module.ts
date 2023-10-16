@@ -11,6 +11,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { CategoryComponent } from './components/admin/category/category.component';
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
+import { MovieComponent } from './components/admin/movie/movie.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
       { path: 'episodes', component: EpisodeComponent },
       { path: 'actor', component: ActorComponent },
       { path: 'character', component: CharacterComponent },
-      { path: 'category', component: CategoryComponent }
+      { path: 'category', component: CategoryComponent },
+      { path: 'movie', component: MovieComponent }
     ]
   },
   {

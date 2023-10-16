@@ -50,6 +50,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { CategoryComponent } from './components/admin/category/category.component';
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MovieComponent } from './components/admin/movie/movie.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -68,7 +69,8 @@ registerLocaleData(fr);
     ProfileComponent,
     SearchComponent,
     CategoryComponent,
-    DetailActorComponent
+    DetailActorComponent,
+    MovieComponent
   ],
   imports: [
     BrowserModule,
