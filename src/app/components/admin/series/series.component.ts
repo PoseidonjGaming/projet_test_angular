@@ -1,16 +1,16 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTable } from '@angular/material/table';
 import { combineLatest, mergeMap } from 'rxjs';
+import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';
+import { ApiService } from 'src/app/service/api.service';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 import { AfficheDialogComponent } from './affiche-dialog/affiche-dialog.component';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Category } from 'src/app/models/category.model';
-import { ApiService } from 'src/app/service/api.service';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-series',
