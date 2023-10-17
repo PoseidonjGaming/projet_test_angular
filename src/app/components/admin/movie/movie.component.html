@@ -1,19 +1,19 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
+        <div class="col mat-elevation-z8 p-2 mx-2 mt-2">
             <mat-tab-group dynamicHeight (selectedIndexChange)="updateNotif($event)" selectedIndex="1">
                 <mat-tab>
                     <ng-template mat-tab-label>
-                        <span *ngIf="notification>0 else none" [matBadge]="notification" matBadgeOverlap="false">Séries
+                        <span *ngIf="notification>0 else none" [matBadge]="notification" matBadgeOverlap="false">Films
                             en
                             attente</span>
                         <ng-template #none>
-                            <span>Séries en attente</span>
+                            <span>Films en attente</span>
                         </ng-template>
                     </ng-template>
                     <button mat-raised-button color="primary" class="mt-2" (click)="saves()">Envoyer la
                         liste</button>
-                    <table #tableToAdd mat-table [dataSource]="toAddSeries">
+                    <table #tableToAdd mat-table [dataSource]="toAddMovie">
                         <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef> Nom </th>
                             <td mat-cell *matCellDef="let element"> {{element.name}} </td>
@@ -38,7 +38,7 @@
                         <tr mat-row *matRowDef="let row; columns: columns;"></tr>
                     </table>
                 </mat-tab>
-                <mat-tab label="Série">
+                <mat-tab label="Film">
                     <form id="form" [formGroup]="formMovie" (ngSubmit)="submit()">
                         <div class="container-fluid">
                             <div class="row">
@@ -54,6 +54,22 @@
                                         <mat-label>Nom</mat-label>
                                         <input matInput type="text" formControlName="name" name="name" id="name"
                                             placeholder="Nom">
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <mat-form-field>
+                                        <mat-label>Resumé</mat-label>
+                                        <textarea matInput formControlName="summary" name="summary" id="summary"
+                                            placeholder="Il était un fois..." cdkTextareaAutosize></textarea>
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <mat-form-field>
+                                        <mat-label>Date de diffusion</mat-label>
+                                        <input matInput [matDatepicker]="picker" formControlName="releaseDate"
+                                            name="releaseDate" id="releaseDate" (click)="picker.open()">
+                                        <mat-datepicker #picker></mat-datepicker>
+                                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                                     </mat-form-field>
                                 </div>
                             </div>
@@ -80,24 +96,38 @@
                             </div>
                         </form>
                         <div cdkDropListGroup>
-                            <div class="example-container">
-                                <h2>Toute les catégories</h2>
-                                <div cdkDropList [cdkDropListData]="categories" class="example-list"
-                                    (cdkDropListDropped)="drop($event)">
-                                    <div class="example-box" *ngFor="let item of categories" cdkDrag>
-                                        {{item.name}}</div>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h2>Toute les catégories</h2>
+                                </div>
+                                <div class="col text-center">
+                                    <h2>Catégories de {{formMovie.controls.name.value}}</h2>
                                 </div>
                             </div>
-                            <div class="example-container">
-                                <h2>Catégories de {{formMovie.controls.name.value}}</h2>
-                                <div cdkDropList [cdkDropListData]="formMovie.controls.categories.value!"
-                                    class="example-list" (cdkDropListDropped)="drop($event)">
-                                    <div class="example-box" *ngFor="let item of formMovie.controls.categories.value"
-                                        cdkDrag>
-                                        {{item.name}}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="example-container">
+                                        <div cdkDropList [cdkDropListData]="categories" class="example-list"
+                                            (cdkDropListDropped)="drop($event)">
+                                            <div class="example-box" *ngFor="let item of categories" cdkDrag>
+                                                {{item.name}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="example-container">
+                                        <div cdkDropList [cdkDropListData]="formMovie.controls.categories.value!"
+                                            class="example-list" (cdkDropListDropped)="drop($event)">
+                                            <div class="example-box" *ngFor="let item of formMovie.controls.categories.value"
+                                                cdkDrag>
+                                                {{item.name}}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            
                         </div>
                     </div>
                 </mat-tab>
