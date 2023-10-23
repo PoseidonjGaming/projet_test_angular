@@ -59,16 +59,6 @@
                             </mat-form-field>
                         </div>
                         <div class="row">
-                            <mat-form-field>
-                                <mat-label>Séries</mat-label>
-                                <mat-select formControlName="series" multiple>
-                                    <mat-option *ngFor="let serie of series" [value]="serie">
-                                        {{serie.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="row">
                             <button mat-raised-button type="submit" color="primary" class="col m-2">Enregistrer</button>
                             <button mat-raised-button type="reset" color="primary" class="col m-2">
                                 Reset

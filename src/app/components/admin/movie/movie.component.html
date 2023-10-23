@@ -98,7 +98,7 @@
                         <div cdkDropListGroup>
                             <div class="row">
                                 <div class="col text-center">
-                                    <h2>Toute les catégories</h2>
+                                    <h2>Toutes les catégories</h2>
                                 </div>
                                 <div class="col text-center">
                                     <h2>Catégories de {{formMovie.controls.name.value}}</h2>
@@ -118,8 +118,8 @@
                                     <div class="example-container">
                                         <div cdkDropList [cdkDropListData]="formMovie.controls.categories.value!"
                                             class="example-list" (cdkDropListDropped)="drop($event)">
-                                            <div class="example-box" *ngFor="let item of formMovie.controls.categories.value"
-                                                cdkDrag>
+                                            <div class="example-box"
+                                                *ngFor="let item of formMovie.controls.categories.value" cdkDrag>
                                                 {{item.name}}
                                             </div>
                                         </div>
@@ -127,7 +127,50 @@
                                 </div>
                             </div>
 
-                            
+
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab label="Personnages" [disabled]="!formMovie.controls.name.value">
+                    <div class="container-fluid">
+                        <form>
+                            <div class="row">
+                                <mat-form-field>
+                                    <input #inputSearch matInput type="text" (keyup)="search(inputSearch.value)">
+                                </mat-form-field>
+                            </div>
+                        </form>
+                        <div cdkDropListGroup>
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h2>Tous les personnages</h2>
+                                </div>
+                                <div class="col text-center">
+                                    <h2>Personnages de {{formMovie.controls.name.value}}</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="example-container">
+                                        <div cdkDropList [cdkDropListData]="characters" class="example-list"
+                                            (cdkDropListDropped)="drop($event)">
+                                            <div class="example-box" *ngFor="let item of characters" cdkDrag>
+                                                {{item.name}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="example-container">
+                                        <div cdkDropList [cdkDropListData]="formMovie.controls.characters.value!"
+                                            class="example-list" (cdkDropListDropped)="drop($event)">
+                                            <div class="example-box"
+                                                *ngFor="let item of formMovie.controls.characters.value" cdkDrag>
+                                                {{item.name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </mat-tab>

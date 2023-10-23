@@ -38,9 +38,7 @@ export class CharacterComponent implements OnInit {
     id: new FormControl(0),
     name: new FormControl('', [Validators.required]),
     actorIds: new FormControl(this.arrayNumber, [Validators.required]),
-    seriesIds: new FormControl(this.arrayNumber, [Validators.required]),
     actors: new FormControl(this.actors),
-    series: new FormControl(this.series)
   })
 
   constructor(private service: ApiService<Character>,
@@ -63,18 +61,12 @@ export class CharacterComponent implements OnInit {
   populate(character: Character) {
     this.utils.populate(character, this.formCharacter)
 
-    let tempSeries: Series[] = []
     let tempActors: Actor[] = []
-    this.series.forEach((e) => {
-      if (this.formCharacter.controls.seriesIds.value?.includes(e.id))
-        tempSeries.push(e)
-    })
 
     this.actors.forEach((e) => {
       if (this.formCharacter.controls.actorIds.value?.includes(e.id))
         tempActors.push(e)
     })
-    this.formCharacter.controls.series.setValue(tempSeries)
     this.formCharacter.controls.actors.setValue(tempActors)
 
     if (character.id == 0)
@@ -128,7 +120,6 @@ export class CharacterComponent implements OnInit {
 
   setValues() {
     this.formCharacter.controls.actorIds.setValue(this.formCharacter.controls.actors.value?.map(e => e.id)!)
-    this.formCharacter.controls.seriesIds.setValue(this.formCharacter.controls.series.value?.map(e => e.id)!)
     let character = new Character()
     Object.keys(character).forEach((e) => {
       const control = this.formCharacter.get(e)

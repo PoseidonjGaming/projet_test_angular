@@ -5,4 +5,5 @@ export class Movie extends Base {
     summary: string = ''
     releaseDate = new Date()
     categoryIds: number[] = []
+    characterIds: number[] = []
 }
