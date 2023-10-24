@@ -37,9 +37,9 @@ export class MovieComponent implements OnInit {
     characterIds: new FormControl(this.temp)
   })
 
-  constructor(private service: ApiService<Movie>,
-    private categoryService: ApiService<Category>,
-    private characterServuice: ApiCharacterService,
+  constructor(private service: ApiService,
+    private categoryService: ApiService,
+    private characterService: ApiCharacterService,
     private utilsService: UtilsService,
     @Inject(LOCALE_ID) public locale: string
   ) { }
@@ -47,9 +47,9 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll('movie'),
-      this.categoryService.getAll('category'),
-      this.characterServuice.getAll()
+      this.service.getAll<Movie>('movie'),
+      this.categoryService.getAll<Category>('category'),
+      this.characterService.getAll<Character>()
     ]).subscribe(([movieDtos, categoryDtos, characterDtos]) => {
       this.movies = movieDtos
       this.categories = categoryDtos
@@ -88,8 +88,8 @@ export class MovieComponent implements OnInit {
     this.utilsService.populate(movie, this.formMovie)
 
     combineLatest([
-      this.categoryService.getAll('category'),
-      this.characterServuice.getAll()
+      this.categoryService.getAll<Category>('category'),
+      this.characterService.getAll<Character>()
     ]).subscribe(([categoryDtos, characterDtos]) => {
       this.set(categoryDtos,
         this.formMovie.controls.categories.value!,

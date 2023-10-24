@@ -1,7 +1,7 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row>
         <button mat-button routerLink="/">Les Séries</button>
-        <button mat-button routerLink="/search">Recherche</button>
+        <a mat-button routerLink="/search">Recherche</a>
         <div *ngIf="isLogged">
             <button mat-button [matMenuTriggerFor]="menuAdmin">Menu</button>
             <mat-menu #menuAdmin="matMenu">

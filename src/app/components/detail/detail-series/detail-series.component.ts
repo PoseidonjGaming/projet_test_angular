@@ -35,28 +35,28 @@ export class DetailSeriesComponent implements OnInit {
     this.route.paramMap.subscribe((param: ParamMap) => {
       const id = param.get('id')
       if (id) {
-        this.service.getById(id).pipe(
+        this.service.getById<Series>(id).pipe(
           switchMap((dto: Series) => {
             this.series = dto
 
             return combineLatest([
-              this.seasonService.getByIds(dto.seasonsIds),
-              this.characterService.getByIds(dto.characterIds)
+              this.seasonService.getByIds<Season>(dto.seasonsIds),
+              this.characterService.getByIds<Character>(dto.characterIds)
             ])
           }),
           switchMap(([seasonDtos, characterDtos]) => {
             this.characters = characterDtos
 
             return combineLatest([
-              this.actorService.getByIds(characterDtos.map(e => e.actorId)),
-              this.episodeService.getByIds(seasonDtos.map(e => e.episodesIds).flat())
+              this.actorService.getByIds<Actor>(characterDtos.map(e => e.actorId)),
+              this.episodeService.getByIds<Episode>(seasonDtos.map(e => e.episodesIds).flat())
             ])
           })
         ).subscribe(([actorDtos, episodeDtos]) => {
           this.characters.forEach(character => {
-            character.actor=actorDtos.find(e=>e.id==character.actorId)
+            character.actor = actorDtos.find(e => e.id == character.actorId)
           })
-          this.actors.find(e=>e.id==1)
+          this.actors.find(e => e.id == 1)
           new Set(episodeDtos.map(e => e.seasonId)).forEach(s => {
             let temp: Episode[] = []
             episodeDtos.forEach(e => {

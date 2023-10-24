@@ -6,40 +6,40 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService<E>{
+export class ApiService{
 
   protected API_BASE_URL = 'http://localhost:8081'
   protected type: string = ''
 
   constructor(protected httpClient: HttpClient) { }
 
-  getAll(type?: String) {
+  getAll<E>(type?: String) {
     if (!type)
       type = this.type
     return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list`)
   }
 
-  getById(id: string, type?: String,) {
+  getById<E>(id: string, type?: String,) {
     if (!type)
       type = this.type
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 
-  getByIds(ids: number[], type?: String) {
+  getByIds<E>(ids: number[], type?: String) {
     if (!type)
       type = this.type
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search(type: String, term: String) {
+  search<E>(type: String, term: String) {
     return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/search?term=${term}`)
   }
 
-  saves(type: string, dtos: E[]) {
+  saves<E>(type: string, dtos: E[]) {
     return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
   }
 
-  save(type: string, dto: E): Observable<any> {
+  save<E>(type: string, dto: E): Observable<any> {
     return this.httpClient.post(`${this.API_BASE_URL}/${type}/save`, dto)
   }
 

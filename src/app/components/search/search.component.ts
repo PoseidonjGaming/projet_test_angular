@@ -5,6 +5,7 @@ import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiService } from 'src/app/service/api.service';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';
+import { UtilsService } from 'src/app/service/utils/utils.service';
 
 @Component({
   selector: 'app-search',
@@ -16,16 +17,20 @@ export class SearchComponent implements OnInit {
   categories: Category[] = []
   isOpened = false
 
+  type: number[] = []
+
   formSearch = new FormGroup({
-    term: new FormControl(null),
-    ids: new FormControl([])
+    term: new FormControl(''),
+    ids: new FormControl(this.type)
   })
 
-  constructor(private service: ApiSeriesService, private categoryService: ApiService<Category>) { }
+  constructor(private service: ApiSeriesService,
+    private categoryService: ApiService,
+    private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll('series').subscribe((dtos: Series[]) => this.series = dtos)
-    this.categoryService.getAll('category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.service.getAll<Series>().subscribe((dtos: Series[]) => this.series = dtos)
+    this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
   }
 
   submit() {
@@ -42,16 +47,16 @@ export class SearchComponent implements OnInit {
     // }
 
     if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
-      this.service.filteredSearch(this.formSearch.value).subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.filteredSearch(this.utilsService.updateValues(new Series(),this.formSearch)).subscribe((dtos: Series[]) => this.series = dtos)
     }
     else if (this.formSearch.controls.term.value) {
-      this.service.search('series', this.formSearch.controls.term.value).subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.search<Series>('series', this.formSearch.controls.term.value).subscribe((dtos: Series[]) => this.series = dtos)
     }
     else if (this.formSearch.controls.ids.value?.length != 0) {
-      this.service.getByCategoryIds(this.formSearch.controls.ids.value).subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.getByCategoryIds(this.formSearch.controls.ids.value!).subscribe((dtos: Series[]) => this.series = dtos)
     }
     else {
-      this.service.getAll('series').subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
     }
   }
 
@@ -62,6 +67,6 @@ export class SearchComponent implements OnInit {
 
   reset() {
     this.formSearch.reset()
-    this.service.getAll('series').subscribe((dtos: Series[]) => this.series = dtos)
+    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
   }
 }

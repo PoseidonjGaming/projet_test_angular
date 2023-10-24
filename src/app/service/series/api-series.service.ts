@@ -6,11 +6,11 @@ import { ApiService } from '../api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiSeriesService extends ApiService<Series> {
+export class ApiSeriesService extends ApiService {
 
   constructor(httpclient: HttpClient) {
     super(httpclient)
-    this.type='series'
+    this.type = 'series'
   }
 
   saveFiles(files: File[]) {
@@ -32,11 +32,11 @@ export class ApiSeriesService extends ApiService<Series> {
     })
   }
 
-  filteredSearch(filter: any) {
+  filteredSearch(filter: Series) {
     return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/filteredSearch`, filter)
   }
 
-  getByCategoryIds(ids: any) {
-    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/byCategories`,ids)
+  getByCategoryIds(ids: number[]) {
+    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/byCategories`, ids)
   }
 }

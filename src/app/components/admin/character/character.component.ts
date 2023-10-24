@@ -41,16 +41,16 @@ export class CharacterComponent implements OnInit {
     actors: new FormControl(this.actors),
   })
 
-  constructor(private service: ApiService<Character>,
+  constructor(private service: ApiService,
     private actorService: ApiActorService,
     private seriesService: ApiSeriesService,
     private utils: UtilsService) { }
 
   ngOnInit(): void {
     combineLatest([
-      this.actorService.getAll(),
-      this.seriesService.getAll(),
-      this.service.getAll('character')
+      this.actorService.getAll<Actor>(),
+      this.seriesService.getAll<Series>(),
+      this.service.getAll<Character>('character')
     ]).subscribe(([actorDtos, seriesDtos, characterDtos]) => {
       this.actors = actorDtos
       this.series = seriesDtos
@@ -76,8 +76,8 @@ export class CharacterComponent implements OnInit {
 
   submit() {
     console.log(this.setValues());
-    this.service.save('character', this.setValues()).pipe(
-      mergeMap(() => this.service.getAll('character'))
+    this.service.save<Character>('character', this.setValues()).pipe(
+      mergeMap(() => this.service.getAll<Character>('character'))
     ).subscribe((dtos: Character[]) => {
       this.characters = dtos
       this.utils.reset()
@@ -86,8 +86,8 @@ export class CharacterComponent implements OnInit {
   }
 
   saves() {
-    this.service.saves('character', this.toAddCharacters).pipe(
-      mergeMap(() => this.service.getAll('character'))
+    this.service.saves<Character>('character', this.toAddCharacters).pipe(
+      mergeMap(() => this.service.getAll<Character>('character'))
     ).subscribe((dtos: Character[]) => {
       this.characters = dtos
       this.toAddCharacters = []
@@ -114,7 +114,7 @@ export class CharacterComponent implements OnInit {
 
   deletes(character: Character) {
     this.service.delete('character', character.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('character'))
+      mergeMap(() => this.service.getAll<Character>('character'))
     ).subscribe((dtos: Character[]) => this.characters = dtos)
   }
 

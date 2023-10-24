@@ -26,10 +26,10 @@ export class ActorComponent implements OnInit {
     lastname: new FormControl('', [Validators.required])
   })
 
-  constructor(private service: ApiService<Actor>, private utils: UtilsService) { }
+  constructor(private service: ApiService, private utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll('actor').subscribe((dtos: Actor[]) => this.actors = dtos)
+    this.service.getAll<Actor>('actor').subscribe((dtos: Actor[]) => this.actors = dtos)
   }
 
   populate(actor: Actor) {
@@ -38,8 +38,8 @@ export class ActorComponent implements OnInit {
 
   submit() {
     if (this.formActor.valid) {
-      this.service.save('actor', this.setValue()).pipe(
-        mergeMap(() => this.service.getAll('actor'))
+      this.service.save<Actor>('actor', this.setValue()).pipe(
+        mergeMap(() => this.service.getAll<Actor>('actor'))
       ).subscribe((dtos: Actor[]) => {
         this.actors = dtos
         this.utils.reset()
@@ -48,8 +48,8 @@ export class ActorComponent implements OnInit {
   }
 
   saves() {
-    this.service.saves('actor', this.toAddActors).pipe(
-      mergeMap(() => this.service.getAll('actor'))
+    this.service.saves<Actor>('actor', this.toAddActors).pipe(
+      mergeMap(() => this.service.getAll<Actor>('actor'))
     ).subscribe((dtos: Actor[]) => {
       this.toAddActors = []
       this.actors = dtos
@@ -69,7 +69,7 @@ export class ActorComponent implements OnInit {
 
   deletes(actor: Actor) {
     this.service.delete('actor', actor.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('actor'))
+      mergeMap(() => this.service.getAll<Actor>('actor'))
     ).subscribe((dtos: Actor[]) => this.actors = dtos)
   }
 

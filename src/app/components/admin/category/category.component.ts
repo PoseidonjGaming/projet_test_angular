@@ -26,10 +26,10 @@ export class CategoryComponent implements OnInit {
     seriesIds: new FormControl(null)
   })
 
-  constructor(private service: ApiService<Category>, public utilService: UtilsService) { }
+  constructor(private service: ApiService, public utilService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll('category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.service.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
   }
 
   populate(category: Category) {
@@ -38,8 +38,8 @@ export class CategoryComponent implements OnInit {
 
   submit() {
     if (this.formCategory.valid) {
-      this.service.save('category', this.setValue(new Category())).pipe(
-        mergeMap(() => this.service.getAll('category'))
+      this.service.save<Category>('category', this.setValue(new Category())).pipe(
+        mergeMap(() => this.service.getAll<Category>('category'))
       ).subscribe((dtos: Category[]) => {
         this.categories = dtos
         this.utilService.reset()
@@ -47,8 +47,8 @@ export class CategoryComponent implements OnInit {
     }
   }
   saves() {
-    this.service.saves('category', this.toAddCategories).pipe(
-      mergeMap(() => this.service.getAll('category'))
+    this.service.saves<Category>('category', this.toAddCategories).pipe(
+      mergeMap(() => this.service.getAll<Category>('category'))
     ).subscribe((dtos: Category[]) => {
       this.categories = dtos
       this.toAddCategories = []
@@ -76,7 +76,7 @@ export class CategoryComponent implements OnInit {
 
   deletes(id: number) {
     this.service.delete('category', id.toString()).pipe(
-      mergeMap(() => this.service.getAll('category'))
+      mergeMap(() => this.service.getAll<Category>('category'))
     ).subscribe((dtos: Category[]) => this.categories = dtos)
   }
 

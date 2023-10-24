@@ -44,7 +44,7 @@ export class SeriesComponent implements OnInit {
 
 
   constructor(private service: ApiSeriesService,
-    private categoryService: ApiService<Category>,
+    private categoryService: ApiService,
     private utilService: UtilsService,
     public dialog: MatDialog,
     private snack: MatSnackBar,
@@ -52,8 +52,8 @@ export class SeriesComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll(),
-      this.categoryService.getAll('category'),
+      this.service.getAll<Series>(),
+      this.categoryService.getAll<Category>('category'),
     ]).subscribe(([seriesDtos, categoryDtos]) => {
       this.series = seriesDtos
       this.categories = categoryDtos
@@ -84,8 +84,8 @@ export class SeriesComponent implements OnInit {
 
   saves() {
     this.service.saveFiles(this.files).pipe(
-      mergeMap(() => this.service.saves('series', this.toAddSeries)),
-      mergeMap(() => this.service.getAll('series'))
+      mergeMap(() => this.service.saves<Series>('series', this.toAddSeries)),
+      mergeMap(() => this.service.getAll<Series>('series'))
     ).subscribe((dtos: Series[]) => {
       this.toAddSeries = []
       this.series = dtos
@@ -124,7 +124,7 @@ export class SeriesComponent implements OnInit {
   //#region tableSeries
   populate(series: Series) {
     this.utilService.populate(series, this.formSeries)
-    this.categoryService.getAll('category').subscribe((dtos: Category[]) => {
+    this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => {
       this.formSeries.controls.categories.setValue(dtos.filter((category: Category) => series.categoryIds.includes(category.id)))
       this.categories = dtos.filter((category: Category) => !series.categoryIds.includes(category.id))
     })
@@ -137,7 +137,7 @@ export class SeriesComponent implements OnInit {
 
   deletes(series: Series) {
     this.service.delete('series', series.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('series'))
+      mergeMap(() => this.service.getAll<Series>('series'))
     ).subscribe((dtos: Series[]) => {
       this.series = dtos
     })
@@ -162,7 +162,7 @@ export class SeriesComponent implements OnInit {
 
   search(term: string) {
     if (term)
-      this.categoryService.search('category', term).subscribe((dtos: Category[]) => this.categories = dtos)
+      this.categoryService.search<Category>('category', term).subscribe((dtos: Category[]) => this.categories = dtos)
 
 
   }
@@ -176,7 +176,7 @@ export class SeriesComponent implements OnInit {
       console.log(series);
       if (this.files.length > 0) {
         this.service.saveWithFile(series, this.files[0]).pipe(
-          mergeMap(() => this.service.getAll())
+          mergeMap(() => this.service.getAll<Series>())
         ).subscribe((dtos: Series[]) => {
           this.utilService.reset()
           this.series = dtos
@@ -184,8 +184,8 @@ export class SeriesComponent implements OnInit {
           this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
         })
       } else {
-        this.service.save('series', series).pipe(
-          mergeMap(() => this.service.getAll())
+        this.service.save<Series>('series', series).pipe(
+          mergeMap(() => this.service.getAll<Series>())
         ).subscribe((dtos: Series[]) => {
           this.utilService.reset()
           this.series = dtos

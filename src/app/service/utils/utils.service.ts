@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { Base } from 'src/app/models/base.model';
 
@@ -18,6 +18,15 @@ export class UtilsService {
     })
   }
 
+  updateValues<T>(entity: T, form: FormGroup) {
+    Object.keys(form.controls).forEach((e: string) => {
+      let control = form.get(e)
+      if (control)
+        e = control.value
+    })
+    return entity
+  }
+
   updateTable<E extends Base>(table: MatTable<E>) {
     table.renderRows()
   }
@@ -27,6 +36,6 @@ export class UtilsService {
     resetForm.reset();
   }
 
-  
+
 
 }

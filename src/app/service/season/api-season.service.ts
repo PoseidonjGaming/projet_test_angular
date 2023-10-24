@@ -6,7 +6,7 @@ import { ApiService } from '../api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiSeasonService extends ApiService<Season>{
+export class ApiSeasonService extends ApiService{
 
   constructor(httpClient: HttpClient) {
     super(httpClient)

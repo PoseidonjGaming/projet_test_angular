@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiCharacterService extends ApiService<Character>{
+export class ApiCharacterService extends ApiService{
 
   constructor(httpClient: HttpClient) {
     super(httpClient)

@@ -54,8 +54,8 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll(),
-      this.seriesService.getAll()
+      this.service.getAll<Episode>(),
+      this.seriesService.getAll<Series>()
     ]).subscribe(([episodeDtos, seriesDtos]) => {
       this.episodes = episodeDtos
       this.series = seriesDtos
@@ -67,13 +67,13 @@ export class EpisodeComponent implements OnInit {
   submit() {
     if (this.formEpisode.valid) {
       if (this.formEpisode.controls.isNewSaison.value) {
-        this.saisonService.save('season', new Season(this.formEpisode.controls.seriesId.value!, this.seasons.length + 1)).pipe(
+        this.saisonService.save<Season>('season', new Season(this.formEpisode.controls.seriesId.value!, this.seasons.length + 1)).pipe(
           mergeMap(() => this.saisonService.getBySeriesId(this.formEpisode.controls.seriesId.value?.toString()!)),
           mergeMap((dtos: Season[]) => {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
-            return this.service.save('episode', this.setValue(new Episode()))
+            return this.service.save<Episode>('episode', this.setValue(new Episode()))
           }),
-          mergeMap(() => this.service.getAll('episode'))
+          mergeMap(() => this.service.getAll<Episode>('episode'))
         ).subscribe((dtos: Episode[]) => {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
@@ -83,8 +83,8 @@ export class EpisodeComponent implements OnInit {
         })
       }
       else {
-        this.service.save('episode', this.setValue(new Episode())).pipe(
-          mergeMap(() => this.service.getAll('episode'))
+        this.service.save<Episode>('episode', this.setValue(new Episode())).pipe(
+          mergeMap(() => this.service.getAll<Episode>('episode'))
         ).subscribe((dtos: Episode[]) => {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
@@ -111,7 +111,7 @@ export class EpisodeComponent implements OnInit {
 
   deletes(episode: Episode) {
     this.service.delete('episode', episode.id.toString()).pipe(
-      mergeMap(() => this.service.getAll('episode'))
+      mergeMap(() => this.service.getAll<Episode>('episode'))
     ).subscribe((dtos: Episode[]) => {
       this.episodes = dtos
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
@@ -133,8 +133,8 @@ export class EpisodeComponent implements OnInit {
   }
 
   saves() {
-    this.service.saves('episode', this.toAddEpisodes).pipe(
-      mergeMap(() => this.service.getAll('episode'))
+    this.service.saves<Episode>('episode', this.toAddEpisodes).pipe(
+      mergeMap(() => this.service.getAll<Episode>('episode'))
     ).subscribe((dtos: Episode[]) => {
       this.toAddEpisodes = []
       this.episodes = dtos

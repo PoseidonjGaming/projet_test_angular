@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     if (this.tokenService.isExist()) {
       combineLatest([
         this.credentialService.isExist(),
-        this.service.getAll()
+        this.service.getAll<Series>()
       ]).subscribe(([isExist, seriesDtos]) => {
         if (isExist)
           this.tokenService.logout()
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
       })
     }
     else {
-      this.service.getAll().subscribe((dtos: Series[]) => {
+      this.service.getAll<Series>().subscribe((dtos: Series[]) => {
         this.series = dtos
       })
     }

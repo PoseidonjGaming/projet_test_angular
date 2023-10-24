@@ -26,7 +26,7 @@ export class ProfileComponent implements OnInit {
   })
 
   constructor(private tokenService: TokenService,
-    private service: ApiService<User>,
+    private service: ApiService,
     private utils: UtilsService) {
     this.formUser.controls.confirmPassword.addValidators(Password.checkNew(this.formUser.controls.password))
     this.formUser.controls.password.addValidators(Password.checkOld(this.formUser.controls.currentPassword))
@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.service.search('user', this.tokenService.getClaims().sub).subscribe((dtos: User[]) => {
+    this.service.search<User>('user', this.tokenService.getClaims().sub).subscribe((dtos: User[]) => {
       this.utils.populate(dtos[0], this.formUser)
       this.file64 = `htts://localhost:8081/file/load/${dtos[0].avatarFile}`
     })
