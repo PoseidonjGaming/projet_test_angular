@@ -40,8 +40,8 @@
                         </div>
                         <div class="row">
                             <div class="col d-flex justify-content-center">
-                                <mat-button-toggle-group value="serie">
-                                    <mat-button-toggle value="serie" aria-label="series">
+                                <mat-button-toggle-group formControlName="type">
+                                    <mat-button-toggle value="series" aria-label="series">
                                         <mat-icon>tv</mat-icon>
                                     </mat-button-toggle>
                                     <mat-button-toggle value="movie" aria-label="movie">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="row">
-                <p>Resulats trouvés: {{series.length}}</p>
+                <p>Résulats trouvés: {{series.length}}</p>
                 <div class="col-4" *ngFor="let serie of series">
                     <mat-card class="m-2" style="width: 20vw;">
                         <mat-card-header>

@@ -21,7 +21,8 @@ export class SearchComponent implements OnInit {
 
   formSearch = new FormGroup({
     term: new FormControl(''),
-    ids: new FormControl(this.type)
+    ids: new FormControl(this.type),
+    type: new FormControl('series')
   })
 
   constructor(private service: ApiSeriesService,
@@ -34,7 +35,6 @@ export class SearchComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.formSearch.value);
 
     // if (!this.formSearch.controls.term.value) {
     //   this.service.getByCategoryIds(this.formSearch.controls.ids.value).subscribe((dtos: Series[]) => this.series = dtos)
@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit {
     //   this.service.filteredSearch(this.formSearch.value).subscribe((dtos: Series[]) => this.series = dtos)
     // }
 
-    if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
+    /* if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
       this.service.filteredSearch(this.utilsService.updateValues(new Series(),this.formSearch)).subscribe((dtos: Series[]) => this.series = dtos)
     }
     else if (this.formSearch.controls.term.value) {
@@ -57,6 +57,10 @@ export class SearchComponent implements OnInit {
     }
     else {
       this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
+    } */
+    if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
+      console.log(this.formSearch.controls.type.value);
+
     }
   }
 
@@ -66,7 +70,15 @@ export class SearchComponent implements OnInit {
   }
 
   reset() {
-    this.formSearch.reset()
-    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
+    this.formSearch.reset({
+      ids: [],
+      term: null,
+      type: 'series'
+    })
+    //this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
+  }
+
+  private search<T>(type: string|((value: T) => void)){
+    this.service.filteredSearch(this.utilsService.updateValues(new Series(),this.formSearch)).subscribe((dtos: Series[]) => this.series = dtos)
   }
 }
