@@ -32,11 +32,5 @@ export class ApiSeriesService extends ApiService {
     })
   }
 
-  filteredSearch(filter: Series) {
-    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/filteredSearch`, filter)
-  }
-
-  getByCategoryIds(ids: number[]) {
-    return this.httpClient.post<Series[]>(`${this.API_BASE_URL}/series/byCategories`, ids)
-  }
+  
 }

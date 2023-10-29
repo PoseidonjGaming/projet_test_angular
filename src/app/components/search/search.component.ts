@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
+import { Base } from 'src/app/models/base.model';
 import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiService } from 'src/app/service/api.service';
-import { ApiSeriesService } from 'src/app/service/series/api-series.service';
+import { ApiSearchService } from 'src/app/service/search/api-search.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { UtilsService } from 'src/app/service/utils/utils.service';
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
-  series: Series[] = []
+  results: Base[] = []
   categories: Category[] = []
   isOpened = false
 
@@ -25,12 +26,12 @@ export class SearchComponent implements OnInit {
     type: new FormControl('series')
   })
 
-  constructor(private service: ApiSeriesService,
+  constructor(private service: ApiSearchService,
     private categoryService: ApiService,
     private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Series>().subscribe((dtos: Series[]) => this.series = dtos)
+    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.results = dtos)
     this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
   }
 
@@ -46,21 +47,17 @@ export class SearchComponent implements OnInit {
     //   this.service.filteredSearch(this.formSearch.value).subscribe((dtos: Series[]) => this.series = dtos)
     // }
 
-    /* if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
-      this.service.filteredSearch(this.utilsService.updateValues(new Series(),this.formSearch)).subscribe((dtos: Series[]) => this.series = dtos)
+    if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
+      this.service.filteredSearch<Base>(this.utilsService.updateValues(new Base(), this.formSearch), this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
     }
     else if (this.formSearch.controls.term.value) {
-      this.service.search<Series>('series', this.formSearch.controls.term.value).subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.search<Base>(this.formSearch.controls.type.value!, this.formSearch.controls.term.value).subscribe((dtos: Base[]) => this.results = dtos)
     }
     else if (this.formSearch.controls.ids.value?.length != 0) {
-      this.service.getByCategoryIds(this.formSearch.controls.ids.value!).subscribe((dtos: Series[]) => this.series = dtos)
+      this.service.getByCategoryIds<Base>(this.formSearch.controls.ids.value!, this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
     }
     else {
-      this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
-    } */
-    if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
-      console.log(this.formSearch.controls.type.value);
-
+      this.service.getAll<Base>(this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
     }
   }
 
@@ -76,9 +73,5 @@ export class SearchComponent implements OnInit {
       type: 'series'
     })
     //this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
-  }
-
-  private search<T>(type: string|((value: T) => void)){
-    this.service.filteredSearch(this.utilsService.updateValues(new Series(),this.formSearch)).subscribe((dtos: Series[]) => this.series = dtos)
   }
 }
