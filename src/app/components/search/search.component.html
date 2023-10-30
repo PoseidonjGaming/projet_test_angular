@@ -2,18 +2,21 @@
     <mat-drawer #drawer mode="push" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid" style="height: 100vh;">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
-                <div class="row" style="width: 15vw;">
-                    <mat-chip-listbox multiple="true" formControlName="ids" class="mat-mdc-chip-set-stacked"
-                        aria-label="Fish selection">
-                        <mat-chip-option *ngFor="let category of categories" [value]="category.id"
-                            color="accent">{{category.name}}</mat-chip-option>
-                    </mat-chip-listbox>
+                <div class="col" style="width: 25wh;">
+                    <div class="row">
+                        <mat-chip-listbox multiple="true" formControlName="ids" class="mat-mdc-chip-set-stacked"
+                            aria-label="Fish selection">
+                            <mat-chip-option *ngFor="let category of categories" [value]="category.id"
+                                color="accent">{{category.name}}</mat-chip-option>
+                        </mat-chip-listbox>
+                    </div>
+
+                    <div class="row m-2">
+                        <button type="submit" mat-raised-button color="primary">Filtrer</button>
+                        <button type="button" mat-raised-button (click)="reset()">Reset</button>
+                    </div>
                 </div>
 
-                <div class="row m-2">
-                    <button type="submit" mat-raised-button color="primary">Filtrer</button>
-                    <button type="button" mat-raised-button (click)="reset()">Reset</button>
-                </div>
             </form>
         </div>
     </mat-drawer>
