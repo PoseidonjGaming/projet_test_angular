@@ -99,7 +99,7 @@ export class SeriesComponent implements OnInit {
   setPoster(event: any) {
     let file = event.target.files[0] as File
     console.log(file.name);
-    
+
     if (!this.files.find((f: File) => file.name === f.name)) {
       this.files.push(file)
       this.formSeries.controls.poster.setValue(file.name as string)
@@ -162,7 +162,7 @@ export class SeriesComponent implements OnInit {
 
   search(term: string) {
     if (term)
-      this.categoryService.search<Category>('category', term).subscribe((dtos: Category[]) => this.categories = dtos)
+      this.categoryService.search<Category>('category', { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
 
 
   }

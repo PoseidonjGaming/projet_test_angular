@@ -4,7 +4,7 @@
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
                 <div class="col" style="width: 25wh;">
                     <div class="row">
-                        <mat-chip-listbox multiple="true" formControlName="ids" class="mat-mdc-chip-set-stacked"
+                        <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
                             <mat-chip-option *ngFor="let category of categories" [value]="category.id"
                                 color="accent">{{category.name}}</mat-chip-option>
@@ -37,7 +37,7 @@
                         <div class="row">
                             <mat-form-field>
                                 <mat-label>Recherche</mat-label>
-                                <input matInput type="text" formControlName="term" name="term" id="term"
+                                <input matInput type="text" formControlName="name" name="term" id="term"
                                     placeholder="Rechercher une série ou un film">
                             </mat-form-field>
                         </div>

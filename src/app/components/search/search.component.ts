@@ -21,8 +21,8 @@ export class SearchComponent implements OnInit {
   type: number[] = []
 
   formSearch = new FormGroup({
-    term: new FormControl(''),
-    ids: new FormControl(this.type),
+    name: new FormControl(''),
+    categoryIds: new FormControl(this.type),
     type: new FormControl('series')
   })
 
@@ -36,29 +36,17 @@ export class SearchComponent implements OnInit {
   }
 
   submit() {
+    if (this.formSearch.controls.name.value) {
+      this.service.search<Base>(this.formSearch.controls.type.value!, this.formSearch.value).subscribe((dtos: Base[]) => {
+        this.results = dtos
+      })
+    } else {
+      this.service.getAll<Base>(this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => {
+        this.results = dtos
+      })
+    }
+    
 
-    // if (!this.formSearch.controls.term.value) {
-    //   this.service.getByCategoryIds(this.formSearch.controls.ids.value).subscribe((dtos: Series[]) => this.series = dtos)
-    // }
-    // else if (this.formSearch.controls.ids.value?.length == 0) {
-    //   this.service.search('series', this.formSearch.controls.term.value).subscribe((dtos: Series[]) => this.series = dtos)
-    // }
-    // else {
-    //   this.service.filteredSearch(this.formSearch.value).subscribe((dtos: Series[]) => this.series = dtos)
-    // }
-
-    if (this.formSearch.controls.term.value && this.formSearch.controls.ids.value?.length != 0) {
-      this.service.filteredSearch<Base>(this.utilsService.updateValues(new Base(), this.formSearch), this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
-    }
-    else if (this.formSearch.controls.term.value) {
-      this.service.search<Base>(this.formSearch.controls.type.value!, this.formSearch.controls.term.value).subscribe((dtos: Base[]) => this.results = dtos)
-    }
-    else if (this.formSearch.controls.ids.value?.length != 0) {
-      this.service.getByCategoryIds<Base>(this.formSearch.controls.ids.value!, this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
-    }
-    else {
-      this.service.getAll<Base>(this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => this.results = dtos)
-    }
   }
 
   panel(drawer: MatDrawer) {
@@ -68,8 +56,8 @@ export class SearchComponent implements OnInit {
 
   reset() {
     this.formSearch.reset({
-      ids: [],
-      term: null,
+      categoryIds: [],
+      name: '',
       type: 'series'
     })
     //this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
