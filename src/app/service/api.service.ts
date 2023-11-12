@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Series } from '../models/series.model';
 import { Observable } from 'rxjs';
@@ -42,6 +42,25 @@ export class ApiService {
 
   save<E>(type: string, dto: E): Observable<any> {
     return this.httpClient.post(`${this.API_BASE_URL}/${type}/save`, dto)
+  }
+
+  saveFiles(files: File[]) {
+    let formData = new FormData();
+    files.forEach(file => formData.append('files', file))
+    return this.httpClient.post(`${this.API_BASE_URL}/series/save/files`, formData)
+  }
+
+  saveWithFile<E>(type: string, dtos: E, file: File) {
+    let formData = new FormData()
+
+    let headers = new HttpHeaders()
+    headers.set('Content-Type', 'multipart/form-data')
+    headers.set('Accept', 'multipart/form-data')
+    formData.append('file', file)
+    formData.append(type, JSON.stringify(dtos))
+    return this.httpClient.post(`${this.API_BASE_URL}/${type}/save`, formData, {
+      headers: headers
+    })
   }
 
   delete(type: String, id: String) {

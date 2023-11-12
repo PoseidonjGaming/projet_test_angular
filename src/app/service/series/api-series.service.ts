@@ -13,24 +13,7 @@ export class ApiSeriesService extends ApiService {
     this.type = 'series'
   }
 
-  saveFiles(files: File[]) {
-    let formData = new FormData();
-    files.forEach(file => formData.append('files', file))
-    return this.httpClient.post(`${this.API_BASE_URL}/series/save/files`, formData)
-  }
-
-  saveWithFile(series: Series, file: File) {
-    let formData = new FormData()
-
-    let headers = new HttpHeaders()
-    headers.set('Content-Type', 'multipart/form-data')
-    headers.set('Accept', 'multipart/form-data')
-    formData.append('file', file)
-    formData.append('series', JSON.stringify(series))
-    return this.httpClient.post(`${this.API_BASE_URL}/series/save`, formData, {
-      headers: headers
-    })
-  }
+ 
 
   
 }

@@ -10,7 +10,9 @@ import { Series } from 'src/app/models/series.model';
 import { ApiService } from 'src/app/service/api.service';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
-import { AfficheDialogComponent } from './affiche-dialog/affiche-dialog.component';
+import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.component';
+import { ListComponent } from '../list/list.component';
+import { Base } from 'src/app/models/base.model';
 
 @Component({
   selector: 'app-series',
@@ -29,6 +31,7 @@ export class SeriesComponent implements OnInit {
   toAddIndex = -1
 
   @ViewChild('tableToAdd') tableToAdd: MatTable<Series> | undefined
+  @ViewChild(ListComponent) listComponent: ListComponent | undefined
 
   formSeries = new FormGroup({
     id: new FormControl(0),
@@ -70,28 +73,14 @@ export class SeriesComponent implements OnInit {
         this.toAddSeries.push(this.setValue(new Series()))
       }
 
-      this.utilService.reset()
-      this.utilService.updateTable(this.tableToAdd!)
+      this.listComponent?.update()
       this.notification++
     }
 
   }
 
-  remove(index: number) {
-    this.toAddSeries.splice(index, 1)
-    this.utilService.updateTable(this.tableToAdd!)
-  }
-
-  saves() {
-    this.service.saveFiles(this.files).pipe(
-      mergeMap(() => this.service.saves<Series>('series', this.toAddSeries)),
-      mergeMap(() => this.service.getAll<Series>('series'))
-    ).subscribe((dtos: Series[]) => {
-      this.toAddSeries = []
-      this.series = dtos
-      this.snack.open(`Séries modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
-    })
-
+  update(series: Base[]) {
+    this.series = series as Series[]
   }
   //#endregion
 
@@ -104,9 +93,6 @@ export class SeriesComponent implements OnInit {
       this.files.push(file)
       this.formSeries.controls.poster.setValue(file.name as string)
     }
-    console.log(this.files);
-
-
   }
 
   openPosterDialog() {
@@ -175,7 +161,7 @@ export class SeriesComponent implements OnInit {
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
       console.log(series);
       if (this.files.length > 0) {
-        this.service.saveWithFile(series, this.files[0]).pipe(
+        this.service.saveWithFile('series', series, this.files[0]).pipe(
           mergeMap(() => this.service.getAll<Series>())
         ).subscribe((dtos: Series[]) => {
           this.utilService.reset()

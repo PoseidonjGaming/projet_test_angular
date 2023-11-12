@@ -9,6 +9,9 @@ import { Movie } from 'src/app/models/movie.model';
 import { ApiService } from 'src/app/service/api.service';
 import { ApiCharacterService } from 'src/app/service/character/api-character.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
+import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-movie',
@@ -23,6 +26,7 @@ export class MovieComponent implements OnInit {
   characters: Character[] = []
   columns = ['name', 'releaseDate', 'action']
   notification: number = 0
+  files: File[] = []
 
   temp: number[] = []
 
@@ -31,6 +35,8 @@ export class MovieComponent implements OnInit {
     name: new FormControl(null),
     summary: new FormControl(null),
     releaseDate: new FormControl(new Date()),
+    poster: new FormControl(''),
+    trailerUrl: new FormControl(null),
     categories: new FormControl(this.categories),
     categoryIds: new FormControl(this.temp),
     characters: new FormControl(this.characters),
@@ -41,6 +47,8 @@ export class MovieComponent implements OnInit {
     private categoryService: ApiService,
     private characterService: ApiCharacterService,
     private utilsService: UtilsService,
+    public dialog: MatDialog,
+    private snack: MatSnackBar,
     @Inject(LOCALE_ID) public locale: string
   ) { }
 
@@ -62,6 +70,16 @@ export class MovieComponent implements OnInit {
       if (ids.includes(e['id']))
         list.push(e)
     })
+  }
+
+  setPoster(event: any) {
+    let file = event.target.files[0] as File
+    console.log(file.name);
+
+    if (!this.files.find((f: File) => file.name === f.name)) {
+      this.files.push(file)
+      this.formMovie.controls.poster.setValue(file.name as string)
+    }
   }
 
   add() {
@@ -122,5 +140,16 @@ export class MovieComponent implements OnInit {
 
   search(term: string) {
 
+  }
+
+  openPosterDialog() {
+    const file = this.files.find((value: File) => value.name === this.formMovie.controls.poster.value)
+    if (file)
+      this.dialog.open(AfficheDialogComponent, {
+        data: file,
+        height: '95%'
+      });
+    else
+      this.snack.open("Aucune affiche n'a été sélectionnée", "Fermer", { duration: 5 * 1000 })
   }
 }

@@ -4,6 +4,8 @@ export class Movie extends Base {
     name: string = ''
     summary: string = ''
     releaseDate = new Date()
+    poster: string = ''
+    trailerUrl: string = ''
     categoryIds: number[] = []
     characterIds: number[] = []
 }

@@ -36,7 +36,7 @@ import { AppComponent } from './app.component';
 import { ActorComponent } from './components/admin/actor/actor.component';
 import { CharacterComponent } from './components/admin/character/character.component';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
-import { AfficheDialogComponent } from './components/admin/series/affiche-dialog/affiche-dialog.component';
+import { AfficheDialogComponent } from './components/admin/affiche-dialog/affiche-dialog.component';
 import { SeriesComponent } from './components/admin/series/series.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
@@ -51,6 +51,7 @@ import { CategoryComponent } from './components/admin/category/category.componen
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MovieComponent } from './components/admin/movie/movie.component';
+import { ListComponent } from './components/admin/list/list.component';
 registerLocaleData(fr);
 
 @NgModule({
@@ -70,7 +71,8 @@ registerLocaleData(fr);
     SearchComponent,
     CategoryComponent,
     DetailActorComponent,
-    MovieComponent
+    MovieComponent,
+    ListComponent
   ],
   imports: [
     BrowserModule,
