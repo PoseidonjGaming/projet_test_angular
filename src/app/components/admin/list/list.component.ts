@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output, Signal, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output, ViewChild } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { mergeMap } from 'rxjs/operators';
@@ -50,7 +50,8 @@ export class ListComponent {
     this.populateOutput.emit(dto)
   }
 
-  update() {
+  update(toAdd: Base[]) {
+    this.toAdd = toAdd
     this.utilService.reset()
     this.utilService.updateTable(this.tableToAdd!)
   }

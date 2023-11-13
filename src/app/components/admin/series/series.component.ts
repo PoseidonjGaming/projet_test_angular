@@ -73,7 +73,7 @@ export class SeriesComponent implements OnInit {
         this.toAddSeries.push(this.setValue(new Series()))
       }
 
-      this.listComponent?.update()
+      this.listComponent?.update(this.toAddSeries)
       this.notification++
     }
 
