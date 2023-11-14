@@ -13,6 +13,7 @@ import { UtilsService } from 'src/app/service/utils/utils.service';
 import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.component';
 import { ListComponent } from '../list/list.component';
 import { Base } from 'src/app/models/base.model';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-series',
@@ -108,17 +109,19 @@ export class SeriesComponent implements OnInit {
   //#endregion
 
   //#region tableSeries
-  populate(series: Series) {
+  populate(series: Base, tab: MatTabGroup) {
     this.utilService.populate(series, this.formSeries)
     this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => {
-      this.formSeries.controls.categories.setValue(dtos.filter((category: Category) => series.categoryIds.includes(category.id)))
-      this.categories = dtos.filter((category: Category) => !series.categoryIds.includes(category.id))
+      this.formSeries.controls.categories.setValue(dtos.filter((category: Category) => series['categoryIds'].includes(category.id)))
+      this.categories = dtos.filter((category: Category) => !series['categoryIds'].includes(category.id))
     })
     console.log(this.categories, this.formSeries.controls.categories.value);
 
-    if (series.id == 0) {
-      this.toAddIndex = this.toAddSeries.indexOf(series)
+    if (series['id'] == 0) {
+      this.toAddIndex = this.toAddSeries.indexOf(series as Series)
     }
+    tab.selectedIndex = 1
+
   }
 
   deletes(series: Series) {

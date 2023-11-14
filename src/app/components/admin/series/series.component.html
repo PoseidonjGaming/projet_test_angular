@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col mat-elevation-z8 p-2 mx-2 mt-2">
-            <mat-tab-group dynamicHeight (selectedIndexChange)="updateNotif($event)" selectedIndex="1">
+            <mat-tab-group #tabs dynamicHeight (selectedIndexChange)="updateNotif($event)" selectedIndex="1">
                 <mat-tab>
                     <ng-template mat-tab-label>
                         <span *ngIf="notification>0 else none" [matBadge]="notification" matBadgeOverlap="false">Séries
@@ -11,7 +11,7 @@
                             <span>Séries en attente</span>
                         </ng-template>
                     </ng-template>
-                    <app-list [columns]="columns" [type]="'series'" (listOutput)="update($event)"></app-list>
+                    <app-list [columns]="columns" [type]="'series'" (populateOutput)="populate($event, tabs)" (listOutput)="update($event)"></app-list>
                 </mat-tab>
 
                 <mat-tab label="Série">
@@ -141,7 +141,7 @@
                     <th mat-header-cell *matHeaderCellDef> Action </th>
                     <td mat-cell *matCellDef="let element">
                         <button mat-raised-button color="accent" class="me-2"
-                            (click)="populate(element)">Modier</button>
+                            (click)="populate(element, tabs)">Modier</button>
                         <button mat-raised-button color="warn" (click)="deletes(element)">Supprimer</button>
                     </td>
                 </ng-container>
