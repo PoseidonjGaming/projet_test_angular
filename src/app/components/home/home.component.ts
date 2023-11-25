@@ -19,23 +19,8 @@ export class HomeComponent implements OnInit {
     private tokenService: TokenService) { }
 
   ngOnInit(): void {
-
-    if (this.tokenService.isExist()) {
-      combineLatest([
-        this.credentialService.isExist(),
-        this.service.getAll<Series>()
-      ]).subscribe(([isExist, seriesDtos]) => {
-        if (isExist)
-          this.tokenService.logout()
-        this.series = seriesDtos
-      })
-    }
-    else {
-      this.service.getAll<Series>().subscribe((dtos: Series[]) => {
-        this.series = dtos
-      })
-    }
-
-
+    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => {
+      this.series = dtos
+    })
   }
 }

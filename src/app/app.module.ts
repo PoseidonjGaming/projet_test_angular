@@ -7,9 +7,10 @@ import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatChipsModule } from '@angular/material/chips';
@@ -34,10 +35,14 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ActorComponent } from './components/admin/actor/actor.component';
+import { AfficheDialogComponent } from './components/admin/affiche-dialog/affiche-dialog.component';
+import { CategoryComponent } from './components/admin/category/category.component';
 import { CharacterComponent } from './components/admin/character/character.component';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
-import { AfficheDialogComponent } from './components/admin/affiche-dialog/affiche-dialog.component';
+import { ListComponent } from './components/admin/list/list.component';
+import { MovieComponent } from './components/admin/movie/movie.component';
 import { SeriesComponent } from './components/admin/series/series.component';
+import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
@@ -46,14 +51,8 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { MatBadgeModule } from '@angular/material/badge';
-import { CategoryComponent } from './components/admin/category/category.component';
-import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MovieComponent } from './components/admin/movie/movie.component';
-import { ListComponent } from './components/admin/list/list.component';
+import { ReactiveFormsModule } from '@angular/forms';
 registerLocaleData(fr);
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -77,8 +76,6 @@ registerLocaleData(fr);
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
@@ -106,7 +103,6 @@ registerLocaleData(fr);
     CdkDropList,
     CdkDrag,
     HttpClientModule,
-    FormsModule,
     ReactiveFormsModule,
     JwtModule.forRoot({
       config: {

@@ -8,7 +8,7 @@ export class Series extends Base {
     summary: string = ''
     poster: string = ''
     trailerUrl: string = ''
-    seasonsIds: number[] = []
+    seasonIds: number[] = []
     categoryIds: number[] = []
     characterIds: number[] = []
     nextMovieId: number = 0

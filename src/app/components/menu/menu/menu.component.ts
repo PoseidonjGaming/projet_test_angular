@@ -51,6 +51,7 @@ export class MenuComponent implements OnInit {
     if (this.formLogin.valid) {
       this.service.authenticate(this.formLogin.value as Credential).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
+        this.username = this.tokenService.getClaims().sub
         this.tokenService.nextRole()
       })
     }

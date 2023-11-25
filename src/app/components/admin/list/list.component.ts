@@ -37,7 +37,7 @@ export class ListComponent {
     ).subscribe((dtos: Base[]) => {
       this.toAdd = []
       this.listOutput.emit(dtos)
-      this.snack.open(`Séries modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
+      this.snack.open(`${this.type} modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
     })
 
   }

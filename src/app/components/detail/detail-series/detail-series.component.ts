@@ -38,9 +38,10 @@ export class DetailSeriesComponent implements OnInit {
         this.service.getById<Series>(id).pipe(
           switchMap((dto: Series) => {
             this.series = dto
-
+            console.log(this.series.seasonIds);
+            
             return combineLatest([
-              this.seasonService.getByIds<Season>(dto.seasonsIds),
+              this.seasonService.getByIds<Season>(dto.seasonIds),
               this.characterService.getByIds<Character>(dto.characterIds)
             ])
           }),
@@ -49,7 +50,7 @@ export class DetailSeriesComponent implements OnInit {
 
             return combineLatest([
               this.actorService.getByIds<Actor>(characterDtos.map(e => e.actorId)),
-              this.episodeService.getByIds<Episode>(seasonDtos.map(e => e.episodesIds).flat())
+              this.episodeService.getByIds<Episode>(seasonDtos.map(e => e.episodeIds).flat())
             ])
           })
         ).subscribe(([actorDtos, episodeDtos]) => {
