@@ -14,6 +14,8 @@ import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.compone
 import { ListComponent } from '../list/list.component';
 import { Base } from 'src/app/models/base.model';
 import { MatTabGroup } from '@angular/material/tabs';
+import { MatchMode } from 'src/app/models/MatchMode.model';
+import { StringMatcher } from 'src/app/models/StringMatcher.model';
 
 @Component({
   selector: 'app-series',
@@ -151,7 +153,8 @@ export class SeriesComponent implements OnInit {
 
   search(term: string) {
     if (term)
-      this.categoryService.search<Category>('category', { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
+      this.categoryService.search<Category>('category',
+        MatchMode.ANY, StringMatcher.CONTAINING, { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
 
 
   }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
+import { MatchMode } from 'src/app/models/MatchMode.model';
+import { StringMatcher } from 'src/app/models/StringMatcher.model';
 import { Base } from 'src/app/models/base.model';
 import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';
@@ -37,15 +39,16 @@ export class SearchComponent implements OnInit {
 
   submit() {
     if (this.formSearch.controls.name.value) {
-      this.service.search<Base>(this.formSearch.controls.type.value!, this.formSearch.value).subscribe((dtos: Base[]) => {
-        this.results = dtos
-      })
+      this.service.search<Base>(this.formSearch.controls.type.value!,
+        MatchMode.ALL, StringMatcher.CONTAINING, this.formSearch.value).subscribe((dtos: Base[]) => {
+          this.results = dtos
+        })
     } else {
       this.service.getAll<Base>(this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => {
         this.results = dtos
       })
     }
-    
+
 
   }
 

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Series } from '../models/series.model';
 import { Observable } from 'rxjs';
 import { Base } from '../models/base.model';
+import { MatchMode } from '../models/MatchMode.model';
+import { StringMatcher } from '../models/StringMatcher.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +34,8 @@ export class ApiService {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search<E>(type: String, dto: Base) {
-    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, dto)
+  search<E>(type: String, mode: MatchMode, matcherType: StringMatcher, dto: Base) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search?mode=${mode}&type=${matcherType}`, dto)
   }
 
   saves<E>(type: string, dtos: E[]) {
