@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { JwtHeader } from 'jwt-decode';
 import { combineLatest } from 'rxjs';
 import { Series } from 'src/app/models/series.model';
 import { CredentialService } from 'src/app/service/credential/credential.service';
@@ -16,11 +18,14 @@ export class HomeComponent implements OnInit {
 
   constructor(private service: ApiSeriesService,
     private credentialService: CredentialService,
-    private tokenService: TokenService) { }
+    private tokenService: TokenService, private jwtHelper: JwtHelperService) { }
 
   ngOnInit(): void {
     this.service.getAll<Series>('series').subscribe((dtos: Series[]) => {
       this.series = dtos
     })
+    if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
+      this.tokenService.deleteToken()
+    }
   }
 }

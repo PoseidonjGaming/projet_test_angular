@@ -1,4 +1,4 @@
 export enum MatchMode {
-    ALL = 'All',
+    ALL = 'ALL',
     ANY = 'ANY'
 }

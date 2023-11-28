@@ -42,8 +42,8 @@ export class ApiService {
     return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
   }
 
-  save<E>(type: string, dto: E): Observable<any> {
-    return this.httpClient.post(`${this.API_BASE_URL}/${type}/save`, dto)
+  save<E>(type: string, dto: E): Observable<E> {
+    return this.httpClient.post<E>(`${this.API_BASE_URL}/${type}/save`, dto)
   }
 
   saveFiles(files: File[]) {

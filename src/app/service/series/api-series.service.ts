@@ -13,7 +13,9 @@ export class ApiSeriesService extends ApiService {
     this.type = 'series'
   }
 
- 
+  saveWithSeasons(series: Series, seasons: number) {
+    return this.httpClient.post<Series>(`${this.API_BASE_URL}/series/save/seasons?seasons=${seasons}`, series)
+  }
 
-  
+
 }
