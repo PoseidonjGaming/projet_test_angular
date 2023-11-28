@@ -7,6 +7,7 @@ import { CredentialService } from 'src/app/service/credential/credential.service
 import { TokenService } from 'src/app/service/token/token.service';
 import { ExportDialogComponent } from '../export-dialog/export-dialog.component';
 import { ImportDialogComponent } from '../import-dialog/import-dialog.component';
+import { Route, Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -27,6 +28,7 @@ export class MenuComponent implements OnInit {
   constructor(public dialog: MatDialog,
     private service: CredentialService,
     private tokenService: TokenService,
+    private router: Router,
     private jwt: JwtHelperService) { }
 
 
@@ -60,5 +62,6 @@ export class MenuComponent implements OnInit {
   logout() {
     this.tokenService.logout();
     this.tokenService.nextRole()
+    this.router.navigate(['/'])
   }
 }
