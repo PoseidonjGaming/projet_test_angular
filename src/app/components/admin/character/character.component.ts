@@ -48,9 +48,9 @@ export class CharacterComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.actorService.getAll<Actor>(),
-      this.seriesService.getAll<Series>(),
-      this.service.getAll<Character>('character')
+      this.actorService.getAll<Actor>(0, 0),
+      this.seriesService.getAll<Series>(0, 0),
+      this.service.getAll<Character>(0, 0, 'character')
     ]).subscribe(([actorDtos, seriesDtos, characterDtos]) => {
       this.actors = actorDtos
       this.series = seriesDtos
@@ -77,7 +77,7 @@ export class CharacterComponent implements OnInit {
   submit() {
     console.log(this.setValues());
     this.service.save<Character>('character', this.setValues()).pipe(
-      mergeMap(() => this.service.getAll<Character>('character'))
+      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
     ).subscribe((dtos: Character[]) => {
       this.characters = dtos
       this.utils.reset()
@@ -87,7 +87,7 @@ export class CharacterComponent implements OnInit {
 
   saves() {
     this.service.saves<Character>('character', this.toAddCharacters).pipe(
-      mergeMap(() => this.service.getAll<Character>('character'))
+      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
     ).subscribe((dtos: Character[]) => {
       this.characters = dtos
       this.toAddCharacters = []
@@ -114,7 +114,7 @@ export class CharacterComponent implements OnInit {
 
   deletes(character: Character) {
     this.service.delete('character', character.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Character>('character'))
+      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
     ).subscribe((dtos: Character[]) => this.characters = dtos)
   }
 

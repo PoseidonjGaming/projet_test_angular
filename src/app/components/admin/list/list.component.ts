@@ -33,7 +33,7 @@ export class ListComponent {
   saves() {
     this.service.saveFiles(this.files).pipe(
       mergeMap(() => this.service.saves<Base>(this.type, this.toAdd)),
-      mergeMap(() => this.service.getAll<Base>(this.type))
+      mergeMap(() => this.service.getAll<Base>(0, 0, this.type))
     ).subscribe((dtos: Base[]) => {
       this.toAdd = []
       this.listOutput.emit(dtos)

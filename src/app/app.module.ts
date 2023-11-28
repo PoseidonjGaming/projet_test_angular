@@ -53,6 +53,8 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -101,6 +103,7 @@ registerLocaleData(fr);
     MatBadgeModule,
     MatButtonToggleModule,
     MatSortModule,
+    MatPaginatorModule,
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,

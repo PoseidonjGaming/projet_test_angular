@@ -55,9 +55,9 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Movie>('movie'),
-      this.categoryService.getAll<Category>('category'),
-      this.characterService.getAll<Character>()
+      this.service.getAll<Movie>(0,0,'movie'),
+      this.categoryService.getAll<Category>(0,0,'category'),
+      this.characterService.getAll<Character>(0,0,)
     ]).subscribe(([movieDtos, categoryDtos, characterDtos]) => {
       this.movies = movieDtos
       this.categories = categoryDtos
@@ -106,8 +106,8 @@ export class MovieComponent implements OnInit {
     this.utilsService.populate(movie, this.formMovie)
 
     combineLatest([
-      this.categoryService.getAll<Category>('category'),
-      this.characterService.getAll<Character>()
+      this.categoryService.getAll<Category>(0, 0, 'category'),
+      this.characterService.getAll<Character>(0, 0)
     ]).subscribe(([categoryDtos, characterDtos]) => {
       this.set(categoryDtos,
         this.formMovie.controls.categories.value!,

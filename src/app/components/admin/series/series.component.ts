@@ -64,8 +64,8 @@ export class SeriesComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Series>('series'),
-      this.service.getAll<Category>('category'),
+      this.service.getAll<Series>(0, 0, 'series'),
+      this.service.getAll<Category>(0, 0, 'category'),
     ]).subscribe(([seriesDtos, categoryDtos]) => {
       this.series = seriesDtos
       this.categories = categoryDtos
@@ -122,7 +122,7 @@ export class SeriesComponent implements OnInit {
 
 
     combineLatest([
-      this.service.getAll<Category>('category'),
+      this.service.getAll<Category>(0, 0, 'category'),
       this.service.getByIds(series['seasonIds'], 'season')
     ]).subscribe(([categoryDtos, seasonDtos]) => {
       this.formSeries.controls.categories.setValue(categoryDtos.filter((category: Category) => series['categoryIds'].includes(category.id)))
@@ -139,13 +139,13 @@ export class SeriesComponent implements OnInit {
 
   deletes(series: Series) {
     this.service.delete('series', series.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Series>('series'))
+      mergeMap(() => this.service.getAll<Series>(0, 0, 'series'))
     ).subscribe((dtos: Series[]) => {
       this.series = dtos
     })
   }
 
-  
+
   //#endregion
 
   //#region Categories
@@ -180,7 +180,7 @@ export class SeriesComponent implements OnInit {
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
 
       this.seriesService.saveWithSeasons(series, this.formSeries.controls.seasons.value!).pipe(
-        mergeMap((dto: Series) => this.service.getAll<Series>('series'))
+        mergeMap((dto: Series) => this.service.getAll<Series>(0, 0, 'series'))
       ).subscribe((dtos: Series[]) => {
         this.utilService.reset()
         this.series = dtos

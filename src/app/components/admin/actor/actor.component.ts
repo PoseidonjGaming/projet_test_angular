@@ -29,7 +29,7 @@ export class ActorComponent implements OnInit {
   constructor(private service: ApiService, private utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Actor>('actor').subscribe((dtos: Actor[]) => this.actors = dtos)
+    this.service.getAll<Actor>(0, 0, 'actor').subscribe((dtos: Actor[]) => this.actors = dtos)
   }
 
   populate(actor: Actor) {
@@ -39,7 +39,7 @@ export class ActorComponent implements OnInit {
   submit() {
     if (this.formActor.valid) {
       this.service.save<Actor>('actor', this.setValue()).pipe(
-        mergeMap(() => this.service.getAll<Actor>('actor'))
+        mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
       ).subscribe((dtos: Actor[]) => {
         this.actors = dtos
         this.utils.reset()
@@ -49,7 +49,7 @@ export class ActorComponent implements OnInit {
 
   saves() {
     this.service.saves<Actor>('actor', this.toAddActors).pipe(
-      mergeMap(() => this.service.getAll<Actor>('actor'))
+      mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
     ).subscribe((dtos: Actor[]) => {
       this.toAddActors = []
       this.actors = dtos
@@ -69,7 +69,7 @@ export class ActorComponent implements OnInit {
 
   deletes(actor: Actor) {
     this.service.delete('actor', actor.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Actor>('actor'))
+      mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
     ).subscribe((dtos: Actor[]) => this.actors = dtos)
   }
 

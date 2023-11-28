@@ -33,8 +33,8 @@ export class SearchComponent implements OnInit {
     private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.results = dtos)
-    this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.service.getAll<Series>(0, 0, 'series').subscribe((dtos: Series[]) => this.results = dtos)
+    this.categoryService.getAll<Category>(0, 0, 'category').subscribe((dtos: Category[]) => this.categories = dtos)
   }
 
   submit() {
@@ -44,7 +44,7 @@ export class SearchComponent implements OnInit {
           this.results = dtos
         })
     } else {
-      this.service.getAll<Base>(this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => {
+      this.service.getAll<Base>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => {
         this.results = dtos
       })
     }

@@ -1,7 +1,7 @@
 import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
@@ -28,6 +28,7 @@ export class EpisodeComponent implements OnInit {
   series: Series[] = []
   seasons: Season[] = []
   notification: number = 0
+  sorter?: Sort
 
   @ViewChild('tableToAddEpisodes') table: MatTable<Episode> | undefined
 
@@ -56,8 +57,8 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Episode>(),
-      this.seriesService.getAll<Series>()
+      this.service.getAll<Episode>(0, 0, 'episode'),
+      this.seriesService.getAll<Series>(0, 0)
     ]).subscribe(([episodeDtos, seriesDtos]) => {
       this.episodes = episodeDtos
       this.series = seriesDtos
@@ -75,7 +76,7 @@ export class EpisodeComponent implements OnInit {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save<Episode>('episode', this.setValue(new Episode()))
           }),
-          mergeMap(() => this.service.getAll<Episode>('episode'))
+          mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
         ).subscribe((dtos: Episode[]) => {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
@@ -86,7 +87,7 @@ export class EpisodeComponent implements OnInit {
       }
       else {
         this.service.save<Episode>('episode', this.setValue(new Episode())).pipe(
-          mergeMap(() => this.service.getAll<Episode>('episode'))
+          mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
         ).subscribe((dtos: Episode[]) => {
           this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
@@ -113,7 +114,7 @@ export class EpisodeComponent implements OnInit {
 
   deletes(episode: Episode) {
     this.service.delete('episode', episode.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Episode>('episode'))
+      mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
     ).subscribe((dtos: Episode[]) => {
       this.episodes = dtos
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
@@ -122,6 +123,7 @@ export class EpisodeComponent implements OnInit {
   }
 
   sort(sort: Sort) {
+    this.sorter = sort
     let field = sort.active
     let dir: Sorter;
     switch (sort.direction) {
@@ -146,6 +148,14 @@ export class EpisodeComponent implements OnInit {
       this.episodes = dtos
     })
   }
+
+  page(event: PageEvent) {
+    if (this.sorter) {
+
+    } else {
+
+    }
+  }
   //#endregion
 
   //#region toAddEpisodes
@@ -162,7 +172,7 @@ export class EpisodeComponent implements OnInit {
 
   saves() {
     this.service.saves<Episode>('episode', this.toAddEpisodes).pipe(
-      mergeMap(() => this.service.getAll<Episode>('episode'))
+      mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
     ).subscribe((dtos: Episode[]) => {
       this.toAddEpisodes = []
       this.episodes = dtos
