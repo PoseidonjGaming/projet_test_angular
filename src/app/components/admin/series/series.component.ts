@@ -18,6 +18,7 @@ import { MatchMode } from 'src/app/models/MatchMode.model';
 import { StringMatcher } from 'src/app/models/StringMatcher.model';
 import { Season } from 'src/app/models/season.model';
 import { MapType } from '@angular/compiler';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-series',
@@ -143,6 +144,8 @@ export class SeriesComponent implements OnInit {
       this.series = dtos
     })
   }
+
+  
   //#endregion
 
   //#region Categories

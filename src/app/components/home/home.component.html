@@ -1,6 +1,7 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-4" *ngFor="let serie of series">
+        @for (serie of series; track $index) {
+        <div class="col-4">
             <mat-card class="m-2" style="width: 20vw;">
                 <mat-card-header>
                     <mat-card-title>{{serie.name}}</mat-card-title>
@@ -27,5 +28,7 @@
                 </mat-card-actions>
             </mat-card>
         </div>
+        }
+
     </div>
 </div>

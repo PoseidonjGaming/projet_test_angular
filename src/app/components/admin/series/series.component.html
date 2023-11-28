@@ -131,13 +131,13 @@
 
         </div>
         <div class="col m-2">
-            <table #tableSeries mat-table [dataSource]="series" class="mat-elevation-z8">
+            <table #tableSeries mat-table  [dataSource]="series" class="mat-elevation-z8">
                 <ng-container matColumnDef="name">
                     <th mat-header-cell *matHeaderCellDef> Nom </th>
                     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                 </ng-container>
                 <ng-container matColumnDef="releaseDate">
-                    <th mat-header-cell *matHeaderCellDef> Date de diffusion </th>
+                    <th mat-header-cell  *matHeaderCellDef> Date de diffusion </th>
                     <td mat-cell *matCellDef="let element"> {{element.releaseDate | date:'shortDate': undefined:
                         locale}}
                     </td>

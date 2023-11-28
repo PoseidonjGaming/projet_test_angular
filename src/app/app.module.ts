@@ -7,6 +7,7 @@ import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +27,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -51,7 +53,6 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { ReactiveFormsModule } from '@angular/forms';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ registerLocaleData(fr);
     MatChipsModule,
     MatBadgeModule,
     MatButtonToggleModule,
+    MatSortModule,
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,

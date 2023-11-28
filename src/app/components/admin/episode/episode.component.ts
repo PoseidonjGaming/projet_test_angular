@@ -3,8 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { combineLatest, mergeMap } from 'rxjs';
+import { Sorter } from 'src/app/models/Sorter.model';
 import { Episode } from 'src/app/models/episode.model';
 import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
@@ -117,6 +119,32 @@ export class EpisodeComponent implements OnInit {
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
     })
 
+  }
+
+  sort(sort: Sort) {
+    let field = sort.active
+    let dir: Sorter;
+    switch (sort.direction) {
+      case 'asc': {
+        dir = Sorter.ASC
+        break;
+      }
+
+      case 'desc': {
+        dir = Sorter.DESC
+        break;
+      }
+
+      default: {
+        field = 'id'
+        dir = Sorter.ASC
+        break;
+      }
+    }
+
+    this.service.sort<Episode>('episode', field, dir).subscribe((dtos: Episode[]) => {
+      this.episodes = dtos
+    })
   }
   //#endregion
 

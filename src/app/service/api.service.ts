@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Base } from '../models/base.model';
 import { MatchMode } from '../models/MatchMode.model';
 import { StringMatcher } from '../models/StringMatcher.model';
+import { Sorter } from '../models/Sorter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,10 @@ export class ApiService {
 
   search<E>(type: String, mode: MatchMode, matcherType: StringMatcher, dto: Base) {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search?mode=${mode}&type=${matcherType}`, dto)
+  }
+
+  sort<E>(type: string, field: string, direction: Sorter) {
+    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/sort?field=${field}&direction=${direction}`)
   }
 
   saves<E>(type: string, dtos: E[]) {

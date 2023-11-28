@@ -64,6 +64,7 @@
             </div>
             <div class="row">
                 <p>Résulats trouvés: {{results.length}}</p>
+                @for (result of results; track $index) {
                 <div class="col-4" *ngFor="let result of results">
                     <mat-card class="m-2" style="width: 20vw;">
                         <mat-card-header>
@@ -82,6 +83,8 @@
                         </mat-card-actions>
                     </mat-card>
                 </div>
+                }
+
             </div>
         </div>
     </mat-drawer-content>
