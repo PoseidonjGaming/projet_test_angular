@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { merge, mergeMap } from 'rxjs';
+import { mergeMap } from 'rxjs';
+import { Sorter } from 'src/app/models/Sorter.model';
 import { Category } from 'src/app/models/category.model';
 import { ApiService } from 'src/app/service/api.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
@@ -46,6 +48,29 @@ export class CategoryComponent implements OnInit {
       })
     }
   }
+
+  sort(sort: Sort) {
+    let field = sort.active;
+    let dir: Sorter;
+    switch (sort.direction) {
+      case 'asc': {
+        dir = Sorter.ASC
+        break;
+      }
+      case 'desc': {
+        dir = Sorter.DESC
+        break;
+      }
+      default: {
+        field = 'id'
+        dir = Sorter.ASC
+        break;
+      }
+    }
+
+    this.service.sort<Category>('category', field, dir).subscribe((dtos: Category[]) => this.categories = dtos)
+  }
+
   saves() {
     this.service.saves<Category>('category', this.toAddCategories).pipe(
       mergeMap(() => this.service.getAll<Category>('category'))
