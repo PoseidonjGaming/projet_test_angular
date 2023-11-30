@@ -35,23 +35,19 @@
                 <div class="col-4">
                     <form [formGroup]="formSearch" (ngSubmit)="submit()">
                         <div class="row">
+
+
                             <mat-form-field>
+                                <mat-select matPrefix formControlName="type">
+                                    <mat-option [value]="'series'">
+                                        Séries
+                                    </mat-option>
+                                </mat-select>
                                 <mat-label>Recherche</mat-label>
                                 <input matInput type="text" formControlName="name" name="term" id="term"
                                     placeholder="Rechercher une série ou un film">
+
                             </mat-form-field>
-                        </div>
-                        <div class="row">
-                            <div class="col d-flex justify-content-center">
-                                <mat-button-toggle-group formControlName="type">
-                                    <mat-button-toggle value="series" aria-label="series">
-                                        <mat-icon>tv</mat-icon>
-                                    </mat-button-toggle>
-                                    <mat-button-toggle value="movie" aria-label="movie">
-                                        <mat-icon>movie</mat-icon>
-                                    </mat-button-toggle>
-                                </mat-button-toggle-group>
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col mt-2 d-flex justify-content-center">

@@ -7,6 +7,7 @@ import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { combineLatest, mergeMap } from 'rxjs';
 import { Sorter } from 'src/app/models/Sorter.model';
+import { Base } from 'src/app/models/base.model';
 import { Episode } from 'src/app/models/episode.model';
 import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
@@ -57,7 +58,7 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Episode>(0, 0, 'episode'),
+      this.service.getAll<Episode>(1, 0, 'episode'),
       this.seriesService.getAll<Series>(0, 0)
     ]).subscribe(([episodeDtos, seriesDtos]) => {
       this.episodes = episodeDtos
@@ -153,7 +154,7 @@ export class EpisodeComponent implements OnInit {
     if (this.sorter) {
 
     } else {
-
+      this.service.getAll<Episode>(event.pageSize, event.pageIndex, 'episode').subscribe((dtos: Episode[]) => this.episodes = dtos)
     }
   }
   //#endregion
