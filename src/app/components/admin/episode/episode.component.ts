@@ -6,6 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { combineLatest, mergeMap } from 'rxjs';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { Sorter } from 'src/app/models/Sorter.model';
 import { Base } from 'src/app/models/base.model';
 import { Episode } from 'src/app/models/episode.model';
@@ -58,11 +59,11 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Episode>(1, 0, 'episode'),
-      this.seriesService.getAll<Series>(0, 0)
+      this.service.getAll<PageResponse<Episode>>(1, 0, 'episode'),
+      this.seriesService.getAll<PageResponse<Series>>(0, 0)
     ]).subscribe(([episodeDtos, seriesDtos]) => {
-      this.episodes = episodeDtos
-      this.series = seriesDtos
+      this.episodes = episodeDtos.content
+      this.series = seriesDtos.content
     })
   }
 
@@ -77,9 +78,9 @@ export class EpisodeComponent implements OnInit {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save<Episode>('episode', this.setValue(new Episode()))
           }),
-          mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
-        ).subscribe((dtos: Episode[]) => {
-          this.episodes = dtos
+          mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
+        ).subscribe((dtos: PageResponse<Episode>) => {
+          this.episodes = dtos.content
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
           this.reset()
@@ -88,9 +89,9 @@ export class EpisodeComponent implements OnInit {
       }
       else {
         this.service.save<Episode>('episode', this.setValue(new Episode())).pipe(
-          mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
-        ).subscribe((dtos: Episode[]) => {
-          this.episodes = dtos
+          mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
+        ).subscribe((dtos: PageResponse<Episode>) => {
+          this.episodes = dtos.content
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
           this.reset()
@@ -115,9 +116,9 @@ export class EpisodeComponent implements OnInit {
 
   deletes(episode: Episode) {
     this.service.delete('episode', episode.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
-    ).subscribe((dtos: Episode[]) => {
-      this.episodes = dtos
+      mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
+    ).subscribe((dtos: PageResponse<Episode>) => {
+      this.episodes = dtos.content
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
     })
 
@@ -154,7 +155,7 @@ export class EpisodeComponent implements OnInit {
     if (this.sorter) {
 
     } else {
-      this.service.getAll<Episode>(event.pageSize, event.pageIndex, 'episode').subscribe((dtos: Episode[]) => this.episodes = dtos)
+      this.service.getAll<PageResponse<Episode>>(event.pageSize, event.pageIndex, 'episode').subscribe((dtos: PageResponse<Episode>) => this.episodes = dtos.content)
     }
   }
   //#endregion
@@ -173,10 +174,10 @@ export class EpisodeComponent implements OnInit {
 
   saves() {
     this.service.saves<Episode>('episode', this.toAddEpisodes).pipe(
-      mergeMap(() => this.service.getAll<Episode>(0, 0, 'episode'))
-    ).subscribe((dtos: Episode[]) => {
+      mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
+    ).subscribe((dtos: PageResponse<Episode>) => {
       this.toAddEpisodes = []
-      this.episodes = dtos
+      this.episodes = dtos.content
 
       this.snack.open(`Episodes modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
 

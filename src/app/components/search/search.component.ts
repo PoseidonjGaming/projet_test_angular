@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatchMode } from 'src/app/models/MatchMode.model';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { StringMatcher } from 'src/app/models/StringMatcher.model';
 import { Base } from 'src/app/models/base.model';
 import { Category } from 'src/app/models/category.model';
@@ -33,8 +34,8 @@ export class SearchComponent implements OnInit {
     private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Series>(0, 0, 'series').subscribe((dtos: Series[]) => this.results = dtos)
-    this.categoryService.getAll<Category>(0, 0, 'category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.service.getAll<PageResponse<Series>>(0, 0, 'series').subscribe((dtos: PageResponse<Series>) => this.results = dtos.content)
+    this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category').subscribe((dtos: PageResponse<Category>) => this.categories = dtos.content)
   }
 
   submit() {
@@ -44,8 +45,8 @@ export class SearchComponent implements OnInit {
           this.results = dtos
         })
     } else {
-      this.service.getAll<Base>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: Base[]) => {
-        this.results = dtos
+      this.service.getAll<PageResponse<Base>>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: PageResponse<Base>) => {
+        this.results = dtos.content
       })
     }
 

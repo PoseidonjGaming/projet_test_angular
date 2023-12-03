@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { MatTab } from '@angular/material/tabs';
 import { combineLatest, mergeMap } from 'rxjs';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { Actor } from 'src/app/models/actor.model';
 import { Base } from 'src/app/models/base.model';
 import { Character } from 'src/app/models/character.model';
@@ -48,13 +49,13 @@ export class CharacterComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.actorService.getAll<Actor>(0, 0),
-      this.seriesService.getAll<Series>(0, 0),
-      this.service.getAll<Character>(0, 0, 'character')
+      this.actorService.getAll<PageResponse<Actor>>(0, 0),
+      this.seriesService.getAll<PageResponse<Series>>(0, 0),
+      this.service.getAll<PageResponse<Character>>(0, 0, 'character')
     ]).subscribe(([actorDtos, seriesDtos, characterDtos]) => {
-      this.actors = actorDtos
-      this.series = seriesDtos
-      this.characters = characterDtos
+      this.actors = actorDtos.content
+      this.series = seriesDtos.content
+      this.characters = characterDtos.content
     })
   }
 
@@ -77,9 +78,9 @@ export class CharacterComponent implements OnInit {
   submit() {
     console.log(this.setValues());
     this.service.save<Character>('character', this.setValues()).pipe(
-      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
-    ).subscribe((dtos: Character[]) => {
-      this.characters = dtos
+      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+    ).subscribe((dtos: PageResponse<Character>) => {
+      this.characters = dtos.content
       this.utils.reset()
     })
 
@@ -87,9 +88,9 @@ export class CharacterComponent implements OnInit {
 
   saves() {
     this.service.saves<Character>('character', this.toAddCharacters).pipe(
-      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
-    ).subscribe((dtos: Character[]) => {
-      this.characters = dtos
+      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+    ).subscribe((dtos: PageResponse<Character>) => {
+      this.characters = dtos.content
       this.toAddCharacters = []
     })
   }
@@ -114,8 +115,8 @@ export class CharacterComponent implements OnInit {
 
   deletes(character: Character) {
     this.service.delete('character', character.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Character>(0, 0, 'character'))
-    ).subscribe((dtos: Character[]) => this.characters = dtos)
+      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+    ).subscribe((dtos: PageResponse<Character>) => this.characters = dtos.content)
   }
 
   setValues() {

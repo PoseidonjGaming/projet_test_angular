@@ -20,7 +20,7 @@ export class ApiService {
   getAll<E>(size: number, page: number, type?: String) {
     if (!type)
       type = this.type
-    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list?size=${size}&page=${page}`)
+    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/list?size=${size}&page=${page}`)
   }
 
   getById<E>(id: string, type?: String,) {

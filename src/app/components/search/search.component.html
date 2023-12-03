@@ -2,7 +2,7 @@
     <mat-drawer #drawer mode="push" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid" style="height: 100vh;">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
-                <div class="col" style="width: 25wh;">
+                <div class="col" style="width: 25vh;">
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
@@ -22,9 +22,8 @@
     </mat-drawer>
     <mat-drawer-content>
         <button mat-button (click)="panel(drawer)">
-            <ng-container *ngIf="!isOpened else none">
-                <mat-icon>keyboard_arrow_right</mat-icon>
-            </ng-container>
+            Filtre
+            <mat-icon *ngIf="!isOpened else none">keyboard_arrow_right</mat-icon>
             <ng-template #none>
                 <mat-icon>keyboard_arrow_left</mat-icon>
             </ng-template>
@@ -36,19 +35,18 @@
                     <form [formGroup]="formSearch" (ngSubmit)="submit()">
                         <div class="row">
 
-
                             <mat-form-field>
-                                <mat-select matPrefix formControlName="type">
-                                    <mat-option [value]="'series'">
-                                        Séries
-                                    </mat-option>
+                                <mat-label>Rechercher</mat-label>
+                                <input matInput formControlName="name" type="text" name="name" id="name">
+                            </mat-form-field>
+                            <mat-form-field>
+                                <mat-select formControlName="type">
+                                    <mat-option value="series">Series</mat-option>
+                                    <mat-option value="movie">Movie</mat-option>
                                 </mat-select>
-                                <mat-label>Recherche</mat-label>
-                                <input matInput type="text" formControlName="name" name="term" id="term"
-                                    placeholder="Rechercher une série ou un film">
-
                             </mat-form-field>
                         </div>
+
                         <div class="row">
                             <div class="col mt-2 d-flex justify-content-center">
                                 <button mat-raised-button color="primary">Rechercher</button>

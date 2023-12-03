@@ -2,6 +2,7 @@ import { Component, EventEmitter, Inject, Input, LOCALE_ID, Output, ViewChild } 
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTable } from '@angular/material/table';
 import { mergeMap } from 'rxjs/operators';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { Base } from 'src/app/models/base.model';
 import { ApiService } from 'src/app/service/api.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
@@ -33,10 +34,10 @@ export class ListComponent {
   saves() {
     this.service.saveFiles(this.files).pipe(
       mergeMap(() => this.service.saves<Base>(this.type, this.toAdd)),
-      mergeMap(() => this.service.getAll<Base>(0, 0, this.type))
-    ).subscribe((dtos: Base[]) => {
+      mergeMap(() => this.service.getAll<PageResponse<Base>>(0, 0, this.type))
+    ).subscribe((dtos: PageResponse<Base>) => {
       this.toAdd = []
-      this.listOutput.emit(dtos)
+      this.listOutput.emit(dtos.content)
       this.snack.open(`${this.type} modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
     })
 

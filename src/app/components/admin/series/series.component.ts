@@ -19,6 +19,7 @@ import { StringMatcher } from 'src/app/models/StringMatcher.model';
 import { Season } from 'src/app/models/season.model';
 import { MapType } from '@angular/compiler';
 import { Sort } from '@angular/material/sort';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 
 @Component({
   selector: 'app-series',
@@ -64,11 +65,11 @@ export class SeriesComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Series>(0, 0, 'series'),
-      this.service.getAll<Category>(0, 0, 'category'),
+      this.service.getAll<PageResponse<Series>>(0, 0, 'series'),
+      this.service.getAll<PageResponse<Category>>(0, 0, 'category'),
     ]).subscribe(([seriesDtos, categoryDtos]) => {
-      this.series = seriesDtos
-      this.categories = categoryDtos
+      this.series = seriesDtos.content
+      this.categories = categoryDtos.content
     })
   }
 
@@ -122,11 +123,11 @@ export class SeriesComponent implements OnInit {
 
 
     combineLatest([
-      this.service.getAll<Category>(0, 0, 'category'),
+      this.service.getAll<PageResponse<Category>>(0, 0, 'category'),
       this.service.getByIds(series['seasonIds'], 'season')
     ]).subscribe(([categoryDtos, seasonDtos]) => {
-      this.formSeries.controls.categories.setValue(categoryDtos.filter((category: Category) => series['categoryIds'].includes(category.id)))
-      this.categories = categoryDtos.filter((category: Category) => !series['categoryIds'].includes(category.id))
+      this.formSeries.controls.categories.setValue(categoryDtos.content.filter((category: Category) => series['categoryIds'].includes(category.id)))
+      this.categories = categoryDtos.content.filter((category: Category) => !series['categoryIds'].includes(category.id))
       this.formSeries.controls.seasons.setValue(seasonDtos.length)
     })
 
@@ -139,9 +140,9 @@ export class SeriesComponent implements OnInit {
 
   deletes(series: Series) {
     this.service.delete('series', series.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Series>(0, 0, 'series'))
-    ).subscribe((dtos: Series[]) => {
-      this.series = dtos
+      mergeMap(() => this.service.getAll<PageResponse<Series>>(0, 0, 'series'))
+    ).subscribe((dtos: PageResponse<Series>) => {
+      this.series = dtos.content
     })
   }
 
@@ -180,10 +181,10 @@ export class SeriesComponent implements OnInit {
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
 
       this.seriesService.saveWithSeasons(series, this.formSeries.controls.seasons.value!).pipe(
-        mergeMap((dto: Series) => this.service.getAll<Series>(0, 0, 'series'))
-      ).subscribe((dtos: Series[]) => {
+        mergeMap((dto: Series) => this.service.getAll<PageResponse<Series>>(0, 0, 'series'))
+      ).subscribe((dtos: PageResponse<Series>) => {
         this.utilService.reset()
-        this.series = dtos
+        this.series = dtos.content
         const type = (this.formSeries.controls.id.value! > 0) ? 'modifié' : 'ajouté'
         this.snack.open(`Série ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
       })

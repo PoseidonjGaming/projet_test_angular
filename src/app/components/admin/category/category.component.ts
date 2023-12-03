@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { mergeMap } from 'rxjs';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { Sorter } from 'src/app/models/Sorter.model';
 import { Category } from 'src/app/models/category.model';
 import { ApiService } from 'src/app/service/api.service';
@@ -31,7 +32,7 @@ export class CategoryComponent implements OnInit {
   constructor(private service: ApiService, public utilService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Category>(0, 0, 'category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.service.getAll<PageResponse<Category>>(0, 0, 'category').subscribe((dtos: PageResponse<Category>) => this.categories = dtos.content)
   }
 
   populate(category: Category) {
@@ -41,9 +42,9 @@ export class CategoryComponent implements OnInit {
   submit() {
     if (this.formCategory.valid) {
       this.service.save<Category>('category', this.setValue(new Category())).pipe(
-        mergeMap(() => this.service.getAll<Category>(0, 0, 'category'))
-      ).subscribe((dtos: Category[]) => {
-        this.categories = dtos
+        mergeMap(() => this.service.getAll<PageResponse<Category>>(0, 0, 'category'))
+      ).subscribe((dtos: PageResponse<Category>) => {
+        this.categories = dtos.content
         this.utilService.reset()
       })
     }
@@ -73,9 +74,9 @@ export class CategoryComponent implements OnInit {
 
   saves() {
     this.service.saves<Category>('category', this.toAddCategories).pipe(
-      mergeMap(() => this.service.getAll<Category>(0, 0, 'category'))
-    ).subscribe((dtos: Category[]) => {
-      this.categories = dtos
+      mergeMap(() => this.service.getAll<PageResponse<Category>>(0, 0, 'category'))
+    ).subscribe((dtos: PageResponse<Category>) => {
+      this.categories = dtos.content
       this.toAddCategories = []
     })
   }
@@ -101,8 +102,8 @@ export class CategoryComponent implements OnInit {
 
   deletes(id: number) {
     this.service.delete('category', id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Category>(0, 0, 'category'))
-    ).subscribe((dtos: Category[]) => this.categories = dtos)
+      mergeMap(() => this.service.getAll<PageResponse<Category>>(0, 0, 'category'))
+    ).subscribe((dtos: PageResponse<Category>) => this.categories = dtos.content)
   }
 
   private setValue(category: Category) {

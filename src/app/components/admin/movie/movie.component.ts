@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/service/utils/utils.service';
 import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 
 @Component({
   selector: 'app-movie',
@@ -55,13 +56,13 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<Movie>(0,0,'movie'),
-      this.categoryService.getAll<Category>(0,0,'category'),
-      this.characterService.getAll<Character>(0,0,)
+      this.service.getAll<PageResponse<Movie>>(0, 0, 'movie'),
+      this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category'),
+      this.characterService.getAll<PageResponse<Character>>(0, 0,)
     ]).subscribe(([movieDtos, categoryDtos, characterDtos]) => {
-      this.movies = movieDtos
-      this.categories = categoryDtos
-      this.characters = characterDtos
+      this.movies = movieDtos.content
+      this.categories = categoryDtos.content
+      this.characters = characterDtos.content
     })
   }
 
@@ -106,14 +107,14 @@ export class MovieComponent implements OnInit {
     this.utilsService.populate(movie, this.formMovie)
 
     combineLatest([
-      this.categoryService.getAll<Category>(0, 0, 'category'),
-      this.characterService.getAll<Character>(0, 0)
+      this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category'),
+      this.characterService.getAll<PageResponse<Character>>(0, 0)
     ]).subscribe(([categoryDtos, characterDtos]) => {
-      this.set(categoryDtos,
+      this.set(categoryDtos.content,
         this.formMovie.controls.categories.value!,
         this.formMovie.controls.categoryIds.value!)
 
-      this.set(characterDtos,
+      this.set(characterDtos.content,
         this.formMovie.controls.characters.value!,
         this.formMovie.controls.characterIds.value!)
     })

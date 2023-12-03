@@ -53,7 +53,7 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatPaginatorModule } from '@angular/material/paginator';
 registerLocaleData(fr);
 @NgModule({
@@ -109,6 +109,7 @@ registerLocaleData(fr);
     CdkDrag,
     HttpClientModule,
     ReactiveFormsModule,
+    ScrollingModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

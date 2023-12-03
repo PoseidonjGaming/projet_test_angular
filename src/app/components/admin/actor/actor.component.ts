@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
 import { mergeMap } from 'rxjs';
+import { PageResponse } from 'src/app/models/PageResponse.model';
 import { Actor } from 'src/app/models/actor.model';
 import { ApiService } from 'src/app/service/api.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
@@ -29,7 +30,7 @@ export class ActorComponent implements OnInit {
   constructor(private service: ApiService, private utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Actor>(0, 0, 'actor').subscribe((dtos: Actor[]) => this.actors = dtos)
+    this.service.getAll<PageResponse<Actor>>(0, 0, 'actor').subscribe((dtos: PageResponse<Actor>) => this.actors = dtos.content)
   }
 
   populate(actor: Actor) {
@@ -39,9 +40,9 @@ export class ActorComponent implements OnInit {
   submit() {
     if (this.formActor.valid) {
       this.service.save<Actor>('actor', this.setValue()).pipe(
-        mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
-      ).subscribe((dtos: Actor[]) => {
-        this.actors = dtos
+        mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+      ).subscribe((dtos: PageResponse<Actor>) => {
+        this.actors = dtos.content
         this.utils.reset()
       })
     }
@@ -49,10 +50,10 @@ export class ActorComponent implements OnInit {
 
   saves() {
     this.service.saves<Actor>('actor', this.toAddActors).pipe(
-      mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
-    ).subscribe((dtos: Actor[]) => {
+      mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+    ).subscribe((dtos: PageResponse<Actor>) => {
       this.toAddActors = []
-      this.actors = dtos
+      this.actors = dtos.content
     })
   }
 
@@ -69,8 +70,8 @@ export class ActorComponent implements OnInit {
 
   deletes(actor: Actor) {
     this.service.delete('actor', actor.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<Actor>(0, 0, 'actor'))
-    ).subscribe((dtos: Actor[]) => this.actors = dtos)
+      mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+    ).subscribe((dtos: PageResponse<Actor>) => this.actors = dtos.content)
   }
 
   remove(index: number) {
