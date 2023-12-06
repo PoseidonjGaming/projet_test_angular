@@ -26,7 +26,9 @@ export class SearchComponent implements OnInit {
   formSearch = new FormGroup({
     name: new FormControl(''),
     categoryIds: new FormControl(this.type),
-    type: new FormControl('series')
+    type: new FormControl('series'),
+    startDate: new FormControl(new Date()),
+    endDate: new FormControl(new Date())
   })
 
   constructor(private service: ApiSearchService,

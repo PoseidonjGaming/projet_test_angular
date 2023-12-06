@@ -10,7 +10,19 @@
                                 color="accent">{{category.name}}</mat-chip-option>
                         </mat-chip-listbox>
                     </div>
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Enter a date range</mat-label>
+                            <mat-date-range-input [formGroup]="formSearch" [rangePicker]="picker">
+                                <input matStartDate formControlName="startDate">
+                                <input matEndDate formControlName="endDate">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker></mat-date-range-picker>
 
+
+                        </mat-form-field>
+                    </div>
                     <div class="row m-2">
                         <button type="submit" mat-raised-button color="primary">Filtrer</button>
                         <button type="button" mat-raised-button (click)="reset()">Reset</button>
