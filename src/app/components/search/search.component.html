@@ -1,5 +1,5 @@
 <mat-drawer-container [hasBackdrop]="true">
-    <mat-drawer #drawer mode="push" (closedStart)="isOpened=!isOpened">
+    <mat-drawer  #drawer mode="over" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid" style="height: 100vh;">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
                 <div class="col" style="width: 25vh;">
@@ -54,6 +54,7 @@
                             <mat-form-field>
                                 <mat-select formControlName="type">
                                     <mat-option value="series">Series</mat-option>
+                                    <mat-option value="episode">Episode</mat-option>
                                     <mat-option value="movie">Movie</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -71,7 +72,7 @@
             <div class="row">
                 <p>Résulats trouvés: {{results.length}}</p>
                 @for (result of results; track $index) {
-                <div class="col-4" *ngFor="let result of results">
+                <div class="col-4">
                     <mat-card class="m-2" style="width: 20vw;">
                         <mat-card-header>
                             <mat-card-title>{{result['name']}}</mat-card-title>
@@ -84,7 +85,7 @@
                             </p>
                         </mat-card-content>
                         <mat-card-actions>
-                            <a type="button" mat-button [routerLink]="['/detail/series', result['id']]">Voir les
+                            <a type="button" mat-button [routerLink]="['/detail/{{type}}', result['id']]">Voir les
                                 Détail</a>
                         </mat-card-actions>
                     </mat-card>

@@ -48,6 +48,8 @@ export class SearchComponent implements OnInit {
         })
     } else {
       this.service.getAll<PageResponse<Base>>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: PageResponse<Base>) => {
+        console.log(dtos);
+        
         this.results = dtos.content
       })
     }
