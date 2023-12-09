@@ -12,6 +12,7 @@ import { Base } from 'src/app/models/base.model';
 import { Episode } from 'src/app/models/episode.model';
 import { Season } from 'src/app/models/season.model';
 import { Series } from 'src/app/models/series.model';
+import { ApiService } from 'src/app/service/api.service';
 import { ApiEpisodeService } from 'src/app/service/episode/api-episode.service';
 import { ApiSeasonService } from 'src/app/service/season/api-season.service';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';
@@ -25,7 +26,7 @@ import { UtilsService } from 'src/app/service/utils/utils.service';
 export class EpisodeComponent implements OnInit {
 
   //#region properties
-  episodes: Episode[] = []
+  episodes: PageResponse<Episode> = new PageResponse<Episode>()
   toAddEpisodes: Episode[] = []
   series: Series[] = []
   seasons: Season[] = []
@@ -41,13 +42,13 @@ export class EpisodeComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     summary: new FormControl(''),
     releaseDate: new FormControl(new Date()),
-    seasonId: new FormControl(0,),
+    seasonId: new FormControl(0),
     seriesId: new FormControl(1, [Validators.required, Validators.min(1)]),
     isNewSaison: new FormControl(false)
   })
   //#endregion
 
-  constructor(private service: ApiEpisodeService,
+  constructor(private service: ApiService,
     private seriesService: ApiSeriesService,
     private saisonService: ApiSeasonService,
     private utilService: UtilsService,
@@ -59,11 +60,19 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<PageResponse<Episode>>(1, 0, 'episode'),
+      this.service.getAll<PageResponse<Episode>>(10, 0, 'episode'),
       this.seriesService.getAll<PageResponse<Series>>(0, 0)
     ]).subscribe(([episodeDtos, seriesDtos]) => {
-      this.episodes = episodeDtos.content
+      this.episodes = episodeDtos
       this.series = seriesDtos.content
+    })
+
+    this.formEpisode.controls.seriesId.valueChanges.pipe(
+      mergeMap((id: number | null) => {
+        return this.saisonService.getBySeriesId(id!.toString())
+      })
+    ).subscribe((seasons: Season[]) => {
+      this.seasons = seasons
     })
   }
 
@@ -78,9 +87,9 @@ export class EpisodeComponent implements OnInit {
             this.formEpisode.controls.seasonId.setValue(dtos.slice(-1)[0].id)
             return this.service.save<Episode>('episode', this.setValue(new Episode()))
           }),
-          mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
+          mergeMap(() => this.service.getAll<PageResponse<Episode>>(10, 0, 'episode'))
         ).subscribe((dtos: PageResponse<Episode>) => {
-          this.episodes = dtos.content
+          this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
           this.reset()
@@ -91,7 +100,7 @@ export class EpisodeComponent implements OnInit {
         this.service.save<Episode>('episode', this.setValue(new Episode())).pipe(
           mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
         ).subscribe((dtos: PageResponse<Episode>) => {
-          this.episodes = dtos.content
+          this.episodes = dtos
           const type = (this.formEpisode.controls.id.value! > 0) ? 'modifié' : 'ajouté'
           this.snack.open(`Episode ${type} avec succès`, 'Fermer', { duration: 5 * 1000 })
           this.reset()
@@ -102,9 +111,7 @@ export class EpisodeComponent implements OnInit {
     }
   }
 
-  getSaisons(series: Series) {
-    this.saisonService.getBySeriesId(series.id.toString()).subscribe((dtos: Season[]) => this.seasons = dtos)
-  }
+
 
   //#endregion
 
@@ -118,7 +125,7 @@ export class EpisodeComponent implements OnInit {
     this.service.delete('episode', episode.id.toString()).pipe(
       mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
     ).subscribe((dtos: PageResponse<Episode>) => {
-      this.episodes = dtos.content
+      this.episodes = dtos
       this.snack.open('Episode supprimé avec succès', 'Fermer', { duration: 5 * 1000 })
     })
 
@@ -147,7 +154,8 @@ export class EpisodeComponent implements OnInit {
     }
 
     this.service.sort<Episode>('episode', field, dir).subscribe((dtos: Episode[]) => {
-      this.episodes = dtos
+      this.episodes.content = dtos
+      this.episodes.size = dtos.length
     })
   }
 
@@ -155,7 +163,7 @@ export class EpisodeComponent implements OnInit {
     if (this.sorter) {
 
     } else {
-      this.service.getAll<PageResponse<Episode>>(event.pageSize, event.pageIndex, 'episode').subscribe((dtos: PageResponse<Episode>) => this.episodes = dtos.content)
+      this.service.getAll<PageResponse<Episode>>(event.pageSize, event.pageIndex, 'episode').subscribe((dtos: PageResponse<Episode>) => this.episodes = dtos)
     }
   }
   //#endregion
@@ -177,7 +185,7 @@ export class EpisodeComponent implements OnInit {
       mergeMap(() => this.service.getAll<PageResponse<Episode>>(0, 0, 'episode'))
     ).subscribe((dtos: PageResponse<Episode>) => {
       this.toAddEpisodes = []
-      this.episodes = dtos.content
+      this.episodes = dtos
 
       this.snack.open(`Episodes modifié et/ou ajoutés avec succès`, 'Fermer', { duration: 5 * 1000 })
 
