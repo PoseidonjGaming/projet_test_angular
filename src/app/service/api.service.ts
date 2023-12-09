@@ -35,8 +35,17 @@ export class ApiService {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search<E>(type: String, mode: MatchMode, matcherType: StringMatcher, dto: Base) {
-    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search?mode=${mode}&type=${matcherType}`, dto)
+  search<E>(type: String,
+    mode: MatchMode, matcherType: StringMatcher,
+    startDate: Date | null, endDate: Date | null, dto: Base) {
+    const searcher = {
+      dto: dto,
+      mode: mode,
+      type: matcherType,
+      startDate: startDate,
+      endDate: endDate
+    }
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, searcher)
   }
 
   sort<E>(type: string, field: string, direction: Sorter) {

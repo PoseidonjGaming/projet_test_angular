@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.service.search<User>('user',
       MatchMode.ALL, StringMatcher.EXACT,
+      new Date(), new Date(),
       {
         username: this.tokenService.getClaims().sub
       }).subscribe((dtos: User[]) => {

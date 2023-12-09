@@ -168,7 +168,8 @@ export class SeriesComponent implements OnInit {
   search(term: string) {
     if (term)
       this.service.search<Category>('category',
-        MatchMode.ANY, StringMatcher.CONTAINING, { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
+        MatchMode.ANY, StringMatcher.CONTAINING,
+        new Date(), new Date(), { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
 
 
   }

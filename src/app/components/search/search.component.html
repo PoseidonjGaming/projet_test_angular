@@ -1,8 +1,9 @@
-<mat-drawer-container [hasBackdrop]="true">
-    <mat-drawer  #drawer mode="over" (closedStart)="isOpened=!isOpened">
-        <div class="container-fluid" style="height: 100vh;">
+<app-menu></app-menu>
+<mat-sidenav-container style="height: 100vh;">
+    <mat-sidenav #sidenav mode="over" fixedBottomGap="0" fixedTopGap="0" (closedStart)="isOpened=!isOpened">
+        <div class="container-fluid">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
-                <div class="col" style="width: 25vh;">
+                <div class="col">
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
@@ -31,68 +32,66 @@
 
             </form>
         </div>
-    </mat-drawer>
-    <mat-drawer-content>
-        <button mat-button (click)="panel(drawer)">
-            Filtre
-            <mat-icon *ngIf="!isOpened else none">keyboard_arrow_right</mat-icon>
-            <ng-template #none>
-                <mat-icon>keyboard_arrow_left</mat-icon>
-            </ng-template>
-
-        </button>
-        <div class="container-fluid">
-            <div class="row d-flex justify-content-center">
-                <div class="col-4">
-                    <form [formGroup]="formSearch" (ngSubmit)="submit()">
-                        <div class="row">
-
-                            <mat-form-field>
-                                <mat-label>Rechercher</mat-label>
-                                <input matInput formControlName="name" type="text" name="name" id="name">
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-select formControlName="type">
-                                    <mat-option value="series">Series</mat-option>
-                                    <mat-option value="episode">Episode</mat-option>
-                                    <mat-option value="movie">Movie</mat-option>
-                                </mat-select>
-                            </mat-form-field>
+    </mat-sidenav>
+    <button mat-button (click)="panel(sidenav)">
+        Filtre
+        <mat-icon *ngIf="!isOpened else none">keyboard_arrow_right</mat-icon>
+        <ng-template #none>
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </ng-template>
+    
+    </button>
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center">
+            <div class="col-4">
+                <form [formGroup]="formSearch" (ngSubmit)="submit()">
+                    <div class="row">
+    
+                        <mat-form-field>
+                            <mat-label>Rechercher</mat-label>
+                            <input matInput formControlName="name" type="text" name="name" id="name">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-select formControlName="type">
+                                <mat-option value="series">Series</mat-option>
+                                <mat-option value="episode">Episode</mat-option>
+                                <mat-option value="movie">Movie</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+    
+                    <div class="row">
+                        <div class="col mt-2 d-flex justify-content-center">
+                            <button mat-raised-button color="primary">Rechercher</button>
+                            <button type="button" mat-raised-button (click)="reset()">Reset</button>
                         </div>
-
-                        <div class="row">
-                            <div class="col mt-2 d-flex justify-content-center">
-                                <button mat-raised-button color="primary">Rechercher</button>
-                                <button type="button" mat-raised-button (click)="reset()">Reset</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <p>Résulats trouvés: {{results.length}}</p>
-                @for (result of results; track $index) {
-                <div class="col-4">
-                    <mat-card class="m-2" style="width: 20vw;">
-                        <mat-card-header>
-                            <mat-card-title>{{result['name']}}</mat-card-title>
-                        </mat-card-header>
-                        <img *ngIf="result['poster']" mat-card-image
-                            src="http://localhost:8081/file/load?filename={{result['poster']}}">
-                        <mat-card-content>
-                            <p class="mt-2">
-                                {{result['summary'].slice(0,256)}}
-                            </p>
-                        </mat-card-content>
-                        <mat-card-actions>
-                            <a type="button" mat-button [routerLink]="['/detail/{{type}}', result['id']]">Voir les
-                                Détail</a>
-                        </mat-card-actions>
-                    </mat-card>
-                </div>
-                }
-
+                    </div>
+                </form>
             </div>
         </div>
-    </mat-drawer-content>
-</mat-drawer-container>
+        <div class="row">
+            <p>Résulats trouvés: {{results.length}}</p>
+            @for (result of results; track $index) {
+            <div class="col-4">
+                <mat-card class="m-2" style="width: 20vw;">
+                    <mat-card-header>
+                        <mat-card-title>{{result['name']}}</mat-card-title>
+                    </mat-card-header>
+                    <img *ngIf="result['poster']" mat-card-image
+                        src="http://localhost:8081/file/load?filename={{result['poster']}}">
+                    <mat-card-content>
+                        <p class="mt-2">
+                            {{result['summary'].slice(0,256)}}
+                        </p>
+                    </mat-card-content>
+                    <mat-card-actions>
+                        <a type="button" mat-button [routerLink]="['/detail/{{type}}', result['id']]">Voir les
+                            Détail</a>
+                    </mat-card-actions>
+                </mat-card>
+            </div>
+            }
+    
+        </div>
+    </div>
+</mat-sidenav-container>

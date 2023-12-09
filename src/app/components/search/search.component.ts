@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDrawer } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { MatchMode } from 'src/app/models/MatchMode.model';
 import { PageResponse } from 'src/app/models/PageResponse.model';
 import { StringMatcher } from 'src/app/models/StringMatcher.model';
@@ -21,14 +21,12 @@ export class SearchComponent implements OnInit {
   categories: Category[] = []
   isOpened = false
 
-  type: number[] = []
-
   formSearch = new FormGroup({
     name: new FormControl(''),
-    categoryIds: new FormControl(this.type),
-    type: new FormControl('series'),
-    startDate: new FormControl(new Date()),
-    endDate: new FormControl(new Date())
+    categoryIds: new FormControl<number[]>([]),
+    type: new FormControl<string>('series'),
+    startDate: new FormControl(null),
+    endDate: new FormControl(null)
   })
 
   constructor(private service: ApiSearchService,
@@ -41,23 +39,32 @@ export class SearchComponent implements OnInit {
   }
 
   submit() {
-    if (this.formSearch.controls.name.value) {
-      this.service.search<Base>(this.formSearch.controls.type.value!,
-        MatchMode.ALL, StringMatcher.CONTAINING, this.formSearch.value).subscribe((dtos: Base[]) => {
+    let dto = {}
+    const value = this.formSearch.value
+    if (value.type && value.categoryIds) {
+      if (value.name && value.categoryIds.length > 0) {
+        dto = { name: value.name, categoryIds: value.categoryIds }
+      } else if (value.name) {
+        dto = { name: value.name }
+      } else if (value.categoryIds) {
+        dto = { categoryIds: value.categoryIds }
+      }
+
+      this.service.search<Base>(value.type,
+        MatchMode.ALL, StringMatcher.CONTAINING,
+        this.isDate(value.startDate), this.isDate(value.endDate),
+        dto).subscribe((dtos: Base[]) => {
           this.results = dtos
         })
-    } else {
-      this.service.getAll<PageResponse<Base>>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: PageResponse<Base>) => {
-        console.log(dtos);
-        
-        this.results = dtos.content
-      })
     }
-
 
   }
 
-  panel(drawer: MatDrawer) {
+  private isDate(date: Date | null | undefined) {
+    return (date) ? date : null
+  }
+
+  panel(drawer: MatSidenav) {
     drawer.toggle()
     this.isOpened = !this.isOpened
   }
