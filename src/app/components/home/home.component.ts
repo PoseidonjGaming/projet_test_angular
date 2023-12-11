@@ -24,10 +24,10 @@ export class HomeComponent implements OnInit {
     private tokenService: TokenService, private jwtHelper: JwtHelperService) { }
 
   ngOnInit(): void {
-    this.service.getAll<PageResponse<Series>>(0, 0, 'series').subscribe((dtos: PageResponse<Series>) => {
+    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => {
       console.log(dtos);
 
-      this.series = dtos.content
+      this.series = dtos
     })
     if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
       this.tokenService.deleteToken()

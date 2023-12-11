@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
-import { MatchMode } from 'src/app/models/MatchMode.model';
+import { MatchMode } from 'src/app/models/enum/MatchMode.model';
 import { PageResponse } from 'src/app/models/PageResponse.model';
-import { StringMatcher } from 'src/app/models/StringMatcher.model';
 import { Base } from 'src/app/models/base.model';
 import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';
 import { ApiService } from 'src/app/service/api.service';
 import { ApiSearchService } from 'src/app/service/search/api-search.service';
 import { UtilsService } from 'src/app/service/utils/utils.service';
+import { StringMatcher } from 'src/app/models/enum/StringMatcher.model';
 
 @Component({
   selector: 'app-search',
@@ -34,8 +34,8 @@ export class SearchComponent implements OnInit {
     private utilsService: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<PageResponse<Series>>(0, 0, 'series').subscribe((dtos: PageResponse<Series>) => this.results = dtos.content)
-    this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category').subscribe((dtos: PageResponse<Category>) => this.categories = dtos.content)
+    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.results = dtos)
+    this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
   }
 
   submit() {
@@ -50,12 +50,12 @@ export class SearchComponent implements OnInit {
         dto = { categoryIds: value.categoryIds }
       }
 
-      this.service.search<Base>(value.type,
+      this.service.search<Base>(value.type, dto,
         MatchMode.ALL, StringMatcher.CONTAINING,
-        this.isDate(value.startDate), this.isDate(value.endDate),
-        dto).subscribe((dtos: Base[]) => {
-          this.results = dtos
-        })
+        value.startDate!, value.endDate!
+      ).subscribe((dtos: Base[]) => {
+        this.results = dtos
+      })
     }
 
   }

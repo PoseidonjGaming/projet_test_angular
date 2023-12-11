@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Series } from '../models/series.model';
 import { Observable } from 'rxjs';
 import { Base } from '../models/base.model';
-import { MatchMode } from '../models/MatchMode.model';
-import { StringMatcher } from '../models/StringMatcher.model';
+import { MatchMode } from '../models/enum/MatchMode.model';
+import { StringMatcher } from '../models/enum/StringMatcher.model';
 import { Sorter } from '../models/Sorter.model';
+import { PageResponse } from '../models/PageResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,47 +18,64 @@ export class ApiService {
 
   constructor(protected httpClient: HttpClient) { }
 
-  getAll<E>(size: number, page: number, type?: String) {
-    if (!type)
-      type = this.type
-    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/list?size=${size}&page=${page}`)
+  getAll<E extends Base>(type: String) {
+    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/list`)
   }
 
-  getById<E>(id: string, type?: String,) {
-    if (!type)
-      type = this.type
+  getAllPaged<E extends Base>(type: string, size: number, page: number) {
+    return this.httpClient.get<PageResponse<E>>(`${this.API_BASE_URL}/${type}/paged/list?size=${size}&page=${page}`)
+  }
+
+  getById<E extends Base>(type: string, id: number) {
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 
-  getByIds<E>(ids: number[], type?: String) {
-    if (!type)
-      type = this.type
+  getByIds<E extends Base>(type: string, ids: number[]) {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search<E>(type: String,
-    mode: MatchMode, matcherType: StringMatcher,
-    startDate: Date | null, endDate: Date | null, dto: Base) {
-    const searcher = {
+  search<E extends Base>(type: string, dto: Base, mode: MatchMode, matcher: StringMatcher, startDate: Date | null, endDate: Date | null) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, {
       dto: dto,
       mode: mode,
-      type: matcherType,
+      type: matcher,
       startDate: startDate,
       endDate: endDate
-    }
-    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, searcher)
+    })
   }
 
-  sort<E>(type: string, field: string, direction: Sorter) {
-    return this.httpClient.get<E[]>(`${this.API_BASE_URL}/${type}/sort?field=${field}&direction=${direction}`)
+  searchPaged<E extends Base>(type: string, dto: Base,
+    mode: MatchMode, matcher: StringMatcher,
+    startDate: Date | null, endDate: Date | null,
+    size: number, page: number) {
+    return this.httpClient.post<PageResponse<E>>(`${this.API_BASE_URL}/${type}/paged/search?size=${size}&page=${page}`, {
+      dto: dto,
+      mode: mode,
+      type: matcher,
+      startDate: startDate,
+      endDate: endDate
+    })
   }
 
-  saves<E>(type: string, dtos: E[]) {
-    return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
+  sort<E extends Base>(type: string, field: string, direction: Sorter) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/sort`, {
+      field: field,
+      direction: direction
+    })
+  }
+  sortPaged<E extends Base>(type: string, field: string, direction: Sorter, size: number, page: number) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/page/sort?size=${size}&page=${page}`, {
+      field: field,
+      direction: direction
+    })
   }
 
-  save<E>(type: string, dto: E): Observable<E> {
+  save<E extends Base>(type: string, dto: E) {
     return this.httpClient.post<E>(`${this.API_BASE_URL}/${type}/save`, dto)
+  }
+
+  saves<E extends Base>(type: string, dtos: E[]) {
+    return this.httpClient.post(`${this.API_BASE_URL}/${type}/saves`, dtos)
   }
 
   saveFiles(files: File[]) {
@@ -66,7 +84,7 @@ export class ApiService {
     return this.httpClient.post(`${this.API_BASE_URL}/series/save/files`, formData)
   }
 
-  saveWithFile<E>(type: string, dtos: E, file: File) {
+  saveWithFile<E extends Base>(type: string, dtos: E, file: File) {
     let formData = new FormData()
 
     let headers = new HttpHeaders()
@@ -79,7 +97,7 @@ export class ApiService {
     })
   }
 
-  delete(type: String, id: String) {
+  delete(type: string, id: number) {
     return this.httpClient.delete(`${this.API_BASE_URL}/${type}/delete/${id}`)
   }
 }

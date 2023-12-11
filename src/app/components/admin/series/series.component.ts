@@ -14,8 +14,8 @@ import { AfficheDialogComponent } from '../affiche-dialog/affiche-dialog.compone
 import { ListComponent } from '../list/list.component';
 import { Base } from 'src/app/models/base.model';
 import { MatTabGroup } from '@angular/material/tabs';
-import { MatchMode } from 'src/app/models/MatchMode.model';
-import { StringMatcher } from 'src/app/models/StringMatcher.model';
+import { MatchMode } from 'src/app/models/enum/MatchMode.model';
+import { StringMatcher } from 'src/app/models/enum/StringMatcher.model';
 import { Season } from 'src/app/models/season.model';
 import { MapType } from '@angular/compiler';
 import { Sort } from '@angular/material/sort';
@@ -65,8 +65,8 @@ export class SeriesComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<PageResponse<Series>>(0, 0, 'series'),
-      this.service.getAll<PageResponse<Category>>(0, 0, 'category'),
+      this.service.getAllPaged<Series>('series', 10, 0),
+      this.service.getAllPaged<Category>('category', 10, 0),
     ]).subscribe(([seriesDtos, categoryDtos]) => {
       this.series = seriesDtos.content
       this.categories = categoryDtos.content
@@ -123,8 +123,8 @@ export class SeriesComponent implements OnInit {
 
 
     combineLatest([
-      this.service.getAll<PageResponse<Category>>(0, 0, 'category'),
-      this.service.getByIds(series['seasonIds'], 'season')
+      this.service.getAllPaged<Category>('category', 10, 0),
+      this.service.getByIds('season', series['seasonIds'])
     ]).subscribe(([categoryDtos, seasonDtos]) => {
       this.formSeries.controls.categories.setValue(categoryDtos.content.filter((category: Category) => series['categoryIds'].includes(category.id)))
       this.categories = categoryDtos.content.filter((category: Category) => !series['categoryIds'].includes(category.id))
@@ -139,8 +139,8 @@ export class SeriesComponent implements OnInit {
   }
 
   deletes(series: Series) {
-    this.service.delete('series', series.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Series>>(0, 0, 'series'))
+    this.service.delete('series', series.id).pipe(
+      mergeMap(() => this.service.getAllPaged<Series>('series', 10, 0))
     ).subscribe((dtos: PageResponse<Series>) => {
       this.series = dtos.content
     })
@@ -167,9 +167,12 @@ export class SeriesComponent implements OnInit {
 
   search(term: string) {
     if (term)
-      this.service.search<Category>('category',
-        MatchMode.ANY, StringMatcher.CONTAINING,
-        new Date(), new Date(), { name: term }).subscribe((dtos: Category[]) => this.categories = dtos)
+      this.service.search<Category>('category', {
+        name: term,
+        id: 0,
+        seriesIds: []
+      },
+        MatchMode.ANY, StringMatcher.CONTAINING, null, null).subscribe((dtos: Category[]) => this.categories = dtos)
 
 
   }
@@ -182,7 +185,7 @@ export class SeriesComponent implements OnInit {
       series.categoryIds = this.formSeries.controls.categories.value?.map((s) => s.id) as number[]
 
       this.seriesService.saveWithSeasons(series, this.formSeries.controls.seasons.value!).pipe(
-        mergeMap((dto: Series) => this.service.getAll<PageResponse<Series>>(0, 0, 'series'))
+        mergeMap((dto: Series) => this.service.getAllPaged<Series>('series', 10, 0))
       ).subscribe((dtos: PageResponse<Series>) => {
         this.utilService.reset()
         this.series = dtos.content

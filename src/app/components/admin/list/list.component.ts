@@ -34,7 +34,7 @@ export class ListComponent {
   saves() {
     this.service.saveFiles(this.files).pipe(
       mergeMap(() => this.service.saves<Base>(this.type, this.toAdd)),
-      mergeMap(() => this.service.getAll<PageResponse<Base>>(0, 0, this.type))
+      mergeMap(() => this.service.getAllPaged<Base>(this.type, 10, 0))
     ).subscribe((dtos: PageResponse<Base>) => {
       this.toAdd = []
       this.listOutput.emit(dtos.content)

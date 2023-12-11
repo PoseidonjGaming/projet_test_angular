@@ -56,9 +56,9 @@ export class MovieComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.service.getAll<PageResponse<Movie>>(0, 0, 'movie'),
-      this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category'),
-      this.characterService.getAll<PageResponse<Character>>(0, 0,)
+      this.service.getAllPaged<Movie>('movie', 10, 0),
+      this.categoryService.getAllPaged<Category>('category', 10, 0),
+      this.characterService.getAllPaged<Character>('character', 10, 0)
     ]).subscribe(([movieDtos, categoryDtos, characterDtos]) => {
       this.movies = movieDtos.content
       this.categories = categoryDtos.content
@@ -107,8 +107,8 @@ export class MovieComponent implements OnInit {
     this.utilsService.populate(movie, this.formMovie)
 
     combineLatest([
-      this.categoryService.getAll<PageResponse<Category>>(0, 0, 'category'),
-      this.characterService.getAll<PageResponse<Character>>(0, 0)
+      this.categoryService.getAllPaged<Category>('category', 10, 0),
+      this.characterService.getAllPaged<Character>('character', 10, 0)
     ]).subscribe(([categoryDtos, characterDtos]) => {
       this.set(categoryDtos.content,
         this.formMovie.controls.categories.value!,

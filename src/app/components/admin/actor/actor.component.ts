@@ -30,7 +30,7 @@ export class ActorComponent implements OnInit {
   constructor(private service: ApiService, private utils: UtilsService) { }
 
   ngOnInit(): void {
-    this.service.getAll<PageResponse<Actor>>(0, 0, 'actor').subscribe((dtos: PageResponse<Actor>) => this.actors = dtos.content)
+    this.service.getAllPaged<Actor>('actor', 10, 0).subscribe((dtos: PageResponse<Actor>) => this.actors = dtos.content)
   }
 
   populate(actor: Actor) {
@@ -40,7 +40,7 @@ export class ActorComponent implements OnInit {
   submit() {
     if (this.formActor.valid) {
       this.service.save<Actor>('actor', this.setValue()).pipe(
-        mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+        mergeMap(() => this.service.getAllPaged<Actor>('actor', 10, 0))
       ).subscribe((dtos: PageResponse<Actor>) => {
         this.actors = dtos.content
         this.utils.reset()
@@ -50,7 +50,7 @@ export class ActorComponent implements OnInit {
 
   saves() {
     this.service.saves<Actor>('actor', this.toAddActors).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+      mergeMap(() => this.service.getAllPaged<Actor>('actor', 10, 0))
     ).subscribe((dtos: PageResponse<Actor>) => {
       this.toAddActors = []
       this.actors = dtos.content
@@ -69,8 +69,8 @@ export class ActorComponent implements OnInit {
   }
 
   deletes(actor: Actor) {
-    this.service.delete('actor', actor.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Actor>>(0, 0, 'actor'))
+    this.service.delete('actor', actor.id).pipe(
+      mergeMap(() => this.service.getAllPaged<Actor>('actor', 10, 0))
     ).subscribe((dtos: PageResponse<Actor>) => this.actors = dtos.content)
   }
 

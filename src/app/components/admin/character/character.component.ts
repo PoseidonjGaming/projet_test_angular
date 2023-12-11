@@ -49,12 +49,12 @@ export class CharacterComponent implements OnInit {
 
   ngOnInit(): void {
     combineLatest([
-      this.actorService.getAll<PageResponse<Actor>>(0, 0),
-      this.seriesService.getAll<PageResponse<Series>>(0, 0),
-      this.service.getAll<PageResponse<Character>>(0, 0, 'character')
+      this.service.getAll<Actor>('actor'),
+      this.seriesService.getAll<Series>('series'),
+      this.service.getAllPaged<Character>('character', 10, 0)
     ]).subscribe(([actorDtos, seriesDtos, characterDtos]) => {
-      this.actors = actorDtos.content
-      this.series = seriesDtos.content
+      this.actors = actorDtos
+      this.series = seriesDtos
       this.characters = characterDtos.content
     })
   }
@@ -78,7 +78,7 @@ export class CharacterComponent implements OnInit {
   submit() {
     console.log(this.setValues());
     this.service.save<Character>('character', this.setValues()).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+      mergeMap(() => this.service.getAllPaged<Character>('character', 10, 0))
     ).subscribe((dtos: PageResponse<Character>) => {
       this.characters = dtos.content
       this.utils.reset()
@@ -88,7 +88,7 @@ export class CharacterComponent implements OnInit {
 
   saves() {
     this.service.saves<Character>('character', this.toAddCharacters).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+      mergeMap(() => this.service.getAllPaged<Character>('character', 10, 0))
     ).subscribe((dtos: PageResponse<Character>) => {
       this.characters = dtos.content
       this.toAddCharacters = []
@@ -114,8 +114,8 @@ export class CharacterComponent implements OnInit {
   }
 
   deletes(character: Character) {
-    this.service.delete('character', character.id.toString()).pipe(
-      mergeMap(() => this.service.getAll<PageResponse<Character>>(0, 0, 'character'))
+    this.service.delete('character', character.id).pipe(
+      mergeMap(() => this.service.getAllPaged<Character>('character', 10, 0))
     ).subscribe((dtos: PageResponse<Character>) => this.characters = dtos.content)
   }
 

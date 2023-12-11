@@ -17,7 +17,7 @@ export class DetailActorComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.pipe(
-      mergeMap((param: ParamMap) => this.service.getById<Actor>(param.get('id')!))
+      mergeMap((param: ParamMap) => this.service.getById<Actor>('actor', Number.parseInt(param.get('id')!)))
     ).subscribe((dto: Actor) => {
       console.log(dto);
 

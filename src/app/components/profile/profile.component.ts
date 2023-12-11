@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatchMode } from 'src/app/models/MatchMode.model';
-import { StringMatcher } from 'src/app/models/StringMatcher.model';
+import { MatchMode } from 'src/app/models/enum/MatchMode.model';
+import { StringMatcher } from 'src/app/models/enum/StringMatcher.model';
 import { User } from 'src/app/models/user.model';
 import { ApiService } from 'src/app/service/api.service';
 import { TokenService } from 'src/app/service/token/token.service';
@@ -37,11 +37,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.search<User>('user',
-      MatchMode.ALL, StringMatcher.EXACT,
-      new Date(), new Date(),
       {
-        username: this.tokenService.getClaims().sub
-      }).subscribe((dtos: User[]) => {
+        username: this.tokenService.getClaims().sub,
+        roles: '',
+        password: null,
+        avatarFile: ''
+      }, MatchMode.ALL, StringMatcher.EXACT, null, null).subscribe((dtos: User[]) => {
         this.utils.populate(dtos[0], this.formUser)
         this.file64 = `htts://localhost:8081/file/load/${dtos[0].avatarFile}`
       })
