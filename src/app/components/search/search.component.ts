@@ -27,8 +27,8 @@ export class SearchComponent implements OnInit {
     name: new FormControl(''),
     categoryIds: new FormControl(this.type),
     type: new FormControl('series'),
-    startDate: new FormControl(new Date()),
-    endDate: new FormControl(new Date())
+    startDate: new FormControl(null),
+    endDate: new FormControl(null)
   })
 
   constructor(private service: ApiSearchService,
@@ -41,16 +41,21 @@ export class SearchComponent implements OnInit {
   }
 
   submit() {
-    if (this.formSearch.controls.name.value) {
-      this.service.search<Base>(this.formSearch.controls.type.value!,
-        MatchMode.ALL, StringMatcher.CONTAINING, this.formSearch.value).subscribe((dtos: Base[]) => {
-          this.results = dtos
-        })
-    } else {
-      this.service.getAll<PageResponse<Base>>(0, 0, this.formSearch.controls.type.value!).subscribe((dtos: PageResponse<Base>) => {
-        this.results = dtos.content
-      })
+    let searcher = {
+      dto: {
+        name: this.formSearch.value.name,
+        categoryIds: this.formSearch.value.categoryIds
+      },
+      mode: MatchMode.ALL,
+      type: StringMatcher.CONTAINING,
+      startDate: this.formSearch.value.startDate,
+      endDate: this.formSearch.value.endDate
     }
+    console.log(searcher);
+    
+    this.service.search<Base>(this.formSearch.value.type!, searcher).subscribe((dtos: Base[]) => {
+      this.results = dtos
+    })
 
 
   }

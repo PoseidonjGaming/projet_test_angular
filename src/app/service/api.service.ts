@@ -35,8 +35,8 @@ export class ApiService {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search<E>(type: String, mode: MatchMode, matcherType: StringMatcher, dto: Base) {
-    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search?mode=${mode}&type=${matcherType}`, dto)
+  search<E>(type: String, dto: Base) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, dto)
   }
 
   sort<E>(type: string, field: string, direction: Sorter) {

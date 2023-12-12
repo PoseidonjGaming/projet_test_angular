@@ -1,8 +1,8 @@
 <mat-drawer-container [hasBackdrop]="true">
-    <mat-drawer #drawer mode="push" (closedStart)="isOpened=!isOpened">
-        <div class="container-fluid" style="height: 100vh;">
+    <mat-drawer #drawer mode="push" (closedStart)="isOpened=!isOpened" style="height: 100vh;">
+        <div class="container-fluid">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
-                <div class="col" style="width: 25vh;">
+                <div class="col" style="width: min-content;">
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
@@ -54,6 +54,7 @@
                             <mat-form-field>
                                 <mat-select formControlName="type">
                                     <mat-option value="series">Series</mat-option>
+                                    <mat-option value="episode">Episode</mat-option>
                                     <mat-option value="movie">Movie</mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -71,7 +72,7 @@
             <div class="row">
                 <p>Résulats trouvés: {{results.length}}</p>
                 @for (result of results; track $index) {
-                <div class="col-4" *ngFor="let result of results">
+                <div class="col-4">
                     <mat-card class="m-2" style="width: 20vw;">
                         <mat-card-header>
                             <mat-card-title>{{result['name']}}</mat-card-title>

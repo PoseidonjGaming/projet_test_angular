@@ -37,9 +37,12 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.search<User>('user',
-      MatchMode.ALL, StringMatcher.EXACT,
+
       {
-        username: this.tokenService.getClaims().sub
+        dto: { username: this.tokenService.getClaims().sub },
+        mode: MatchMode.ALL,
+        type: StringMatcher.EXACT
+
       }).subscribe((dtos: User[]) => {
         this.utils.populate(dtos[0], this.formUser)
         this.file64 = `htts://localhost:8081/file/load/${dtos[0].avatarFile}`
