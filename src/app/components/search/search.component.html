@@ -1,8 +1,8 @@
 <app-menu></app-menu>
-<mat-sidenav-container style="height: 100vh;">
-    <mat-sidenav #sidenav mode="over" fixedBottomGap="0" fixedTopGap="0" (closedStart)="isOpened=!isOpened">
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="over" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid">
-            <form [formGroup]="formSearch" (ngSubmit)="submit()">
+            <form [formGroup]="formSearch" (ngSubmit)="submit()"  >
                 <div class="col">
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
@@ -85,7 +85,7 @@
                         </p>
                     </mat-card-content>
                     <mat-card-actions>
-                        <a type="button" mat-button [routerLink]="['/detail/{{type}}', result['id']]">Voir les
+                        <a type="button" mat-button [routerLink]="['/detail/series', result['id']]">Voir les
                             Détail</a>
                     </mat-card-actions>
                 </mat-card>

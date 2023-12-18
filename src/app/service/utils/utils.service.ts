@@ -20,7 +20,7 @@ export class UtilsService {
 
   updateValues<T extends Base>(entity: T, form: FormGroup) {
     Object.keys(form.controls).forEach((e: string) => {
-      let control = form.get(e)
+      let control = form.get(e)      
       if (control)
         e = control.value
     })

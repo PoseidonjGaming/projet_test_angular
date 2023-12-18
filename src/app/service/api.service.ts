@@ -1,12 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Series } from '../models/series.model';
-import { Observable } from 'rxjs';
+import { PageResponse } from '../models/PageResponse.model';
+import { Sorter } from '../models/Sorter.model';
 import { Base } from '../models/base.model';
 import { MatchMode } from '../models/enum/MatchMode.model';
 import { StringMatcher } from '../models/enum/StringMatcher.model';
-import { Sorter } from '../models/Sorter.model';
-import { PageResponse } from '../models/PageResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -64,10 +62,47 @@ export class ApiService {
     })
   }
   sortPaged<E extends Base>(type: string, field: string, direction: Sorter, size: number, page: number) {
-    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/page/sort?size=${size}&page=${page}`, {
+    return this.httpClient.post<PageResponse<E>>(`${this.API_BASE_URL}/${type}/paged/sort?size=${size}&page=${page}`, {
       field: field,
       direction: direction
     })
+  }
+
+  sortSearch<E extends Base>(type: string, field: string, direction: Sorter, dto: Base,
+    mode: MatchMode, matcher: StringMatcher, startDate: Date | null, endDate: Date | null) {
+    return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/sort/search`,
+      {
+        sortDTO: {
+          field: field,
+          direction: direction
+        },
+        searchDTO: {
+          dto: dto,
+          mode: mode,
+          type: matcher,
+          startDate: startDate,
+          endDate: endDate
+        }
+      })
+  }
+
+  sortSearchPaged<E extends Base>(type: string, field: string, direction: Sorter, dto: Base,
+    mode: MatchMode, matcher: StringMatcher, startDate: Date | null, endDate: Date | null,
+    size: number, page: number) {
+    return this.httpClient.post<PageResponse<E>>(`${this.API_BASE_URL}/${type}/paged/sort/search?size=${size}&page=${page}`,
+      {
+        sortDTO: {
+          field: field,
+          direction: direction
+        },
+        searchDTO: {
+          dto: dto,
+          mode: mode,
+          type: matcher,
+          startDate: startDate,
+          endDate: endDate
+        }
+      })
   }
 
   save<E extends Base>(type: string, dto: E) {

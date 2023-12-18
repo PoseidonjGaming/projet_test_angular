@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
   series: Series[] = []
   slicedsummary: boolean = true;
 
-  test: string[] = []
 
   constructor(private service: ApiSeriesService,
     private credentialService: CredentialService,
@@ -25,8 +24,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAll<Series>('series').subscribe((dtos: Series[]) => {
-      console.log(dtos);
-
       this.series = dtos
     })
     if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
