@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
@@ -6,11 +6,15 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { SuperAdminGuard } from './guards/superAdmin/super-admin.guard';
+import { SeriesComponent } from './components/admin/series/series.component';
+import { EpisodeComponent } from './components/admin/episode/episode.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'admin', canActivate: [SuperAdminGuard], children: [
+      { path: 'series', component: SeriesComponent },
+      { path: 'episodes', component: EpisodeComponent }
     ]
   },
   {

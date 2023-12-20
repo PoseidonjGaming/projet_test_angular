@@ -47,6 +47,9 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { AppRoutingModule } from './app-routing.module';
+import { SeriesComponent } from './components/admin/series/series.component';
+import { TableCRUDComponent } from './components/admin/generic/table-crud/table-crud.component';
+import { EpisodeComponent } from './components/admin/episode/episode.component';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -58,6 +61,9 @@ registerLocaleData(fr);
     HomeComponent,
     ProfileComponent,
     SearchComponent,
+    SeriesComponent,
+    TableCRUDComponent,
+    EpisodeComponent,
   ],
   imports: [
     AppRoutingModule,

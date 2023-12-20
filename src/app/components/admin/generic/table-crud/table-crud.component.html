@@ -1,0 +1,32 @@
+<mat-table matSort (matSortChange)="sorting($event)" [dataSource]="dataSource" class="mat-elevation-z8">
+    @for (column of columns; track $index) {
+    <ng-container [matColumnDef]="column" *ngIf="column.toLowerCase().includes('date') else action">
+        <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column"> {{headers[$index]}} </th>
+        <td mat-cell *matCellDef="let element;"> {{element[column] | date: 'shortDate': undefined: locale}} </td>
+    </ng-container>
+    <ng-template #action>
+        <ng-container [matColumnDef]="column" *ngIf="column==='action' else standard">
+            <th mat-header-cell *matHeaderCellDef> {{headers[$index]}} </th>
+            <td mat-cell *matCellDef="let element;">
+                <div class="my-2">
+                    <button mat-raised-button color="accent" class="me-2" (click)="populate(element)">Modifier</button>
+                    <button mat-raised-button color="warn" (click)="delete(element)">Supprimer</button>
+                </div>
+
+            </td>
+        </ng-container>
+    </ng-template>
+    <ng-template #standard>
+        <ng-container [matColumnDef]="column">
+            <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column"> {{headers[$index]}} </th>
+            <td mat-cell *matCellDef="let element;"> {{element[column]}} </td>
+        </ng-container>
+    </ng-template>
+
+    }
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+</mat-table>
+<mat-paginator (page)="page($event)" [length]="length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page">
+</mat-paginator>
