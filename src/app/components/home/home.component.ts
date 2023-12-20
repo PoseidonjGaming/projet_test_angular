@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { JwtHeader } from 'jwt-decode';
 import { combineLatest } from 'rxjs';
-import { PageResponse } from 'src/app/models/PageResponse.model';
+import { PageResponse } from 'src/app/models/pageResponse.model';
 import { Series } from 'src/app/models/series.model';
 import { CredentialService } from 'src/app/service/credential/credential.service';
 import { ApiSeriesService } from 'src/app/service/series/api-series.service';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDrawer, MatSidenav } from '@angular/material/sidenav';
 import { MatchMode } from 'src/app/models/enum/MatchMode.model';
-import { PageResponse } from 'src/app/models/PageResponse.model';
+import { PageResponse } from 'src/app/models/pageResponse.model';
 import { Base } from 'src/app/models/base.model';
 import { Category } from 'src/app/models/category.model';
 import { Series } from 'src/app/models/series.model';

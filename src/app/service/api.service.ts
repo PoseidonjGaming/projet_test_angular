@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PageResponse } from '../models/PageResponse.model';
+import { PageResponse } from '../models/pageResponse.model';
 import { Sorter } from '../models/Sorter.model';
 import { Base } from '../models/base.model';
 import { MatchMode } from '../models/enum/MatchMode.model';
@@ -32,7 +32,9 @@ export class ApiService {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
-  search<E extends Base>(type: string, dto: Base, mode: MatchMode, matcher: StringMatcher, startDate: Date | null, endDate: Date | null) {
+  search<E extends Base>(type: string, dto: Base,
+    mode: MatchMode, matcher: StringMatcher,
+    startDate: Date | null, endDate: Date | null) {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/search`, {
       dto: dto,
       mode: mode,

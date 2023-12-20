@@ -3,6 +3,7 @@ import {
   CdkDropList,
   CdkDropListGroup
 } from '@angular/cdk/drag-drop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpRequest } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
@@ -24,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -36,13 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ActorComponent } from './components/admin/actor/actor.component';
-import { AfficheDialogComponent } from './components/admin/affiche-dialog/affiche-dialog.component';
-import { CategoryComponent } from './components/admin/category/category.component';
-import { CharacterComponent } from './components/admin/character/character.component';
-import { EpisodeComponent } from './components/admin/episode/episode.component';
-import { ListComponent } from './components/admin/list/list.component';
-import { MovieComponent } from './components/admin/movie/movie.component';
+import { FormComponent } from './components/admin/generic/form/form.component';
+import { TableDatabaseComponent } from './components/admin/generic/table-database/table-database.component';
 import { SeriesComponent } from './components/admin/series/series.component';
 import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
@@ -53,8 +50,7 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { AutocompleteComponent } from './components/admin/generic/form/autocomplete/autocomplete.component';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -64,21 +60,11 @@ registerLocaleData(fr);
     ExportDialogComponent,
     DetailSeriesComponent,
     HomeComponent,
-    SeriesComponent,
-    AfficheDialogComponent,
-    EpisodeComponent,
-    ActorComponent,
-    CharacterComponent,
     ProfileComponent,
     SearchComponent,
-    CategoryComponent,
-    DetailActorComponent,
-    MovieComponent,
-    ListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
