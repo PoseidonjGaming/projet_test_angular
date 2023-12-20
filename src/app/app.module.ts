@@ -35,13 +35,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormComponent } from './components/admin/generic/form/form.component';
-import { TableDatabaseComponent } from './components/admin/generic/table-database/table-database.component';
-import { SeriesComponent } from './components/admin/series/series.component';
-import { DetailActorComponent } from './components/detail/detail-actor/detail-actor.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
@@ -50,7 +46,7 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { AutocompleteComponent } from './components/admin/generic/form/autocomplete/autocomplete.component';
+import { AppRoutingModule } from './app-routing.module';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -64,6 +60,8 @@ registerLocaleData(fr);
     SearchComponent,
   ],
   imports: [
+    AppRoutingModule,
+    RouterModule,
     BrowserModule,
     BrowserAnimationsModule,
     MatToolbarModule,

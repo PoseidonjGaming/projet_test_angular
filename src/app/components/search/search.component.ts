@@ -14,7 +14,7 @@ import { StringMatcher } from 'src/app/models/enum/StringMatcher.model';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.css']
+  styleUrl: './search.component.css'
 })
 export class SearchComponent implements OnInit {
   results: Base[] = []

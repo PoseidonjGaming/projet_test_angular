@@ -6,13 +6,11 @@ import { HomeComponent } from './components/home/home.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { SuperAdminGuard } from './guards/superAdmin/super-admin.guard';
-import { SeriesComponent } from './components/admin/series/series.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'admin', canActivate: [SuperAdminGuard], children: [
-      { path: 'series', component: SeriesComponent }
     ]
   },
   {

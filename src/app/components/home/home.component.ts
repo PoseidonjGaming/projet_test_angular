@@ -11,7 +11,7 @@ import { TokenService } from 'src/app/service/token/token.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
   series: Series[] = []
