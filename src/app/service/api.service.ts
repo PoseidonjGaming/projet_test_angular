@@ -4,7 +4,7 @@ import { Sorter } from '../models/Sorter.model';
 import { Base } from '../models/base.model';
 import { MatchMode } from '../models/enum/MatchMode.model';
 import { StringMatcher } from '../models/enum/StringMatcher.model';
-import { PageResponse } from '../models/PageResponse.model';
+import { PageResponse } from '../models/pageResponse.model';
 
 @Injectable({
   providedIn: 'root'

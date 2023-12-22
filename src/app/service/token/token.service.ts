@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { log } from 'console';
 import { jwtDecode } from 'jwt-decode';
 import { Subject } from 'rxjs';
 

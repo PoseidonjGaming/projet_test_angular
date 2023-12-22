@@ -6,5 +6,4 @@ export interface Character extends Base {
     name: String
     actorId: number
     seriesIds: number[]
-    actor: Actor
 }

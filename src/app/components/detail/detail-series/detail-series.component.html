@@ -2,15 +2,20 @@
 @if(series){
 <div class="container-fluid">
     <div class="row">
-        <button *ngIf="series.previousSeriesId!=0" mat-button class="col"
-            [routerLink]="['/detail/series', series.previousSeriesId]">
+        @if (series.previousSeriesId>0) {
+        <button mat-button class="col" [routerLink]="['/detail/series', series.previousSeriesId]">
             <mat-icon>keyboard_arrow_left</mat-icon>
             <span>Série précendente</span>
         </button>
+        }
+
+        @if (series.nextSeriesId>0) {
         <button mat-button class="col">
             <span>Prochaine série</span>
             <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
         </button>
+        }
+
     </div>
     <div class="row">
         @if (series.nextSeriesId>0) {
@@ -31,11 +36,7 @@
     </div>
     <div class="row">
         <div class="col-4">
-            @if(series.poster){
-            <img ngClass="img-fluid" class="m-2" src="http://localhost:8081/file/load?filename={{series.poster}}"
-                alt="affiche">
-            }
-
+            <img class="img-fluid m-2" src="http://localhost:8081/file/load?filename={{series.poster}}" alt="affiche">
         </div>
         <div class="col">
             <div class="row m-2">
@@ -45,21 +46,25 @@
                 <p><b>Personnages:</b> </p>
                 @for (character of characters; track $index) {
                 <p>
-                    {{character.name}}: <a *ngIf="character.actor"
-                        [routerLink]="['/detail/actor', character.actor.id]">{{character.actor.firstname}}
-                        {{character.actor.lastname}}</a>
+                    {{character.name}}:
+                    @if(character['actor']){
+                    <a [routerLink]="['/detail/actor', character['actor'].id]">{{character['actor'].firstname}}
+                        {{character['actor'].lastname}}</a>
+                    }
+
                 </p>
                 }
 
             </div>
             <div class="container-fluid">
                 <div class="row">
-                    @for (season of episodes; track $index;) {
+                    @for (season of seasons; track $index;) {
                     <mat-accordion>
-                        <mat-expansion-panel *ngFor="let episode of episodeSaisoned; index as indexEpisode">
+                        @for (episode of season['episodes']; track $index) {
+                        <mat-expansion-panel>
                             <mat-expansion-panel-header>
                                 <mat-panel-title>
-                                    <!-- {{series.name}} Saison {{season+1}}, Episode {{indexEpisode+1}} -->
+                                    {{series.name}} Saison {{season.number}}, Episode {{$index+1}}
                                 </mat-panel-title>
                                 <mat-panel-description>
                                     {{episode.name}}
@@ -70,12 +75,12 @@
                                 locale}}</p>
                             <p><b>summary:</b> <br>{{episode.summary}}</p>
                         </mat-expansion-panel>
+                        }
                     </mat-accordion>
-                    } 
-
+                    }
                 </div>
             </div>
         </div>
     </div>
-</div> 
+</div>
 }

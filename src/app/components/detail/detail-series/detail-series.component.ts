@@ -11,6 +11,7 @@ import { Series } from '../../../models/series.model';
 import { ApiService } from '../../../service/api.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
+import { combineLatest, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-detail-series',
@@ -33,15 +34,36 @@ export class DetailSeriesComponent {
     })
   }
 
-  series?: Series
-  saisons: Season[] = []
-  episodes: Episode[][] = []
+  series: Series = new Series()
+  seasons: Season[] = []
   characters: Character[] = []
   actors: Actor[] = []
 
+
   constructor(private service: ApiService, @Inject(LOCALE_ID) public locale: string) { }
   ngOnInit(): void {
-    console.log(this.series);
+    combineLatest([
+      this.service.getByIds<Season>('season', this.series.seasonIds),
+      this.service.getByIds<Character>('character', this.series.characterIds)
+    ]).pipe(
+      switchMap(([seasonDtos, characterDtos]) => {
+        this.characters = characterDtos
+        this.seasons = seasonDtos
+        return combineLatest([
+          this.service.getByIds<Actor>('actor', characterDtos.map(e => e.actorId)),
+          this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat())
+        ])
+      })
+    ).subscribe(([actorDtos, episodeDtos]) => {
+      this.seasons.forEach(season => {
+        season['episodes'] = episodeDtos.filter(e => e.seasonId == season.id)
+      })
+
+      this.characters.forEach(character => {
+        character['actor'] = actorDtos.find(a => a.id == character.actorId)
+      })
+
+    })
 
   }
 }
