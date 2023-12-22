@@ -37,7 +37,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EpisodeComponent } from './components/admin/episode/episode.component';
+import { FormComponent } from './components/admin/generic/form/form.component';
+import { TableCRUDComponent } from './components/admin/generic/table-crud/table-crud.component';
+import { SeriesComponent } from './components/admin/series/series.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { ExportDialogComponent } from './components/menu/export-dialog/export-dialog.component';
@@ -46,10 +51,7 @@ import { MenuComponent } from './components/menu/menu/menu.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { SearchComponent } from './components/search/search.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
-import { AppRoutingModule } from './app-routing.module';
-import { SeriesComponent } from './components/admin/series/series.component';
-import { TableCRUDComponent } from './components/admin/generic/table-crud/table-crud.component';
-import { EpisodeComponent } from './components/admin/episode/episode.component';
+import { SelectComponent } from './components/admin/generic/form/select/select.component';
 registerLocaleData(fr);
 @NgModule({
   declarations: [
@@ -64,6 +66,8 @@ registerLocaleData(fr);
     SeriesComponent,
     TableCRUDComponent,
     EpisodeComponent,
+    FormComponent,
+    SelectComponent,
   ],
   imports: [
     AppRoutingModule,

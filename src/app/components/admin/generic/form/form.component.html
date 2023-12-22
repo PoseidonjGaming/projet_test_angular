@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <form *ngIf="form" [formGroup]="form" #formModel="ngForm" (ngSubmit)="submit()">
+        @for (control of controls; track $index) {
+        <div class="row" *ngIf="control.name==='id' else date">
+            <mat-form-field>
+                <mat-label>{{labels[$index]}}</mat-label>
+                <input matInput [formControlName]="control.name" type="number" [name]="control.name" [id]="control.name"
+                    readonly="true">
+            </mat-form-field>
+        </div>
+
+        <ng-template #date>
+            <div class="row" *ngIf="control.name.toLowerCase().includes('date') else entity">
+                <mat-form-field>
+                    <mat-label>{{labels[$index]}}</mat-label>
+                    <input matInput [formControlName]="control.name" type="text" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </ng-template>
+
+        <ng-template #entity>
+            <app-select *ngIf="control.name.endsWith('Id') else number" [control]="control"
+                [type]="typeMap.get(control.name)!" [propertyToDisplay]="searchMap.get(control.name)!" [form]="form"
+                [header]="labels[$index]"></app-select>
+        </ng-template>
+
+        <ng-template #number>
+            <div class="row" *ngIf="control.type==='number' else standard">
+                <mat-form-field>
+                    <mat-label>{{labels[$index]}}</mat-label>
+                    <input matInput [formControlName]="control.name" type="number" [name]="control.name"
+                        [id]="control.name">
+                </mat-form-field>
+            </div>
+        </ng-template>
+
+        <ng-template #standard>
+            <div class="row" *ngIf="!control.name.endsWith('Ids')">
+                <mat-form-field>
+                    <mat-label>{{labels[$index]}}</mat-label>
+                    <input matInput [formControlName]="control.name" type="text" [name]="control.name"
+                        [id]="control.name">
+                </mat-form-field>
+            </div>
+        </ng-template>
+        }
+
+        <button type="submit" mat-raised-button color="primary" class="me-2">Valider</button>
+        <button type="button" mat-raised-button (click)="formModel.resetForm()">Reset</button>
+    </form>
+</div>

@@ -20,6 +20,7 @@ export class TableCRUDComponent implements OnInit {
   @Output() populateEvent = new EventEmitter<Base>()
 
   dataSource = new Subject<Base[]>()
+
   length = 10
 
   private paginator = { pageSize: 10, pageIndex: 0 }
@@ -48,8 +49,7 @@ export class TableCRUDComponent implements OnInit {
   }
 
   page(event: PageEvent) {
-    this.paginator.pageSize = event.pageSize
-    this.paginator.pageIndex = event.pageIndex
+    this.paginator = { pageSize: event.pageSize, pageIndex: event.pageIndex }
     this.sendRequest().subscribe(dto => {
       this.length = dto.size
       this.dataSource.next(dto.content)
@@ -75,7 +75,9 @@ export class TableCRUDComponent implements OnInit {
   }
 
   private sendRequest() {
-    return this.service.getAllPaged(this.type, this.paginator.pageSize, this.paginator.pageIndex)
+    return this.service.sortPaged(this.type,
+      this.sort.active, this.sort.direction,
+      this.paginator.pageSize, this.paginator.pageIndex)
   }
 
 }
