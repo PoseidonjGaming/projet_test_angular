@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
   provideHttpClient(withFetch()),
   {
     provide: LOCALE_ID, useValue: 'fr-FR'
-  }, 
+  },
   importProvidersFrom(
     JwtModule.forRoot({
       config: {

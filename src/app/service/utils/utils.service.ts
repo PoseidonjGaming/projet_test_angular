@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { Base } from 'src/app/models/base.model';
+import { Base } from '../../models/base.model';
+
 
 @Injectable({
   providedIn: 'root'
