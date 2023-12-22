@@ -1,0 +1,13 @@
+<app-menu></app-menu>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <app-form [dataSource]="dataSource" [type]="'series'" [form]="formSeries" [controls]="controls"
+                [typeMap]="typeMap" [displayMap]="displayMap"></app-form>
+        </div>
+        <div class="col">
+            <app-table-crud [dataSource]="dataSource" [columns]="columns" [type]="'series'" (populateEmitter)="populate($event)"></app-table-crud>
+        </div>
+    </div>
+
+</div>

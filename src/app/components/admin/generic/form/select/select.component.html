@@ -1,0 +1,17 @@
+@if(form){
+<div class="row" [formGroup]="form">
+    <mat-form-field>
+        <mat-label>{{control.name}}</mat-label>
+        <mat-select [formControlName]="control.name" [id]="control.name">
+            <mat-option [value]="0">None</mat-option>
+            @for (item of items; track $index) {
+            <mat-option [value]="item['id']">
+                {{item[propertyToDisplay]}}
+            </mat-option>
+            }
+
+        </mat-select>
+    </mat-form-field>
+</div>
+
+}
