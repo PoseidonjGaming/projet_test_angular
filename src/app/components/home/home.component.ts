@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { Series } from '../../models/series.model';
 import { ApiService } from '../../service/api.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, RouterLink],
+  imports: [MatCardModule, MatButtonModule, RouterLink, MenuComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

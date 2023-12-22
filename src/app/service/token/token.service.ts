@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { log } from 'console';
 import { jwtDecode } from 'jwt-decode';
 import { Subject } from 'rxjs';
 
@@ -12,6 +13,8 @@ export class TokenService {
   constructor() { }
 
   isExist() {
+    console.log(this.getToken());
+
     return this.getToken() != null
   }
 
@@ -22,7 +25,7 @@ export class TokenService {
   }
 
   getToken() {
-    return localStorage.getItem('jToken')
+    return (typeof (window) !== 'undefined') ? localStorage.getItem('jToken') : ''
   }
 
   getRole() {
@@ -32,15 +35,17 @@ export class TokenService {
 
 
   getClaims(): any {
-    return jwtDecode(this.getToken()!)
+    return (this.getToken()) ? jwtDecode(this.getToken()!) : null
   }
 
   deleteToken() {
-    localStorage.removeItem("jToken")
+    if (typeof (window) !== 'undefined')
+      localStorage.removeItem("jToken")
   }
 
   setToken(token: string) {
-    localStorage.setItem('jToken', token)
+    if (typeof (window) !== 'undefined')
+      localStorage.setItem('jToken', token)
   }
 
   subscribeRole() {

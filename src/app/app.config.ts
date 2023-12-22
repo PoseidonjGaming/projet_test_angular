@@ -16,8 +16,8 @@ export const appConfig: ApplicationConfig = {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        allowedDomains: ['localhost'],
-        disallowedRoutes:['/admin']
+        allowedDomains: ['localhost:4200'],
+        disallowedRoutes: ['/admin']
       }
     })
   )]
