@@ -13,8 +13,6 @@ export class TokenService {
   constructor() { }
 
   isExist() {
-    console.log(this.getToken());
-
     return this.getToken() != null
   }
 
