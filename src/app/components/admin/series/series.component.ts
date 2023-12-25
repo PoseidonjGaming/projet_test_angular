@@ -1,5 +1,7 @@
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { MatTabsModule } from '@angular/material/tabs';
 import { Subject } from 'rxjs';
 import { Base } from '../../../models/base.model';
 import { Series } from '../../../models/series.model';
@@ -11,7 +13,12 @@ import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 @Component({
   selector: 'app-series',
   standalone: true,
-  imports: [MenuComponent, TableCRUDComponent, FormComponent],
+  imports: [MenuComponent,
+    TableCRUDComponent,
+    FormComponent,
+    ScrollingModule,
+    MatTabsModule
+  ],
   templateUrl: './series.component.html',
   styleUrl: './series.component.css'
 })
