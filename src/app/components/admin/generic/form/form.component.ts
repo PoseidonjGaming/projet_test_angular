@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -25,7 +25,7 @@ import { Base } from '../../../../models/base.model';
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
-export class FormComponent {
+export class FormComponent implements OnInit {
 
   @Input({ required: true }) form?: FormGroup
   @Input({ required: true }) controls: { name: string, type: string }[] = []
@@ -34,7 +34,13 @@ export class FormComponent {
   @Input({ required: true }) type = ''
   @Input() dataSource = new Subject<Base[]>()
 
+  private resetDto: Base = new Base()
+
   constructor(private service: ApiService) { }
+  ngOnInit(): void {
+    if (this.form)
+      this.resetDto = this.form.value
+  }
 
   setPoster(event: Event) {
 
@@ -46,7 +52,7 @@ export class FormComponent {
         mergeMap(() => this.service.getAll(this.type))
       ).subscribe((dtos: Base[]) => {
         this.dataSource.next(dtos)
-        ngForm.resetForm(new Base())
+        ngForm.resetForm(this.resetDto)
       })
     }
   }

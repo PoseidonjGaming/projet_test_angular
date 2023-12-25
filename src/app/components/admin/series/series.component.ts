@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
-import { MenuComponent } from '../../menu/menu.component';
-import { FormComponent } from '../generic/form/form.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Series } from '../../../models/series.model';
 import { Subject } from 'rxjs';
 import { Base } from '../../../models/base.model';
+import { Series } from '../../../models/series.model';
 import { UtilsService } from '../../../service/utils/utils.service';
+import { MenuComponent } from '../../menu/menu.component';
+import { FormComponent } from '../generic/form/form.component';
+import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 
 @Component({
   selector: 'app-series',
