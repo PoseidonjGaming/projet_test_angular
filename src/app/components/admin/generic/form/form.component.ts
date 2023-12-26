@@ -73,5 +73,15 @@ export class FormComponent implements OnInit {
 
   reset(ngForm: FormGroupDirective) {
     ngForm.resetForm(this.dto)
+    if (this.form) {
+      Object.keys(this.form.controls).filter(control => control.endsWith('Ids')).forEach(control => {
+
+
+        this.form?.get(control.slice(0, control.length - 3))?.setValue([])
+        console.log(this.form?.get(control.slice(0, control.length - 3))?.value);
+      })
+    }
+
+
   }
 }

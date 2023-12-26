@@ -44,6 +44,9 @@ export class SeriesComponent implements OnInit {
     const dto = new Series()
     this.formSeries = this.formBuilder.group(dto)
     Object.keys(dto).forEach(property => {
+      if (property.endsWith('Ids')) {
+        this.formSeries?.get(property)?.setValue([])
+      }
       this.controls.push({ name: property, type: typeof (dto[property]) })
     })
 

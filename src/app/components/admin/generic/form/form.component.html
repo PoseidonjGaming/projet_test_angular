@@ -13,8 +13,8 @@
         </div>
         }
         @else if (control.name.endsWith('Id')) {
-         <app-select [form]="form" [control]="control" [type]="typeMap.get(control.name)!"
-                [propertyToDisplay]="displayMap.get(control.name)!"></app-select>
+        <app-select [form]="form" [control]="control" [type]="typeMap.get(control.name)!"
+            [propertyToDisplay]="displayMap.get(control.name)!"></app-select>
 
         }
         @else if (control.name.toLowerCase().includes('date')) {
@@ -49,7 +49,7 @@
         @else if (control.name.toLowerCase().includes('poster')) {
         <div class="row">
             <mat-form-field>
-                <mat-label>Affiche</mat-label>
+                <mat-label>{{control.name}}</mat-label>
                 <input matInput type="text" [formControlName]="control.name" [name]="control.name" [id]="control.name"
                     placeholder="poster" [readonly]="true">
             </mat-form-field>

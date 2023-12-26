@@ -8,7 +8,8 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { JwtModule } from '@auth0/angular-jwt';
 import { routes } from './app.routes';
-import { authInterceptor } from './interceptors/auth.interceptor';
+import { authInterceptor } from './interceptors/auth/auth.interceptor';
+import { errorInterceptor } from './interceptors/error/error.interceptor';
 
 registerLocaleData(fr);
 
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideClientHydration(),
     provideAnimations(),
-    provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
     importProvidersFrom(
       JwtModule.forRoot({
         config: {
