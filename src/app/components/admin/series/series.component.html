@@ -3,11 +3,17 @@
     <div class="row">
         <div class="col mat-elevation-z8 m-2">
             <mat-tab-group>
-                <mat-tab label="Séries">
+                <mat-tab label="Série">
                     <cdk-virtual-scroll-viewport appendOnly itemSize="1" class="form-viewport m-2">
                         <app-form [dataSource]="dataSource" [type]="'series'" [form]="formSeries" [controls]="controls"
                             [typeMap]="typeMap" [displayMap]="displayMap"></app-form>
                     </cdk-virtual-scroll-viewport>
+                </mat-tab>
+                <mat-tab label="Catégories">
+                    @if(formSeries){
+                    <app-drag-and-drop [form]="formSeries" [property]="'categoryIds'" [propertyToDisplay]="'name'"
+                        [type]="'category'"></app-drag-and-drop>
+                    }
                 </mat-tab>
             </mat-tab-group>
 

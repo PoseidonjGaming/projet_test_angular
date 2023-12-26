@@ -19,24 +19,15 @@ export class UtilsService {
     })
   }
 
-  updateValues<T extends Base>(entity: T, form: FormGroup) {
-    Object.keys(form.controls).forEach((e: string) => {
-      let control = form.get(e)      
-      if (control)
-        e = control.value
+  updateValues<T extends Base>(dto: T, form: FormGroup) {
+    let returnedDto=new Base()
+    Object.keys(dto).forEach((e: string) => {
+      const control = form.get(e)
+      if (control) {
+        returnedDto[e] = control.value
+      }
+
     })
-    return entity
+    return returnedDto
   }
-
-  updateTable<E extends Base>(table: MatTable<E>) {
-    table.renderRows()
-  }
-
-  reset() {
-    var resetForm = <HTMLFormElement>document.getElementById('form');
-    resetForm.reset();
-  }
-
-
-
 }

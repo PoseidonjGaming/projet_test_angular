@@ -9,6 +9,7 @@ import { ApiService } from '../../../../service/api.service';
 import { SelectComponent } from './select/select.component';
 import { Subject, mergeMap } from 'rxjs';
 import { Base } from '../../../../models/base.model';
+import { UtilsService } from '../../../../service/utils/utils.service';
 
 @Component({
   selector: 'app-form',
@@ -34,12 +35,12 @@ export class FormComponent implements OnInit {
   @Input({ required: true }) type = ''
   @Input() dataSource = new Subject<Base[]>()
 
-  private resetDto: Base = new Base()
+  private dto: Base = new Base()
 
-  constructor(private service: ApiService) { }
+  constructor(private service: ApiService, private utilsService: UtilsService) { }
   ngOnInit(): void {
     if (this.form)
-      this.resetDto = this.form.value
+      this.dto = this.form.value
   }
 
   setPoster(event: Event) {
@@ -48,11 +49,20 @@ export class FormComponent implements OnInit {
 
   submit(ngForm: FormGroupDirective) {
     if (this.form?.valid) {
-      this.service.save(this.type, this.form.value).pipe(
+
+      Object.keys(this.form.controls).filter(control => control.endsWith('Ids')).forEach(control => {
+        const name = control.slice(0, control.length - 3)
+        const controlDrag = this.form?.get(name)
+        if (controlDrag) {
+          this.form?.get(control)?.setValue(controlDrag.value.map((base: Base) => base['id']))
+        }
+      })
+
+      this.service.save(this.type, this.utilsService.updateValues(this.dto, this.form)).pipe(
         mergeMap(() => this.service.getAll(this.type))
       ).subscribe((dtos: Base[]) => {
         this.dataSource.next(dtos)
-        ngForm.resetForm(this.resetDto)
+        ngForm.resetForm(this.dto)
       })
     }
   }
@@ -62,6 +72,6 @@ export class FormComponent implements OnInit {
   }
 
   reset(ngForm: FormGroupDirective) {
-    ngForm.resetForm(new Base())
+    ngForm.resetForm(this.dto)
   }
 }
