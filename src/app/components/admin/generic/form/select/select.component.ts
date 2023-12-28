@@ -31,9 +31,12 @@ export class SelectComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getAll(this.type).subscribe((dtos: Base[]) => {
-      this.form?.get(this.type)?.setValue(dtos)
+      this.form?.get(this.getControlName())?.setValue(dtos)
     })
   }
 
+  getControlName() {
+    return this.control.name.slice(0, this.control.name.length - 2)
+  }
 
 }
