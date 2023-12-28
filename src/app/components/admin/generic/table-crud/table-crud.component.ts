@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Base } from '../../../../models/base.model';
@@ -25,7 +25,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './table-crud.component.html',
   styleUrl: './table-crud.component.css'
 })
-export class TableCRUDComponent implements OnInit {
+export class TableCRUDComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) columns: { name: string, header: string }[] = []
   @Input({ required: true }) type = ''
@@ -52,6 +52,10 @@ export class TableCRUDComponent implements OnInit {
     })
 
     this.crudService.next(new Base())
+  }
+
+  ngOnDestroy(): void {
+    this.crudService.get().unsubscribe()
   }
 
   paginate(event: PageEvent) {

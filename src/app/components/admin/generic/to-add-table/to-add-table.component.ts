@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Observable, Subject } from 'rxjs';
 import { Base } from '../../../../models/base.model';
@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './to-add-table.component.html',
   styleUrl: './to-add-table.component.css'
 })
-export class ToAddTableComponent implements OnInit {
+export class ToAddTableComponent implements OnInit, OnDestroy {
 
 
   @Input({ required: true }) columns: { name: string, header: string }[] = []
@@ -30,6 +30,9 @@ export class ToAddTableComponent implements OnInit {
   private index = 0
 
   constructor(private toAddService: ToAddService, @Inject(LOCALE_ID) public locale: string) { }
+  ngOnDestroy(): void {
+    this.toAddService.get().unsubscribe()
+  }
 
   ngOnInit(): void {   
     this.toAddService.get().subscribe((value) => {
