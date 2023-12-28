@@ -1,6 +1,6 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Base } from '../../../models/base.model';
@@ -14,6 +14,7 @@ import { UtilsService } from '../../../service/api/utils/utils.service';
 import { ApiService } from '../../../service/api/api.service';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
+import { FormService } from '../../../service/admin/form/form.service';
 
 @Component({
   selector: 'app-series',
@@ -42,6 +43,13 @@ export class SeriesComponent implements OnInit {
 
   controls: { name: string, type: string }[] = []
   formSeries?: FormGroup
+  validators = [
+    { controlName: 'name', validators: [Validators.required] },
+    { controlName: 'nextMovieId', validators: [Validators.required, Validators.min(1)] },
+    { controlName: 'nextSeriesId', validators: [Validators.required, Validators.min(1)] },
+    { controlName: 'previousMovieId', validators: [Validators.required, Validators.min(1)] },
+    { controlName: 'previousSeriesId', validators: [Validators.required, Validators.min(1)] },
+  ]
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
@@ -51,13 +59,10 @@ export class SeriesComponent implements OnInit {
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private formService: FormService) { }
   ngOnInit(): void {
-    this.formSeries = this.formBuilder.group(new Series())
-
-    Object.keys(this.formSeries.controls).forEach(control => {
-      this.controls.push({ name: control, type: typeof (this.formSeries?.controls[control]) })
-    })
+    this.formSeries = this.formService.createForm(new Series(), this.controls)
 
     this.displayMap.set('nextMovieId', 'name')
     this.displayMap.set('nextSeriesId', 'name')
@@ -73,6 +78,9 @@ export class SeriesComponent implements OnInit {
   populate(series: Base) {
     if (this.formSeries) {
       this.utilsService.populate(series, this.formSeries)
+      Object.keys(this.formSeries.controls).filter(c => c.endsWith('Ids')).forEach(controlIdsName => {
+        const controlName = controlIdsName.slice(0, controlIdsName.length - 3)
+      })
     }
   }
 
