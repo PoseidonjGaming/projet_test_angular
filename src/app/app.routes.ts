@@ -6,6 +6,7 @@ import { SeriesComponent } from './components/admin/series/series.component';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
 import { ActorComponent } from './components/admin/actor/actor.component';
 import { CharacterComponent } from './components/admin/character/character.component';
+import { MovieComponent } from './components/admin/movie/movie.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -16,7 +17,8 @@ export const routes: Routes = [
             { path: 'series', component: SeriesComponent },
             { path: 'episodes', component: EpisodeComponent },
             { path: 'actors', component: ActorComponent },
-            { path: 'characters', component: CharacterComponent }
+            { path: 'characters', component: CharacterComponent },
+            { path: 'movies', component: MovieComponent }
         ]
     }
 ];
