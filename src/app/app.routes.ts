@@ -4,6 +4,7 @@ import { DetailSeriesComponent } from './components/detail/detail-series/detail-
 import { SearchComponent } from './components/search/search.component';
 import { SeriesComponent } from './components/admin/series/series.component';
 import { EpisodeComponent } from './components/admin/episode/episode.component';
+import { ActorComponent } from './components/admin/actor/actor.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -12,7 +13,8 @@ export const routes: Routes = [
     {
         path: 'admin', children: [
             { path: 'series', component: SeriesComponent },
-            { path: 'episodes', component: EpisodeComponent }
+            { path: 'episodes', component: EpisodeComponent },
+            { path: 'actors', component: ActorComponent }
         ]
     }
 ];
