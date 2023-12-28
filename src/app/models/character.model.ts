@@ -1,9 +1,9 @@
 import { Actor } from "./actor.model";
 import { Base } from "./base.model";
 
-export interface Character extends Base {
-    id: number
-    name: String
-    actorId: number
-    seriesIds: number[]
+export class Character extends Base {
+    id: number = 0
+    name: String = ''
+    actorId: number = 0
+    seriesIds: number[] = []
 }

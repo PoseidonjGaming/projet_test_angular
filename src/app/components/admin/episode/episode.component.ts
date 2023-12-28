@@ -55,7 +55,7 @@ export class EpisodeComponent implements OnInit {
     this.formEpisode = this.formBuidler.nonNullable.group(new Episode())
 
     Object.keys(this.formEpisode.controls).forEach(controlName => {
-      this.controls.push({ name: controlName, type: typeof (this.formEpisode?.controls[controlName]) })
+      this.controls.push({ name: controlName, type: typeof (this.formEpisode?.controls[controlName].value) })
     })
     this.formEpisode.addControl('series', new FormControl([]))
     this.formEpisode.addControl('season', new FormControl([]))

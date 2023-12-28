@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './to-add-table.component.html',
   styleUrl: './to-add-table.component.css'
 })
-export class ToAddTableComponent implements OnInit, OnDestroy {
+export class ToAddTableComponent implements OnInit {
 
 
   @Input({ required: true }) columns: { name: string, header: string }[] = []
@@ -30,9 +30,7 @@ export class ToAddTableComponent implements OnInit, OnDestroy {
   private index = 0
 
   constructor(private toAddService: ToAddService, @Inject(LOCALE_ID) public locale: string) { }
-  ngOnDestroy(): void {
-    this.toAddService.get().unsubscribe()
-  }
+
 
   ngOnInit(): void {   
     this.toAddService.get().subscribe((value) => {

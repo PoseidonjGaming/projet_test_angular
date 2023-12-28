@@ -25,7 +25,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './table-crud.component.html',
   styleUrl: './table-crud.component.css'
 })
-export class TableCRUDComponent implements OnInit, OnDestroy {
+export class TableCRUDComponent implements OnInit {
 
   @Input({ required: true }) columns: { name: string, header: string }[] = []
   @Input({ required: true }) type = ''
@@ -52,10 +52,6 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
     })
 
     this.crudService.next(new Base())
-  }
-
-  ngOnDestroy(): void {
-    this.crudService.get().unsubscribe()
   }
 
   paginate(event: PageEvent) {
