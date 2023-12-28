@@ -10,7 +10,7 @@ import { DragAndDropComponent } from '../generic/drag-and-drop/drag-and-drop.com
 import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
-import { UtilsService } from '../../../service/api/utils/utils.service';
+import { UtilsService } from '../../../service/utils/utils.service';
 import { ApiService } from '../../../service/api/api.service';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
@@ -73,13 +73,20 @@ export class SeriesComponent implements OnInit {
     this.typeMap.set('nextSeriesId', 'series')
     this.typeMap.set('previousMovieId', 'movie')
     this.typeMap.set('previousSeriesId', 'series')
+
+    this.typeMap.set('categoryIds', 'category')
   }
 
   populate(series: Base) {
     if (this.formSeries) {
       this.utilsService.populate(series, this.formSeries)
       Object.keys(this.formSeries.controls).filter(c => c.endsWith('Ids')).forEach(controlIdsName => {
-        const controlName = controlIdsName.slice(0, controlIdsName.length - 3)
+        const controlName = this.utilsService.getRelatedName(controlIdsName, 3)
+        let control = this.formSeries?.controls[controlName]
+        if (control) {
+          this.service.getByIds(this.typeMap.get(controlIdsName)!,
+            this.formSeries?.controls[controlIdsName].value).subscribe(values=>control?.setValue(values))
+        }
       })
     }
   }
