@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ToAddTableComponent } from './to-add-table.component';
 
-import { ToAddTableComponent } from './ToAddTableComponent';
 
 describe('ToAddTableComponent', () => {
   let component: ToAddTableComponent;

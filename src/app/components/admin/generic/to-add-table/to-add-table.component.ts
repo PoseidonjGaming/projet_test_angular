@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { Observable, Subject } from 'rxjs';
 import { Base } from '../../../../models/base.model';
@@ -7,11 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { CrudService } from '../../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../../service/api/api.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-to-add-table',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule],
+  imports: [MatTableModule, MatButtonModule, DatePipe],
   templateUrl: './to-add-table.component.html',
   styleUrl: './to-add-table.component.css'
 })
@@ -28,9 +29,11 @@ export class ToAddTableComponent implements OnInit {
 
   private index = 0
 
-  constructor(private toAddService: ToAddService) { }
+  constructor(private toAddService: ToAddService, @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit(): void {
+    console.log(this.columns);
+    
     this.toAddService.get().subscribe((value) => {
       this.dataSource.addData(value, this.index)
     })

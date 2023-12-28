@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnInit, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Base } from '../../../../models/base.model';
@@ -11,12 +11,17 @@ import { PageResponse } from '../../../../models/pageResponse.model';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { Sorter } from '../../../../models/Sorter.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-table-crud',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, MatPaginatorModule, MatSortModule],
+  imports: [MatTableModule,
+    MatButtonModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DatePipe],
   templateUrl: './table-crud.component.html',
   styleUrl: './table-crud.component.css'
 })
@@ -33,11 +38,11 @@ export class TableCRUDComponent implements OnInit {
 
   private sorting = { field: 'id', direction: Sorter.ASC }
 
-  constructor(private service: ApiService, private crudService: CrudService) { }
+  constructor(private service: ApiService, private crudService: CrudService, @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnInit(): void {
     this.crudService.get().subscribe({
-      next: (value: Base) => {
+      next: () => {
         this.sendRequest().subscribe((values: PageResponse<Base>) => {
           this.dataSource.setData(values.content)
           this.paginator.length = values.size

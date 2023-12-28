@@ -36,6 +36,7 @@ export class SeriesComponent implements OnInit {
 
   columns: { name: string, header: string }[] = [
     { name: 'name', header: 'Nom' },
+    { name: 'releaseDate', header: 'Date de diffusion' },
     { name: 'action', header: 'Action' }
   ]
 
