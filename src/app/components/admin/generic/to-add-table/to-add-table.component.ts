@@ -31,9 +31,7 @@ export class ToAddTableComponent implements OnInit {
 
   constructor(private toAddService: ToAddService, @Inject(LOCALE_ID) public locale: string) { }
 
-  ngOnInit(): void {
-    console.log(this.columns);
-    
+  ngOnInit(): void {   
     this.toAddService.get().subscribe((value) => {
       this.dataSource.addData(value, this.index)
     })

@@ -1,5 +1,5 @@
 @if(form){
-<div class="container-fluid">
+<div class="container-fluid p-2">
     <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="submit(ngForm)">
         @for (control of controls; track $index) {
         @if(!control.name.endsWith('Ids')){

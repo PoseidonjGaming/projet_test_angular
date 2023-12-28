@@ -35,8 +35,8 @@
     <tr mat-header-row *matHeaderRowDef="getColumnNames()"></tr>
     <tr mat-row *matRowDef="let row; columns: getColumnNames();"></tr>
 </table>
-<mat-paginator (page)="paginate($event)" [length]="paginator.length" [pageSize]="paginator.pageSize"
-    [pageSizeOptions]="[1, 2, 5, 10, 25, 100]" aria-label="Select page">
+<mat-paginator (page)="paginate($event)" [length]="paginator.length" [pageIndex]="paginator.pageIndex"
+    [pageSize]="paginator.pageSize" [pageSizeOptions]="[1, 2, 5, 10, 25, 100]" aria-label="Select page">
 </mat-paginator>
 
 }

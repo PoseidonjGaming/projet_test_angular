@@ -44,8 +44,9 @@ export class TableCRUDComponent implements OnInit {
     this.crudService.get().subscribe({
       next: () => {
         this.sendRequest().subscribe((values: PageResponse<Base>) => {
-          this.dataSource.setData(values.content)
           this.paginator.length = values.size
+          this.dataSource.setData(values.content)
+
         })
       }
     })
@@ -68,7 +69,12 @@ export class TableCRUDComponent implements OnInit {
   }
 
   delete(base: Base) {
-    this.service.delete(this.type, base['id']).subscribe((value) => this.crudService.next(value))
+    this.service.delete(this.type, base['id']).subscribe((value) => {
+      if (this.dataSource.getData().length - 1 == 0)
+        this.paginator.pageIndex = this.paginator.pageIndex - 1
+      this.crudService.next(value)
+
+    })
   }
 
   populate(base: Base) {
