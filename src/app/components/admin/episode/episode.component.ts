@@ -16,6 +16,7 @@ import { mergeMap, startWith } from 'rxjs';
 import { MatchMode } from '../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../models/enum/StringMatcher.model';
 import { Season } from '../../../models/season.model';
+import { FormService } from '../../../service/admin/form/form.service';
 
 @Component({
   selector: 'app-episode',
@@ -49,16 +50,12 @@ export class EpisodeComponent implements OnInit {
     private crudService: CrudService,
     private toAddService: ToAddService,
     private utilsService: UtilsService,
-    private formBuidler: FormBuilder) { }
+    private formService: FormService
+  ) { }
 
   ngOnInit(): void {
-    this.formEpisode = this.formBuidler.nonNullable.group(new Episode())
 
-    Object.keys(this.formEpisode.controls).forEach(controlName => {
-      this.controls.push({ name: controlName, type: typeof (this.formEpisode?.controls[controlName].value) })
-    })
-    this.formEpisode.addControl('series', new FormControl([]))
-    this.formEpisode.addControl('season', new FormControl([]))
+    this.formEpisode = this.formService.createForm(new Episode(), this.controls)
 
     this.formEpisode.controls['seriesId'].addValidators(Validators.min(1))
     this.formEpisode.controls['seasonId'].addValidators(Validators.min(1))
@@ -67,7 +64,7 @@ export class EpisodeComponent implements OnInit {
 
 
     this.formEpisode.controls['seriesId'].valueChanges.pipe(
-      startWith(1),
+      startWith(0),
       mergeMap((value: number) => {
         return this.service.search<Season>('season', { seriesId: value },
           MatchMode.ALL, StringMatcher.CONTAINING, null, null)

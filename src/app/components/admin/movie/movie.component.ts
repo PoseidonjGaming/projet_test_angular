@@ -55,10 +55,10 @@ export class MovieComponent implements OnInit {
       this.controls.push({ name: control, type: typeof (this.formMovie?.controls[control]) })
     })
 
-    this.formMovie.addControl('nextMovie', new FormControl([]))
-    this.formMovie.addControl('nextSeries', new FormControl([]))
-    this.formMovie.addControl('previousMovie', new FormControl([]))
-    this.formMovie.addControl('previousSeries', new FormControl([]))
+    // this.formMovie.addControl('nextMovie', new FormControl([]))
+    // this.formMovie.addControl('nextSeries', new FormControl([]))
+    // this.formMovie.addControl('previousMovie', new FormControl([]))
+    // this.formMovie.addControl('previousSeries', new FormControl([]))
 
     this.displayMap.set('nextMovieId', 'name')
     this.displayMap.set('nextSeriesId', 'name')

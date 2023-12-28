@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -43,7 +43,16 @@ export class FormComponent implements OnInit {
   constructor(private utilsService: UtilsService, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.resetDto = this.form?.value
+    if (this.form) {
+      this.resetDto = this.form.value
+      Object.keys(this.form.controls).filter(c => c.endsWith('Id')).forEach(controlIdName => {
+        const control = new FormControl([])
+        this.form?.addControl(controlIdName.slice(0, controlIdName.length - 2), control)
+      })
+    }
+
+
+
   }
 
   submit(ngForm: FormGroupDirective) {

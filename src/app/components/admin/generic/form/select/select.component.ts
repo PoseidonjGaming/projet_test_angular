@@ -26,7 +26,6 @@ export class SelectComponent implements OnInit {
   @Input({ required: true }) propertyToDisplay = ''
 
 
-  items: Base[] = []
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
