@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Sorter } from '../models/Sorter.model';
-import { Base } from '../models/base.model';
-import { MatchMode } from '../models/enum/MatchMode.model';
-import { StringMatcher } from '../models/enum/StringMatcher.model';
-import { PageResponse } from '../models/pageResponse.model';
+import { Sorter } from '../../models/Sorter.model';
+import { Base } from '../../models/base.model';
+import { MatchMode } from '../../models/enum/MatchMode.model';
+import { StringMatcher } from '../../models/enum/StringMatcher.model';
+import { PageResponse } from '../../models/pageResponse.model';
 
 @Injectable({
   providedIn: 'root'
@@ -134,7 +134,7 @@ export class ApiService {
     })
   }
 
-  delete(type: string, id: number) {
-    return this.httpClient.delete(`${this.API_BASE_URL}/${type}/delete/${id}`)
+  delete<E extends Base>(type: string, id: number) {
+    return this.httpClient.delete<E>(`${this.API_BASE_URL}/${type}/delete/${id}`)
   }
 }

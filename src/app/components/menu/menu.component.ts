@@ -11,8 +11,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Credential } from '../../models/credential.model';
-import { CredentialService } from '../../service/credential/credential.service';
-import { TokenService } from '../../service/token/token.service';
+import { CredentialService } from '../../service/api/credential/credential.service';
+import { TokenService } from '../../service/api/token/token.service';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
 

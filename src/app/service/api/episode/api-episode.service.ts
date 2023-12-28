@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { HttpClient } from '@angular/common/http';
-import { Episode } from '../../models/episode.model';
+import { Episode } from '../../../models/episode.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiEpisodeService extends ApiService{
+export class ApiEpisodeService extends ApiService {
 
   constructor(httpClient: HttpClient) {
     super(httpClient)
-    this.type='episode'
+    this.type = 'episode'
   }
 
   getBySeasonIdIn(id: string[]) {

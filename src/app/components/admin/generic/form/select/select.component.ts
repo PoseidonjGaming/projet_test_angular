@@ -3,7 +3,7 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Base } from '../../../../../models/base.model';
-import { ApiService } from '../../../../../service/api.service';
+import { ApiService } from '../../../../../service/api/api.service';
 
 @Component({
   selector: 'app-select',

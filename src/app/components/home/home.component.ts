@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { Series } from '../../models/series.model';
-import { ApiService } from '../../service/api.service';
+import { ApiService } from '../../service/api/api.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MenuComponent } from '../menu/menu.component';
 

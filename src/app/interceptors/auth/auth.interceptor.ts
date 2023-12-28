@@ -1,20 +1,21 @@
-import { HttpErrorResponse, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { TokenService } from '../../service/token/token.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable } from 'rxjs';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { request } from 'http';
+import { TokenService } from '../../service/api/token/token.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   const tokenService = inject(TokenService)
-  let request = req.clone({
-    setHeaders: {
-      'Authorization': 'Bearer ' + tokenService.getToken(),
-    },
-  });
-  return next(request)
+  if (tokenService.isExist()) {
+    let request = req.clone({
+      setHeaders: {
+        'Authorization': 'Bearer ' + tokenService.getToken(),
+      },
+    });
+    return next(request)
+  }
+  return next(req)
+
+
 
 
 };

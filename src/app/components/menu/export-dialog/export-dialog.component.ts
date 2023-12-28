@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { FileService } from '../../../service/file/file.service';
+import { FileService } from '../../../service/api/file/file.service';
 
 @Component({
   selector: 'app-export-dialog',

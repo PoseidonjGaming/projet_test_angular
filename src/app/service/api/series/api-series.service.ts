@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
-import { Series } from '../../models/series.model';
+import { Series } from '../../../models/series.model';
 
 @Injectable({
   providedIn: 'root'

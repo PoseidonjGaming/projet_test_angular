@@ -3,13 +3,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Base } from '../../../../models/base.model';
 import { CrudService } from '../../../../service/admin/crud/crud.service';
-import { ApiService } from '../../../../service/api.service';
+import { ApiService } from '../../../../service/api/api.service';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PageResponse } from '../../../../models/pageResponse.model';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { Sorter } from '../../../../models/Sorter.model';
+import { CustomDataSource } from '../../../../models/customDataSource.model';
 
 
 @Component({
@@ -28,14 +29,13 @@ export class TableCRUDComponent implements OnInit {
 
 
   dataSource = new CustomDataSource()
-  paginator = { pageSize: 10, pageIndex: 0, length: 2 }
+  paginator = { pageSize: 10, pageIndex: 0, length: 10 }
 
   private sorting = { field: 'id', direction: Sorter.ASC }
 
   constructor(private service: ApiService, private crudService: CrudService) { }
 
   ngOnInit(): void {
-    this.columns.push({ name: 'action', header: 'Action' })
     this.crudService.get().subscribe({
       next: (value: Base) => {
         this.sendRequest().subscribe((values: PageResponse<Base>) => {
@@ -82,31 +82,6 @@ export class TableCRUDComponent implements OnInit {
   }
 }
 
-class CustomDataSource extends DataSource<Base>{
-  private _dataStream = new ReplaySubject<Base[]>();
-  private datas: Base[] = []
 
-  constructor() {
-    super();
-  }
-
-  connect(): Observable<Base[]> {
-    return this._dataStream;
-  }
-
-  disconnect() { }
-
-  setData(data: Base[]) {
-    this.datas = data
-    this._dataStream.next(data);
-  }
-
-  addData(value: Base) {
-    this.datas.push(value)
-    this.setData(this.datas)
-  }
-
-
-}
 
 

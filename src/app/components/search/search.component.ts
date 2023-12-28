@@ -15,8 +15,8 @@ import { Category } from '../../models/category.model';
 import { MatchMode } from '../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../models/enum/StringMatcher.model';
 import { Series } from '../../models/series.model';
-import { ApiService } from '../../service/api.service';
-import { UtilsService } from '../../service/utils/utils.service';
+import { ApiService } from '../../service/api/api.service';
+import { UtilsService } from '../../service/api/utils/utils.service';
 import { MenuComponent } from '../menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
 

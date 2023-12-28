@@ -1,13 +1,16 @@
 <app-menu></app-menu>
 <div class="container-fluid">
     <div class="row">
-        <!-- <div class="col mat-elevation-z8 m-2">
+        <div class="col mat-elevation-z8 m-2">
             <mat-tab-group>
                 <mat-tab label="Séries">
-                    <app-to-add-table [columns]="columns" [dataSource]="toAddData"></app-to-add-table>
+                    <app-to-add-table [type]="type" [columns]="columns"
+                        (populateEvent)="populate($event)" (saveEvent)="saves($event)"></app-to-add-table>
                 </mat-tab>
                 <mat-tab label="Série">
-                    <cdk-virtual-scroll-viewport appendOnly itemSize="1" class="form-viewport m-2">
+                    <cdk-virtual-scroll-viewport itemSize="1" class="form-viewport m-2">
+                        <app-form [type]="type" [form]="formSeries" [controls]="controls" [displayMap]="displayMap"
+                            [typeMap]="typeMap" (submitEvent)="submit($event)"></app-form>
                     </cdk-virtual-scroll-viewport>
                 </mat-tab>
                 <mat-tab label="Catégories">
@@ -18,9 +21,9 @@
                 </mat-tab>
             </mat-tab-group>
 
-        </div> -->
+        </div>
         <div class="col m-2 mat-elevation-z8">
-            <app-table-crud [type]="'series'" [columns]="columns" (populateEvent)="populate($event)"></app-table-crud>
+            <app-table-crud [type]="type" [columns]="columns" (populateEvent)="populate($event)"></app-table-crud>
         </div>
     </div>
 

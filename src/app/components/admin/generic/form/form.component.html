@@ -13,6 +13,7 @@
         </div>
         }
         @else if (control.name.endsWith('Id')) {
+
         <app-select [form]="form" [control]="control" [type]="typeMap.get(control.name)!"
             [propertyToDisplay]="displayMap.get(control.name)!"></app-select>
 
@@ -79,6 +80,7 @@
         }
         <button mat-raised-button color="primary" type="submit">Valider</button>
         <button mat-raised-button class="ms-2" type="button" (click)="reset(ngForm)">Reset</button>
+        <button mat-raised-button color="primary" class="ms-2" type="button" (click)="toAdd(ngForm)">Ajouter</button>
     </form>
 </div>
 }

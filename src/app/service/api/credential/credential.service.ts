@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TokenService } from '../token/token.service';
-import {Credential} from '../../models/credential.model'
+import { Credential } from '../../../models/credential.model'
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class CredentialService {
     return this.httpClient.post(`${this.API_BASE_URL}/user/authenticate`, credentials)
   }
 
-  isExist(){
+  isExist() {
     return this.httpClient.get<boolean>(`${this.API_BASE_URL}/user/exist?username=${this.tokenService.getClaims().sub}`)
   }
 }

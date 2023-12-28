@@ -8,7 +8,7 @@ import { Character } from '../../../models/character.model';
 import { Episode } from '../../../models/episode.model';
 import { Season } from '../../../models/season.model';
 import { Series } from '../../../models/series.model';
-import { ApiService } from '../../../service/api.service';
+import { ApiService } from '../../../service/api/api.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
 import { combineLatest, switchMap } from 'rxjs';

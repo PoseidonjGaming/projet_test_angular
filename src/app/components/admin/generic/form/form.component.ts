@@ -1,15 +1,16 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ApiService } from '../../../../service/api.service';
-import { SelectComponent } from './select/select.component';
-import { Subject, mergeMap } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Base } from '../../../../models/base.model';
-import { UtilsService } from '../../../../service/utils/utils.service';
+import { ApiService } from '../../../../service/api/api.service';
+import { UtilsService } from '../../../../service/api/utils/utils.service';
+import { SelectComponent } from './select/select.component';
+
 
 @Component({
   selector: 'app-form',
@@ -22,66 +23,55 @@ import { UtilsService } from '../../../../service/utils/utils.service';
     MatInputModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatButtonModule],
+    MatButtonModule,
+    MatSnackBarModule],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css'
 })
 export class FormComponent implements OnInit {
 
+  @Input({ required: true }) type = ''
   @Input({ required: true }) form?: FormGroup
   @Input({ required: true }) controls: { name: string, type: string }[] = []
   @Input({ required: true }) typeMap = new Map<string, string>()
   @Input({ required: true }) displayMap = new Map<string, string>()
-  @Input({ required: true }) type = ''
-  @Input() dataSource = new Subject<Base[]>()
 
-  private dto: Base = new Base()
+  @Output() submitEvent = new EventEmitter<{ dto: Base, type: string }>()
 
-  constructor(private service: ApiService, private utilsService: UtilsService) { }
+  private resetDto = new Base()
+
+  constructor(private utilsService: UtilsService, private snack: MatSnackBar) { }
+
   ngOnInit(): void {
-    if (this.form)
-      this.dto = this.form.value
+    this.resetDto = this.form?.value
+  }
+
+  submit(ngForm: FormGroupDirective) {
+    if (this.form && this.form.valid) {
+      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form!), type: 'submit' })
+      ngForm.resetForm(this.resetDto)
+    }
+
+  }
+
+  toAdd(ngForm: FormGroupDirective) {
+    if (this.form) {
+      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), type: 'toAdd' })
+      ngForm.resetForm(this.resetDto)
+      this.snack.open('Elément ajouté à la liste', 'Fermer', { duration: 5 * 1000 })
+    }
+  }
+
+  reset(ngForm: FormGroupDirective) {
+    ngForm.resetForm(new Base())
   }
 
   setPoster(event: Event) {
 
   }
 
-  submit(ngForm: FormGroupDirective) {
-    if (this.form?.valid) {
-
-      Object.keys(this.form.controls).filter(control => control.endsWith('Ids')).forEach(control => {
-        const name = control.slice(0, control.length - 3)
-        const controlDrag = this.form?.get(name)
-        if (controlDrag) {
-          this.form?.get(control)?.setValue(controlDrag.value.map((base: Base) => base['id']))
-        }
-      })
-
-      this.service.save(this.type, this.utilsService.updateValues(this.dto, this.form)).pipe(
-        mergeMap(() => this.service.getAll(this.type))
-      ).subscribe((dtos: Base[]) => {
-        this.dataSource.next(dtos)
-        ngForm.resetForm(this.dto)
-      })
-    }
-  }
-
   openPosterDialog() {
 
   }
 
-  reset(ngForm: FormGroupDirective) {
-    ngForm.resetForm(this.dto)
-    if (this.form) {
-      Object.keys(this.form.controls).filter(control => control.endsWith('Ids')).forEach(control => {
-
-
-        this.form?.get(control.slice(0, control.length - 3))?.setValue([])
-        console.log(this.form?.get(control.slice(0, control.length - 3))?.value);
-      })
-    }
-
-
-  }
 }

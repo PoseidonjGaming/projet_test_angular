@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTable } from '@angular/material/table';
-import { Base } from '../../models/base.model';
+import { Base } from '../../../models/base.model';
 
 
 @Injectable({
@@ -20,7 +20,7 @@ export class UtilsService {
   }
 
   updateValues<T extends Base>(dto: T, form: FormGroup) {
-    let returnedDto=new Base()
+    let returnedDto = new Base()
     Object.keys(dto).forEach((e: string) => {
       const control = form.get(e)
       if (control) {
