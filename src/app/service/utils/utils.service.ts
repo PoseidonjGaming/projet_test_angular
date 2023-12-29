@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatTable } from '@angular/material/table';
-import { Base } from '../../../models/base.model';
+import { FormGroup } from '@angular/forms';
+import { Base } from '../../models/base.model';
 
 
 @Injectable({
@@ -29,5 +28,9 @@ export class UtilsService {
 
     })
     return returnedDto
+  }
+
+  getRelatedName(controlRelatedName: string, removes: number) {
+    return controlRelatedName.slice(0, controlRelatedName.length - removes)
   }
 }

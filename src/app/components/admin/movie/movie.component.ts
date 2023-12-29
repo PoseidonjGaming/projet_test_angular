@@ -11,7 +11,7 @@ import { Base } from '../../../models/base.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
-import { UtilsService } from '../../../service/api/utils/utils.service';
+import { UtilsService } from '../../../service/utils/utils.service';
 
 @Component({
   selector: 'app-movie',

@@ -8,9 +8,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Base } from '../../../../models/base.model';
 import { ApiService } from '../../../../service/api/api.service';
-import { UtilsService } from '../../../../service/api/utils/utils.service';
+import { UtilsService } from '../../../../service/utils/utils.service';
 import { SelectComponent } from './select/select.component';
 import { filter } from 'rxjs';
+import { FormService } from '../../../../service/admin/form/form.service';
 
 
 @Component({
@@ -42,13 +43,13 @@ export class FormComponent implements OnInit {
 
   private resetDto = new Base()
 
-  constructor(private utilsService: UtilsService, private snack: MatSnackBar) { }
+  constructor(private utilsService: UtilsService, private formService: FormService, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.form) {
       this.resetDto = this.form.value
       Object.keys(this.form.controls).filter(c => c.endsWith('Id')).forEach(controlIdName => {
-          this.form?.addControl(controlIdName.slice(0, controlIdName.length - 2), new FormControl([]))
+        this.form?.addControl(controlIdName.slice(0, controlIdName.length - 2), new FormControl([]))
       })
 
       this.validators.forEach(validator => {
@@ -67,6 +68,8 @@ export class FormComponent implements OnInit {
   submit(ngForm: FormGroupDirective) {
     this.form?.markAllAsTouched()
     if (this.form && this.form.valid) {
+      this.formService.mapId(this.form, 'Ids')
+      this.formService.mapId(this.form, 'Id')
       this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), type: 'submit' })
       this.reset(ngForm)
     }

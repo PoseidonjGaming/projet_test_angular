@@ -7,7 +7,7 @@ import { Episode } from '../../../models/episode.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
-import { UtilsService } from '../../../service/api/utils/utils.service';
+import { UtilsService } from '../../../service/utils/utils.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';

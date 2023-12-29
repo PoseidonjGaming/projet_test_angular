@@ -5,7 +5,7 @@ import { Base } from '../../../models/base.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
-import { UtilsService } from '../../../service/api/utils/utils.service';
+import { UtilsService } from '../../../service/utils/utils.service';
 import { Character } from '../../../models/character.model';
 import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
