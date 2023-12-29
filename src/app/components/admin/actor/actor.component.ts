@@ -73,9 +73,6 @@ export class ActorComponent implements OnInit {
   }
 
   saves(bases: Base[]) {
-    this.service.saves(this.type, bases).subscribe(() => {
-      this.crudService.next(new Actor())
-      this.toAddService.next(new Actor())
-    })
+    this.adminService.saves(this.type, new Actor(), bases)
   }
 }

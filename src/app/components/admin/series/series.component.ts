@@ -45,38 +45,38 @@ export class SeriesComponent implements OnInit {
   controls: { name: string, type: string }[] = []
   formSeries?: FormGroup
   validators = [
-    { controlName: 'name', validators: [Validators.required] },
-    { controlName: 'nextMovieId', validators: [Validators.min(1)] },
-    { controlName: 'nextSeriesId', validators: [Validators.min(1)] },
-    { controlName: 'previousMovieId', validators: [Validators.min(1)] },
-    { controlName: 'previousSeriesId', validators: [Validators.min(1)] },
+    { controlName: 'name', validators: [Validators.required] }
   ]
+
+  displays: { control: string, value: string }[] = [
+    { control: 'nextMovieId', value: 'name' },
+    { control: 'nextSeriesId', value: 'name' },
+    { control: 'previousMovieId', value: 'name' },
+    { control: 'previousSeriesId', value: 'name' }
+  ]
+
+  types: { control: string, value: string }[] = [
+    { control: 'nextMovieId', value: 'movie' },
+    { control: 'nextSeriesId', value: 'series' },
+    { control: 'previousMovieId', value: 'movie' },
+    { control: 'previousSeriesId', value: 'series' },
+    { control: 'categoryIds', value: 'category' }
+  ]
+
+
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
 
 
-  constructor(private formBuilder: FormBuilder,
-    private service: ApiService,
-    private crudService: CrudService,
-    private toAddService: ToAddService,
-    private utilsService: UtilsService,
-    private formService: FormService,
+  constructor(private utilsService: UtilsService,
     private adminService: AdminService) { }
+
   ngOnInit(): void {
-    this.formSeries = this.formService.createForm(new Series(), this.controls)
+    this.formSeries = this.adminService.init(new Series(), this.controls)
 
-    this.displayMap.set('nextMovieId', 'name')
-    this.displayMap.set('nextSeriesId', 'name')
-    this.displayMap.set('previousMovieId', 'name')
-    this.displayMap.set('previousSeriesId', 'name')
-
-    this.typeMap.set('nextMovieId', 'movie')
-    this.typeMap.set('nextSeriesId', 'series')
-    this.typeMap.set('previousMovieId', 'movie')
-    this.typeMap.set('previousSeriesId', 'series')
-
-    this.typeMap.set('categoryIds', 'category')
+    this.displayMap = this.adminService.initMap(this.displays)
+    this.typeMap=this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {
@@ -92,10 +92,7 @@ export class SeriesComponent implements OnInit {
   }
 
   saves(bases: Base[]) {
-    this.service.saves(this.type, bases).subscribe(() => {
-      this.crudService.next(new Series())
-      this.toAddService.next(new Series())
-    })
+    this.adminService.saves<Series>(this.type, new Series(), bases)
   }
 
 
