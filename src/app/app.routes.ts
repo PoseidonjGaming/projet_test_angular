@@ -8,13 +8,14 @@ import { SeriesComponent } from './components/admin/series/series.component';
 import { DetailSeriesComponent } from './components/detail/detail-series/detail-series.component';
 import { HomeComponent } from './components/home/home.component';
 import { SearchComponent } from './components/search/search.component';
+import { authGuard } from './guard/auth/auth.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'detail/series/:id', component: DetailSeriesComponent },
     { path: 'search', component: SearchComponent },
     {
-        path: 'admin', children: [
+        path: 'admin', canActivate: [authGuard], children: [
             { path: 'series', component: SeriesComponent },
             { path: 'episodes', component: EpisodeComponent },
             { path: 'actors', component: ActorComponent },
