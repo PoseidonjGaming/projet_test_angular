@@ -39,7 +39,7 @@ export class FormComponent implements OnInit {
   @Input({ required: true }) displayMap = new Map<string, string>()
   @Input() validators: { controlName: string, validators: ValidatorFn[] }[] = []
 
-  @Output() submitEvent = new EventEmitter<{ dto: Base, type: string }>()
+  @Output() submitEvent = new EventEmitter<{ dto: Base, isSubmit: boolean }>()
 
   private resetDto = new Base()
 
@@ -70,14 +70,14 @@ export class FormComponent implements OnInit {
     if (this.form && this.form.valid) {
       this.formService.mapId(this.form, 'Ids')
       this.formService.mapId(this.form, 'Id')
-      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), type: 'submit' })
+      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), isSubmit: true })
       this.reset(ngForm)
     }
   }
 
   toAdd(ngForm: FormGroupDirective) {
     if (this.form) {
-      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), type: 'toAdd' })
+      this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), isSubmit: false })
       this.reset(ngForm)
       this.snack.open('Elément ajouté à la liste', 'Fermer', { duration: 5 * 1000 })
     }

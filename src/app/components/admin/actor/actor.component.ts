@@ -13,6 +13,7 @@ import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
 import { MatButtonModule } from '@angular/material/button';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-actor',
@@ -47,7 +48,8 @@ export class ActorComponent implements OnInit {
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
 
@@ -66,14 +68,8 @@ export class ActorComponent implements OnInit {
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (event.type === 'submit')
-      this.service.save(this.type, event.dto).subscribe((series) => {
-        this.crudService.next(series)
-      })
-    else
-      this.toAddService.next(event.dto)
-
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
   }
 
   saves(bases: Base[]) {

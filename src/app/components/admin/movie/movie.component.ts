@@ -12,6 +12,7 @@ import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-movie',
@@ -47,18 +48,14 @@ export class MovieComponent implements OnInit {
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.formMovie = this.formBuilder.group(new Movie())
     Object.keys(this.formMovie.controls).forEach(control => {
       this.controls.push({ name: control, type: typeof (this.formMovie?.controls[control]) })
     })
-
-    // this.formMovie.addControl('nextMovie', new FormControl([]))
-    // this.formMovie.addControl('nextSeries', new FormControl([]))
-    // this.formMovie.addControl('previousMovie', new FormControl([]))
-    // this.formMovie.addControl('previousSeries', new FormControl([]))
 
     this.displayMap.set('nextMovieId', 'name')
     this.displayMap.set('nextSeriesId', 'name')
@@ -78,14 +75,8 @@ export class MovieComponent implements OnInit {
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (event.type === 'submit')
-      this.service.save(this.type, event.dto).subscribe((movie) => {
-        this.crudService.next(movie)
-      })
-    else
-      this.toAddService.next(event.dto)
-
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
   }
 
   saves(bases: Base[]) {

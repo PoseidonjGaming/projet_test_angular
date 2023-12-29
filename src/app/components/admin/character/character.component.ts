@@ -13,6 +13,7 @@ import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.compon
 import { MatTabsModule } from '@angular/material/tabs';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DragAndDropComponent } from '../generic/drag-and-drop/drag-and-drop.component';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-character',
@@ -48,7 +49,8 @@ export class CharacterComponent implements OnInit {
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private adminService: AdminService) { }
   ngOnInit(): void {
     this.formCharacter = this.formBuilder.group(new Character())
 
@@ -71,14 +73,8 @@ export class CharacterComponent implements OnInit {
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (event.type === 'submit')
-      this.service.save(this.type, event.dto).subscribe((character) => {
-        this.crudService.next(character)
-      })
-    else
-      this.toAddService.next(event.dto)
-
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
   }
 
   saves(bases: Base[]) {

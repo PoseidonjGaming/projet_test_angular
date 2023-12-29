@@ -12,6 +12,7 @@ import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-catagory',
@@ -46,14 +47,12 @@ export class CatagoryComponent {
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
-    private utilsService: UtilsService) { }
+    private utilsService: UtilsService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
 
     this.formCategory = this.formBuilder.group(new Category())
-
-    console.log(this.formCategory.value);
-
     Object.keys(this.formCategory.controls).forEach(control => {
       this.controls.push({ name: control, type: typeof (this.formCategory?.controls[control]) })
     })
@@ -65,14 +64,8 @@ export class CatagoryComponent {
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (event.type === 'submit')
-      this.service.save(this.type, event.dto).subscribe((series) => {
-        this.crudService.next(series)
-      })
-    else
-      this.toAddService.next(event.dto)
-
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
   }
 
   saves(bases: Base[]) {

@@ -17,6 +17,7 @@ import { MatchMode } from '../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../models/enum/StringMatcher.model';
 import { Season } from '../../../models/season.model';
 import { FormService } from '../../../service/admin/form/form.service';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-episode',
@@ -37,6 +38,7 @@ export class EpisodeComponent implements OnInit {
     { name: 'releaseDate', header: 'Date de diffusion' },
     { name: 'action', header: 'Action' }
   ]
+
   controls: { name: string, type: string }[] = []
 
   type = 'episode'
@@ -50,18 +52,13 @@ export class EpisodeComponent implements OnInit {
     private crudService: CrudService,
     private toAddService: ToAddService,
     private utilsService: UtilsService,
-    private formService: FormService
+    private formService: FormService,
+    private adminService: AdminService
   ) { }
 
   ngOnInit(): void {
 
     this.formEpisode = this.formService.createForm(new Episode(), this.controls)
-
-    this.formEpisode.controls['seriesId'].addValidators(Validators.min(1))
-    this.formEpisode.controls['seasonId'].addValidators(Validators.min(1))
-
-
-
 
     this.formEpisode.controls['seriesId'].valueChanges.pipe(
       startWith(0),
@@ -91,22 +88,8 @@ export class EpisodeComponent implements OnInit {
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (this.formEpisode) {
-      if (event.type === 'submit') {
-
-        this.service.save(this.type, event.dto).subscribe((series) => {
-          this.crudService.next(series)
-        })
-      }
-
-      else {
-        this.toAddService.next(event.dto)
-      }
-
-    }
-
-
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
   }
 
   saves(bases: Base[]) {

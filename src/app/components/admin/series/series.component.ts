@@ -15,6 +15,7 @@ import { ApiService } from '../../../service/api/api.service';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { FormService } from '../../../service/admin/form/form.service';
+import { AdminService } from '../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-series',
@@ -45,10 +46,10 @@ export class SeriesComponent implements OnInit {
   formSeries?: FormGroup
   validators = [
     { controlName: 'name', validators: [Validators.required] },
-    { controlName: 'nextMovieId', validators: [Validators.required, Validators.min(1)] },
-    { controlName: 'nextSeriesId', validators: [Validators.required, Validators.min(1)] },
-    { controlName: 'previousMovieId', validators: [Validators.required, Validators.min(1)] },
-    { controlName: 'previousSeriesId', validators: [Validators.required, Validators.min(1)] },
+    { controlName: 'nextMovieId', validators: [Validators.min(1)] },
+    { controlName: 'nextSeriesId', validators: [Validators.min(1)] },
+    { controlName: 'previousMovieId', validators: [Validators.min(1)] },
+    { controlName: 'previousSeriesId', validators: [Validators.min(1)] },
   ]
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
@@ -60,7 +61,8 @@ export class SeriesComponent implements OnInit {
     private crudService: CrudService,
     private toAddService: ToAddService,
     private utilsService: UtilsService,
-    private formService: FormService) { }
+    private formService: FormService,
+    private adminService: AdminService) { }
   ngOnInit(): void {
     this.formSeries = this.formService.createForm(new Series(), this.controls)
 
@@ -80,17 +82,12 @@ export class SeriesComponent implements OnInit {
   populate(series: Base) {
     if (this.formSeries) {
       this.utilsService.populate(series, this.formSeries, this.typeMap)
-     
+
     }
   }
 
-  submit(event: { dto: Base, type: string }) {
-    if (event.type === 'submit')
-      this.service.save(this.type, event.dto).subscribe((series) => {
-        this.crudService.next(series)
-      })
-    else
-      this.toAddService.next(event.dto)
+  submit(event: { dto: Base, isSubmit: boolean }) {
+    this.adminService.submit(this.type, event)
 
   }
 
