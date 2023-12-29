@@ -5,7 +5,7 @@ import { Base } from '../../../../models/base.model';
 import { CrudService } from '../../../../service/admin/crud/crud.service';
 import { ApiService } from '../../../../service/api/api.service';
 import { DataSource } from '@angular/cdk/collections';
-import { Observable, ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject, Subscription } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PageResponse } from '../../../../models/pageResponse.model';
 import { MatSortModule, Sort } from '@angular/material/sort';
@@ -25,7 +25,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './table-crud.component.html',
   styleUrl: './table-crud.component.css'
 })
-export class TableCRUDComponent implements OnInit {
+export class TableCRUDComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) columns: { name: string, header: string }[] = []
   @Input({ required: true }) type = ''
@@ -37,11 +37,16 @@ export class TableCRUDComponent implements OnInit {
   paginator = { pageSize: 10, pageIndex: 0, length: 10 }
 
   private sorting = { field: 'id', direction: Sorter.ASC }
+  private crudSub?: Subscription
 
   constructor(private service: ApiService, private crudService: CrudService, @Inject(LOCALE_ID) public locale: string) { }
+  ngOnDestroy(): void {
+    if (this.crudSub)
+      this.crudSub.unsubscribe()
+  }
 
   ngOnInit(): void {
-    this.crudService.get().subscribe({
+    this.crudSub = this.crudService.get().subscribe({
       next: () => {
         this.sendRequest().subscribe((values: PageResponse<Base>) => {
           this.paginator.length = values.size
