@@ -43,19 +43,11 @@ export class CatagoryComponent {
 
 
 
-  constructor(private formBuilder: FormBuilder,
-    private service: ApiService,
-    private crudService: CrudService,
-    private toAddService: ToAddService,
-    private utilsService: UtilsService,
+  constructor(private utilsService: UtilsService,
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-
-    this.formCategory = this.formBuilder.group(new Category())
-    Object.keys(this.formCategory.controls).forEach(control => {
-      this.controls.push({ name: control, type: typeof (this.formCategory?.controls[control]) })
-    })
+    this.formCategory = this.adminService.init(new Category(), this.controls)
   }
 
   populate(series: Base) {
@@ -69,9 +61,6 @@ export class CatagoryComponent {
   }
 
   saves(bases: Base[]) {
-    this.service.saves(this.type, bases).subscribe(() => {
-      this.crudService.next(new Category())
-      this.toAddService.next(new Category())
-    })
+    this.adminService.saves(this.type, new Category(), bases)
   }
 }

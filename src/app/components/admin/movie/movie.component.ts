@@ -39,6 +39,22 @@ export class MovieComponent implements OnInit {
 
   controls: { name: string, type: string }[] = []
   formMovie?: FormGroup
+
+  displays: { control: string, value: string }[] = [
+    { control: 'nextMovieId', value: 'name' },
+    { control: 'nextSeriesId', value: 'name' },
+    { control: 'previousMovieId', value: 'name' },
+    { control: 'previousSeriesId', value: 'name' }
+  ]
+
+  types: { control: string, value: string }[] = [
+    { control: 'nextMovieId', value: 'movie' },
+    { control: 'nextSeriesId', value: 'series' },
+    { control: 'previousMovieId', value: 'movie' },
+    { control: 'previousSeriesId', value: 'series' },
+    { control: 'categoryIds', value: 'category' }
+  ]
+
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
@@ -52,20 +68,11 @@ export class MovieComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.formMovie = this.formBuilder.group(new Movie())
-    Object.keys(this.formMovie.controls).forEach(control => {
-      this.controls.push({ name: control, type: typeof (this.formMovie?.controls[control]) })
-    })
+    this.formMovie = this.adminService.init(new Movie(), this.controls)
 
-    this.displayMap.set('nextMovieId', 'name')
-    this.displayMap.set('nextSeriesId', 'name')
-    this.displayMap.set('previousMovieId', 'name')
-    this.displayMap.set('previousSeriesId', 'name')
+    this.displayMap = this.adminService.initMap(this.displays)
+    this.typeMap = this.adminService.initMap(this.types)
 
-    this.typeMap.set('nextMovieId', 'movie')
-    this.typeMap.set('nextSeriesId', 'series')
-    this.typeMap.set('previousMovieId', 'movie')
-    this.typeMap.set('previousSeriesId', 'series')
 
   }
 

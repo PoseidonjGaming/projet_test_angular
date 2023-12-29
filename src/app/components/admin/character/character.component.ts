@@ -40,6 +40,14 @@ export class CharacterComponent implements OnInit {
 
   controls: { name: string, type: string }[] = []
   formCharacter?: FormGroup
+
+  displays: { control: string, value: string }[] = [
+    { control: 'actorId', value: 'firstname' }
+  ]
+
+  types: { control: string, value: string }[] = [
+    { control: 'actorId', value: 'actor' }
+  ]
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
@@ -52,19 +60,9 @@ export class CharacterComponent implements OnInit {
     private utilsService: UtilsService,
     private adminService: AdminService) { }
   ngOnInit(): void {
-    this.formCharacter = this.formBuilder.group(new Character())
-
-
-
-    Object.keys(this.formCharacter.controls).forEach(control => {
-      this.controls.push({ name: control, type: typeof (this.formCharacter?.controls[control].value) })
-    })
-
-    this.formCharacter.addControl('actor', new FormControl([]))
-
-
-    this.displayMap.set('actorId', 'firstname')
-    this.typeMap.set('actorId', 'actor')
+    this.formCharacter = this.adminService.init(new Character(), this.controls)
+    this.displayMap = this.adminService.initMap(this.displays)
+    this.typeMap = this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {

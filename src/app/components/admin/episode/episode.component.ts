@@ -43,22 +43,28 @@ export class EpisodeComponent implements OnInit {
 
   type = 'episode'
 
+  displays: { control: string, value: string }[] = [
+    { control: 'seriesId', value: 'name' },
+    { control: 'seasonId', value: 'number' }
+  ]
+
+  types: { control: string, value: string }[] = [
+    { control: 'seriesId', value: 'series' },
+    { control: 'seasonId', value: 'season' },
+  ]
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
   formEpisode?: FormGroup
 
   constructor(private service: ApiService,
-    private crudService: CrudService,
-    private toAddService: ToAddService,
     private utilsService: UtilsService,
-    private formService: FormService,
     private adminService: AdminService
   ) { }
 
   ngOnInit(): void {
 
-    this.formEpisode = this.formService.createForm(new Episode(), this.controls)
+    this.formEpisode = this.adminService.init(new Episode(), this.controls)
 
     this.formEpisode.controls['seriesId'].valueChanges.pipe(
       startWith(0),
@@ -73,13 +79,8 @@ export class EpisodeComponent implements OnInit {
       }
     })
 
-
-
-    this.displayMap.set('seriesId', 'name')
-    this.displayMap.set('seasonId', 'number')
-
-    this.typeMap.set('seriesId', 'series')
-    this.typeMap.set('seasonId', 'season')
+    this.displayMap = this.adminService.initMap(this.displays)
+    this.typeMap=this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {
@@ -93,10 +94,7 @@ export class EpisodeComponent implements OnInit {
   }
 
   saves(bases: Base[]) {
-    this.service.saves(this.type, bases).subscribe(() => {
-      this.crudService.next(new Episode())
-      this.toAddService.next(new Episode())
-    })
+    this.adminService.saves(this.type, new Episode(), bases)
   }
 
 }

@@ -1,6 +1,7 @@
 import { Base } from "./base.model";
 
 export class Movie extends Base {
+    id: number = 0
     name: string = ''
     summary: string = ''
     releaseDate = new Date()
