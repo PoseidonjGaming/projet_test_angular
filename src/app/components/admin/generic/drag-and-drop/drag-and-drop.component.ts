@@ -17,6 +17,7 @@ import { Base } from '../../../../models/base.model';
 import { ApiService } from '../../../../service/api/api.service';
 import { MatchMode } from '../../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../../models/enum/StringMatcher.model';
+import { UtilsService } from '../../../../service/utils/utils.service';
 
 
 @Component({
@@ -40,13 +41,16 @@ export class DragAndDropComponent implements OnInit {
   @Input({ required: true }) property: string = ''
   @Input({ required: true }) type: string = ''
 
+  propertyList: string = ''
+
   dragList: Base[] = []
 
   formSearch = new FormGroup({
     term: new FormControl('')
   })
 
-  constructor(private service: ApiService, private snack: MatSnackBar) { }
+  constructor(private service: ApiService, private snack: MatSnackBar, private utilsService: UtilsService) { }
+
   ngOnInit(): void {
 
     this.formSearch.controls.term.valueChanges.pipe(
@@ -59,28 +63,44 @@ export class DragAndDropComponent implements OnInit {
       })
     ).subscribe((dtos: Base[]) => this.dragList = dtos)
 
+
     if (this.form) {
-      this.service.getAll(this.type).subscribe((dtos: Base[]) => this.dragList = dtos)
-      this.form.get(this.property)?.setValue([])
-      this.form.addControl(this.type, new FormControl<Base[]>([]))
+      this.propertyList = this.utilsService.getRelatedName(this.property, 3)
+      this.form.addControl(this.propertyList, new FormControl([]))
+
+      this.service.getAll(this.type).subscribe(values => {
+        this.dragList = values
+      })
     }
+
 
   }
 
   drop(event: CdkDragDrop<Base[]>) {
-    const base = event.previousContainer.data[event.previousIndex]
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else if (!event.container.data.includes(base)) {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-      this.dragList.push(base)
     } else {
-      this.snack.open('L\'élément est déjà présent dans la liste cible', 'Fermer', { duration: 5 * 1000 })
+      if (event.previousContainer.data === this.dragList) {
+
+        const item = event.previousContainer.data[event.previousIndex]
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+        this.dragList.splice(event.previousIndex, 0, item)
+      }
+      else if (event.previousContainer.data === this.form?.get(this.propertyList)?.value) {
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          event.previousIndex,
+          event.currentIndex,
+        );
+        this.dragList.splice(event.currentIndex, 1)
+      }
+
     }
   }
 }

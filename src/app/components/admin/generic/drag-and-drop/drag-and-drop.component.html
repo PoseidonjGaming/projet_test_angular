@@ -21,17 +21,15 @@
         </div>
         <div class="example-container">
             <h2>Catégories de {{form.get(propertyToDisplay)!.value}}</h2>
-            @if(form.get(type) && form.get(type)?.value){
-            <div cdkDropList [cdkDropListData]="form.get(type)!.value" class="example-list"
+            <div cdkDropList [cdkDropListData]="form.get(propertyList)!.value" class="example-list"
                 (cdkDropListDropped)="drop($event)">
-                @for (item of form.get(type)!.value; track $index) {
+                @for (item of form.get(propertyList)!.value; track $index) {
                 <div class="example-box" cdkDrag>
                     {{item.name}}
                 </div>
                 }
 
             </div>
-            }
 
         </div>
     </div>
