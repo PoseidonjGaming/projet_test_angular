@@ -39,27 +39,17 @@ export class ActorComponent implements OnInit {
 
   controls: { name: string, type: string }[] = []
   formActor?: FormGroup
+
   displayMap = new Map<string, string>()
   typeMap = new Map<string, string>()
 
 
 
-  constructor(private formBuilder: FormBuilder,
-    private service: ApiService,
-    private crudService: CrudService,
-    private toAddService: ToAddService,
-    private utilsService: UtilsService,
+  constructor(private utilsService: UtilsService,
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-
-    this.formActor = this.formBuilder.group(new Actor())
-
-    console.log(this.formActor.value);
-
-    Object.keys(this.formActor.controls).forEach(control => {
-      this.controls.push({ name: control, type: typeof (this.formActor?.controls[control]) })
-    })
+    this.formActor = this.adminService.init(new Actor(), this.controls)
   }
 
   populate(series: Base) {
