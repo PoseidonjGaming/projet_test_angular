@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Base } from '../../models/base.model';
+import { ApiService } from '../api/api.service';
 
 
 @Injectable({
@@ -8,13 +9,25 @@ import { Base } from '../../models/base.model';
 })
 export class UtilsService {
 
-  constructor() { }
+  constructor(private service: ApiService) { }
 
-  populate<E extends Base>(entity: E, form: FormGroup) {
+  populate<E extends Base>(entity: E, form: FormGroup, typeMap?: Map<string, string>) {
     Object.keys(entity).forEach((e: string) => {
-      let control = form.get(e)
-      if (control)
-        control.setValue(entity[e])
+      if (e.endsWith('Ids')) {
+        const controlName = this.getRelatedName(e, 3)
+        console.log(form.controls[e].value);
+        
+        let control = form.controls[controlName]
+        if (control && typeMap) {
+          this.service.getByIds(typeMap.get(e)!,
+            entity[e]).subscribe(values => control.setValue(values))
+        }
+      } else {
+        let control = form.get(e)
+        if (control)
+          control.setValue(entity[e])
+      }
+
     })
   }
 

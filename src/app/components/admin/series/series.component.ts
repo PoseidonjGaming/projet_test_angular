@@ -79,15 +79,8 @@ export class SeriesComponent implements OnInit {
 
   populate(series: Base) {
     if (this.formSeries) {
-      this.utilsService.populate(series, this.formSeries)
-      Object.keys(this.formSeries.controls).filter(c => c.endsWith('Ids')).forEach(controlIdsName => {
-        const controlName = this.utilsService.getRelatedName(controlIdsName, 3)
-        let control = this.formSeries?.controls[controlName]
-        if (control) {
-          this.service.getByIds(this.typeMap.get(controlIdsName)!,
-            this.formSeries?.controls[controlIdsName].value).subscribe(values=>control?.setValue(values))
-        }
-      })
+      this.utilsService.populate(series, this.formSeries, this.typeMap)
+     
     }
   }
 
