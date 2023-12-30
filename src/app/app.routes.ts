@@ -9,11 +9,13 @@ import { DetailSeriesComponent } from './components/detail/detail-series/detail-
 import { HomeComponent } from './components/home/home.component';
 import { SearchComponent } from './components/search/search.component';
 import { authGuard } from './guard/auth/auth.guard';
+import { RegistrationComponent } from './components/registration/registration.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'detail/series/:id', component: DetailSeriesComponent },
     { path: 'search', component: SearchComponent },
+    { path: 'registrate', component: RegistrationComponent },
     {
         path: 'admin', canActivate: [authGuard], children: [
             { path: 'series', component: SeriesComponent },

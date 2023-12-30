@@ -46,7 +46,7 @@ export class DetailSeriesComponent {
       this.service.getByIds<Season>('season', this.series.seasonIds),
       this.service.getByIds<Character>('character', this.series.characterIds)
     ]).pipe(
-      switchMap(([seasonDtos, characterDtos]) => {        
+      switchMap(([seasonDtos, characterDtos]) => {
         this.characters = characterDtos
         this.seasons = seasonDtos
         return combineLatest([

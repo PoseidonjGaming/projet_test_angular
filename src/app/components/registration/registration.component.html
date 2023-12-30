@@ -1,0 +1,20 @@
+<app-menu></app-menu>
+<div class="container-fluid">
+    <div class="d-flex justify-content-center">
+        <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="username" type="text" name="username" id="username">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="password" type="password" name="password" id="password">
+                </mat-form-field>
+            </div>
+            <button mat-raised-button color="primary">S'incrire</button>
+        </form>
+    </div>
+</div>

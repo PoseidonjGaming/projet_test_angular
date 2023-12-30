@@ -76,7 +76,7 @@ export class SeriesComponent implements OnInit {
     this.formSeries = this.adminService.init(new Series(), this.controls)
 
     this.displayMap = this.adminService.initMap(this.displays)
-    this.typeMap=this.adminService.initMap(this.types)
+    this.typeMap = this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {
