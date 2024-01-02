@@ -16,6 +16,7 @@ import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { FormService } from '../../../service/admin/form/form.service';
 import { AdminService } from '../../../service/admin/admin.service';
+import { FileService } from '../../../service/api/file/file.service';
 
 @Component({
   selector: 'app-series',
@@ -70,13 +71,14 @@ export class SeriesComponent implements OnInit {
 
 
   constructor(private utilsService: UtilsService,
+    private fileService: FileService,
     private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.formSeries = this.adminService.init(new Series(), this.controls)
 
     this.displayMap = this.adminService.initMap(this.displays)
-    this.typeMap=this.adminService.initMap(this.types)
+    this.typeMap = this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {
@@ -87,7 +89,14 @@ export class SeriesComponent implements OnInit {
   }
 
   submit(event: { dto: Base, isSubmit: boolean }) {
-    this.adminService.submit(this.type, event)
+    if (this.formSeries) {
+      const file = this.formSeries.value['posterFile']
+      this.fileService.upload(file, 'series').subscribe(()=>{})
+      this.adminService.submit(this.type, event)
+    }
+
+
+
 
   }
 

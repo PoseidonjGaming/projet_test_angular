@@ -1,0 +1,17 @@
+<div class="row" [formGroup]="form">
+    <mat-form-field>
+        <mat-label>{{control.name}}</mat-label>
+        <input matInput type="text" [formControlName]="control.name" [name]="getControlName()" [id]="getControlName()"
+            placeholder="poster" [readonly]="true">
+    </mat-form-field>
+    <div class="row mb-2 mx-2">
+        <div class="col">
+            <input type="file" (change)="setPoster($event);" accept="image/png, image/jpeg">
+        </div>
+        <div class="col">
+            <button mat-raised-button type="button" color="primary" class="m-2" (click)="openPosterDialog()">
+                Voir poster
+            </button>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,7 @@ import { UtilsService } from '../../../../service/utils/utils.service';
 import { SelectComponent } from './select/select.component';
 import { filter } from 'rxjs';
 import { FormService } from '../../../../service/admin/form/form.service';
+import { FileComponent } from './file/file.component';
 
 
 @Component({
@@ -19,7 +20,9 @@ import { FormService } from '../../../../service/admin/form/form.service';
   standalone: true,
   imports: [
     SelectComponent,
+    FileComponent,
     FormsModule,
+    
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -94,12 +97,6 @@ export class FormComponent implements OnInit {
     ngForm.resetForm(this.resetDto)
   }
 
-  setPoster(event: Event) {
-
-  }
-
-  openPosterDialog() {
-
-  }
+  
 
 }
