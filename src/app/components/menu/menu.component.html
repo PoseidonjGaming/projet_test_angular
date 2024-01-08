@@ -24,7 +24,8 @@
         <span class="example-spacer"></span>
 
         @if (!isLogged) {
-        <button mat-button [matMenuTriggerFor]="menuLogin">Login</button>
+            <button mat-button routerLink="/registrate">Créer un compte</button>
+            <button mat-button [matMenuTriggerFor]="menuLogin">Login</button>
         }@else {
         <button mat-button [matMenuTriggerFor]="menuUser">{{username}}</button>
         <mat-menu #menuUser="matMenu">

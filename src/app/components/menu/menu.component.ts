@@ -15,6 +15,8 @@ import { CredentialService } from '../../service/api/credential/credential.servi
 import { TokenService } from '../../service/api/token/token.service';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
+import { UtilsService } from '../../service/utils/utils.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -40,7 +42,7 @@ export class MenuComponent {
   private rolesAdmin = ['ROLE_super_admin']
   hide = true;
   isLogged: boolean = false
-  username?: string
+  username: string = ''
 
   formLogin = new FormGroup({
     username: new FormControl('', [Validators.required]),
@@ -50,19 +52,23 @@ export class MenuComponent {
   constructor(public dialog: MatDialog,
     private service: CredentialService,
     private tokenService: TokenService,
+    private utilsService: UtilsService,
     private router: Router,
     private jwt: JwtHelperService) { }
 
 
   ngOnInit(): void {
     this.tokenService.subscribeRole().subscribe((d) => {
-      this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken()!);
+
+
+      this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
+      if (this.isLogged) {
+        this.username = this.tokenService.getClaims().sub
+      }
     })
     this.tokenService.nextRole()
 
-    if (this.tokenService.isExist() && this.tokenService.getClaims()) {
-      this.username = this.tokenService.getClaims().sub
-    }
+
   }
 
   openDialogImport() {
@@ -74,7 +80,7 @@ export class MenuComponent {
 
   submit() {
     if (this.formLogin.valid) {
-      this.service.authenticate(this.formLogin.value as Credential).subscribe((token: any) => {
+      this.service.authenticate(this.utilsService.updateValues(new User(), this.formLogin)).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
         this.username = this.tokenService.getClaims().sub
         this.tokenService.nextRole()

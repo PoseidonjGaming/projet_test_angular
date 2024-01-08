@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Subject } from 'rxjs';
+import { User } from '../../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class TokenService {
     return (typeof (window) !== 'undefined') ? localStorage.getItem('jToken') : ''
   }
 
-  getRole() {
+  getRole(): string {
     const decoded: any = this.getClaims()
     return decoded.Role
   }
@@ -51,5 +52,9 @@ export class TokenService {
 
   nextRole() {
     this.menu.next((this.getToken()) ? this.getRole() : 'default')
+  }
+
+  getUser() {
+    return { username: this.getClaims().sub, roles: [this.getRole()] }
   }
 }

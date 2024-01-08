@@ -80,7 +80,7 @@ export class EpisodeComponent implements OnInit {
     })
 
     this.displayMap = this.adminService.initMap(this.displays)
-    this.typeMap=this.adminService.initMap(this.types)
+    this.typeMap = this.adminService.initMap(this.types)
   }
 
   populate(series: Base) {
