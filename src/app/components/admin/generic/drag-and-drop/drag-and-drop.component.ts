@@ -71,6 +71,9 @@ export class DragAndDropComponent implements OnInit {
       this.service.getAll(this.type).subscribe(values => {
         this.dragList = values
       })
+
+      console.log(this.form.value);
+
     }
 
 

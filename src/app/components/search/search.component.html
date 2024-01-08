@@ -1,9 +1,18 @@
 <app-menu></app-menu>
 <mat-sidenav-container>
-    <mat-sidenav #sidenav mode="push" (closedStart)="isOpened=!isOpened" >
+    <mat-sidenav #sidenav mode="push" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid">
             <form [formGroup]="formSearch" (ngSubmit)="submit()">
                 <div class="col">
+                    <div class="row">
+                        <mat-form-field>
+                            <mat-label>Mode de recherche</mat-label>
+                            <mat-select formControlName="mode">
+                                <mat-option value="all">Correspond</mat-option>
+                                <mat-option value="any">Contient</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
@@ -48,7 +57,6 @@
             <div class="col-4">
                 <form [formGroup]="formSearch" (ngSubmit)="submit()">
                     <div class="row">
-
                         <mat-form-field>
                             <mat-label>Rechercher</mat-label>
                             <input matInput formControlName="name" type="text" name="name" id="name">

@@ -14,9 +14,7 @@ export class UtilsService {
   populate<E extends Base>(entity: E, form: FormGroup, typeMap?: Map<string, string>) {
     Object.keys(entity).forEach((e: string) => {
       if (e.endsWith('Ids')) {
-        const controlName = this.getRelatedName(e, 3)
-        console.log(form.controls[e].value);
-        
+        const controlName = this.getRelatedName(e, 3)        
         let control = form.controls[controlName]
         if (control && typeMap) {
           this.service.getByIds(typeMap.get(e)!,

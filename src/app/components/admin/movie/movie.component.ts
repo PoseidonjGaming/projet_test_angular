@@ -13,6 +13,7 @@ import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
 import { AdminService } from '../../../service/admin/admin.service';
+import { FileService } from '../../../service/api/file/file.service';
 
 @Component({
   selector: 'app-movie',
@@ -60,7 +61,7 @@ export class MovieComponent implements OnInit {
 
 
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(private fileService: FileService,
     private service: ApiService,
     private crudService: CrudService,
     private toAddService: ToAddService,
@@ -83,7 +84,11 @@ export class MovieComponent implements OnInit {
   }
 
   submit(event: { dto: Base, isSubmit: boolean }) {
-    this.adminService.submit(this.type, event)
+    if (this.formMovie) {
+      const file = this.formMovie.value['posterFile']
+      this.fileService.upload(file, 'movie').subscribe(()=>{})
+      this.adminService.submit(this.type, event)
+    }
   }
 
   saves(bases: Base[]) {
