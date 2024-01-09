@@ -11,13 +11,14 @@ import { SearchComponent } from './components/search/search.component';
 import { authGuard } from './guard/auth/auth.guard';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ReviewComponent } from './components/admin/review/review.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'detail/series/:id', component: DetailSeriesComponent },
     { path: 'search', component: SearchComponent },
     { path: 'registrate', component: RegistrationComponent },
-    { path: 'profile', component: ProfileComponent ,canActivate:[authGuard]},
+    { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
     {
         path: 'admin', canActivate: [authGuard], children: [
             { path: 'series', component: SeriesComponent },
@@ -25,7 +26,8 @@ export const routes: Routes = [
             { path: 'actors', component: ActorComponent },
             { path: 'characters', component: CharacterComponent },
             { path: 'movies', component: MovieComponent },
-            { path: 'categories', component: CatagoryComponent }
+            { path: 'categories', component: CatagoryComponent },
+            { path: 'reviews', component: ReviewComponent }
         ]
     }
 ];
