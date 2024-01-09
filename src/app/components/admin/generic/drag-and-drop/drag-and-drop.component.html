@@ -7,8 +7,9 @@
             </mat-form-field>
         </div>
     </form>
-    <div cdkDropListGroup>
-        <div class="example-container">
+  
+    <div class="row" cdkDropListGroup>
+        <div class="example-container col">
             <h2>Toute les catégories</h2>
             <div cdkDropList cdkDropListSortingDisabled [cdkDropListData]="dragList" class="example-list"
                 (cdkDropListDropped)="drop($event)">
@@ -19,7 +20,7 @@
 
             </div>
         </div>
-        <div class="example-container">
+        <div class="example-container col">
             <h2>Catégories de {{form.get(propertyList)!.value}}</h2>
             <div cdkDropList [cdkDropListData]="form.get(propertyList)!.value" class="example-list"
                 (cdkDropListDropped)="drop($event)">
