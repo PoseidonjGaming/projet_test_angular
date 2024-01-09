@@ -18,15 +18,4 @@ export class FormService {
 
     return form
   }
-
-  mapId(form: FormGroup, endWith: string) {
-    Object.keys(form.controls).filter(c => c.endsWith(endWith)).forEach(controlName => {
-      const entityName = controlName.slice(0, controlName.length - endWith.length)
-      let controlId = form.controls[controlName]
-      const control = form.controls[entityName]
-      if (control && controlId) {
-        controlId.setValue((endWith === 'Id') ? control.value['id'] : control.value.map((e: Base) => e['id']))
-      }
-    })
-  }
 }

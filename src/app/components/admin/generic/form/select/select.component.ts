@@ -25,12 +25,14 @@ export class SelectComponent implements OnInit {
   @Input({ required: true }) type = ''
   @Input({ required: true }) propertyToDisplay = ''
 
+  selectList: Base[] = []
+
 
   constructor(private service: ApiService) { }
 
   ngOnInit(): void {
     this.service.getAll(this.type).subscribe((dtos: Base[]) => {
-      this.form?.get(this.getControlName())?.setValue(dtos)
+      this.selectList = dtos
     })
   }
 

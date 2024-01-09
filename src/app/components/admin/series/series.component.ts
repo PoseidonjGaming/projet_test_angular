@@ -40,6 +40,7 @@ export class SeriesComponent implements OnInit {
   columns: { name: string, header: string }[] = [
     { name: 'name', header: 'Nom' },
     { name: 'releaseDate', header: 'Date de diffusion' },
+    { name: 'nextSeriesId', header: 'Prochaine série' },
     { name: 'action', header: 'Action' }
   ]
 
@@ -89,9 +90,10 @@ export class SeriesComponent implements OnInit {
   }
 
   submit(event: { dto: Base, isSubmit: boolean }) {
-    if (this.formSeries) {
+    if (this.formSeries) {      
       const file = this.formSeries.value['posterFile']
-      this.fileService.upload(file, 'series').subscribe(()=>{})
+      if (file)
+        this.fileService.upload(file, 'series').subscribe(() => { })
       this.adminService.submit(this.type, event)
     }
 

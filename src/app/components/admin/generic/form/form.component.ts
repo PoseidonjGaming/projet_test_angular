@@ -22,7 +22,7 @@ import { FileComponent } from './file/file.component';
     SelectComponent,
     FileComponent,
     FormsModule,
-    
+
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -71,8 +71,6 @@ export class FormComponent implements OnInit {
   submit(ngForm: FormGroupDirective) {
     this.form?.markAllAsTouched()
     if (this.form && this.form.valid) {
-      this.formService.mapId(this.form, 'Ids')
-      this.formService.mapId(this.form, 'Id')
       this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), isSubmit: true })
       this.reset(ngForm)
     }
@@ -97,6 +95,6 @@ export class FormComponent implements OnInit {
     ngForm.resetForm(this.resetDto)
   }
 
-  
+
 
 }
