@@ -26,6 +26,7 @@ export class ReviewComponent implements OnInit {
   type = 'review'
   columns = [
     { name: 'note', header: 'Note' },
+    {name: 'userId', header: 'User'},
     { name: 'action', header: 'Action' }
   ]
 
