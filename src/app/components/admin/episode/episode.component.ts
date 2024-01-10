@@ -34,9 +34,9 @@ import { AdminService } from '../../../service/admin/admin.service';
 export class EpisodeComponent implements OnInit {
 
   columns = [
-    { name: 'name', header: 'Nom' },
-    { name: 'releaseDate', header: 'Date de diffusion' },
-    { name: 'action', header: 'Action' }
+    { name: 'name', header: 'Nom', display: [] },
+    { name: 'releaseDate', header: 'Date de diffusion', display: [] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
   controls: { name: string, type: string }[] = []

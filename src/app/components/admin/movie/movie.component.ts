@@ -32,10 +32,10 @@ import { FileService } from '../../../service/api/file/file.service';
 export class MovieComponent implements OnInit {
   type = 'movie'
 
-  columns: { name: string, header: string }[] = [
-    { name: 'name', header: 'Nom' },
-    { name: 'releaseDate', header: 'Date de diffusion' },
-    { name: 'action', header: 'Action' }
+  columns: { name: string, header: string, display: string[] }[] = [
+    { name: 'name', header: 'Nom', display: [] },
+    { name: 'releaseDate', header: 'Date de diffusion', display: [] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
   controls: { name: string, type: string }[] = []
@@ -86,7 +86,7 @@ export class MovieComponent implements OnInit {
   submit(event: { dto: Base, isSubmit: boolean }) {
     if (this.formMovie) {
       const file = this.formMovie.value['posterFile']
-      this.fileService.upload(file, 'movie').subscribe(()=>{})
+      this.fileService.upload(file, 'movie').subscribe(() => { })
       this.adminService.submit(this.type, event)
     }
   }

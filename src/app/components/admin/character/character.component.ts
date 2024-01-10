@@ -33,52 +33,52 @@ import { AdminService } from '../../../service/admin/admin.service';
 export class CharacterComponent implements OnInit {
   type = 'character'
 
-  columns: { name: string, header: string }[] = [
-    { name: 'name', header: 'Nom' },
-    { name: 'action', header: 'Action' }
+  columns: { name: string, header: string, display: string[] }[] = [
+    { name: 'name', header: 'Nom', display: [] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
-  controls: { name: string, type: string }[] = []
-  formCharacter?: FormGroup
+controls: { name: string, type: string } [] = []
+formCharacter ?: FormGroup
 
-  displays: { control: string, value: string }[] = [
-    { control: 'actorId', value: 'firstname' }
-  ]
+displays: { control: string, value: string } [] = [
+  { control: 'actorId', value: 'firstname' }
+]
 
-  types: { control: string, value: string }[] = [
-    { control: 'actorId', value: 'actor' }
-  ]
-  displayMap = new Map<string, string>()
-  typeMap = new Map<string, string>()
+types: { control: string, value: string } [] = [
+  { control: 'actorId', value: 'actor' }
+]
+displayMap = new Map<string, string>()
+typeMap = new Map<string, string>()
 
 
 
-  constructor(private formBuilder: FormBuilder,
-    private service: ApiService,
-    private crudService: CrudService,
-    private toAddService: ToAddService,
-    private utilsService: UtilsService,
-    private adminService: AdminService) { }
-  ngOnInit(): void {
-    this.formCharacter = this.adminService.init(new Character(), this.controls)
+constructor(private formBuilder: FormBuilder,
+  private service: ApiService,
+  private crudService: CrudService,
+  private toAddService: ToAddService,
+  private utilsService: UtilsService,
+  private adminService: AdminService) { }
+ngOnInit(): void {
+  this.formCharacter = this.adminService.init(new Character(), this.controls)
     this.displayMap = this.adminService.initMap(this.displays)
     this.typeMap = this.adminService.initMap(this.types)
-  }
+}
 
-  populate(series: Base) {
-    if (this.formCharacter) {
-      this.utilsService.populate(series, this.formCharacter)
-    }
+populate(series: Base) {
+  if (this.formCharacter) {
+    this.utilsService.populate(series, this.formCharacter)
   }
+}
 
-  submit(event: { dto: Base, isSubmit: boolean }) {
-    this.adminService.submit(this.type, event)
-  }
+submit(event: { dto: Base, isSubmit: boolean }) {
+  this.adminService.submit(this.type, event)
+}
 
-  saves(bases: Base[]) {
-    this.service.saves(this.type, bases).subscribe(() => {
-      this.crudService.next(new Character())
-      this.toAddService.next(new Character())
-    })
-  }
+saves(bases: Base[]) {
+  this.service.saves(this.type, bases).subscribe(() => {
+    this.crudService.next(new Character())
+    this.toAddService.next(new Character())
+  })
+}
 }

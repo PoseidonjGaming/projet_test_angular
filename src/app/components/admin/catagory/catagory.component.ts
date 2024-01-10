@@ -31,9 +31,9 @@ import { AdminService } from '../../../service/admin/admin.service';
 export class CatagoryComponent {
   type = 'category'
 
-  columns: { name: string, header: string }[] = [
-    { name: 'name', header: 'Nom' },
-    { name: 'action', header: 'Action' }
+  columns: { name: string, header: string, display: string[] }[] = [
+    { name: 'name', header: 'Nom', display: [] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
   controls: { name: string, type: string }[] = []

@@ -31,10 +31,10 @@ import { AdminService } from '../../../service/admin/admin.service';
 export class ActorComponent implements OnInit {
   type = 'actor'
 
-  columns: { name: string, header: string }[] = [
-    { name: 'firstname', header: 'Prénom' },
-    { name: 'lastname', header: 'Nom de famille' },
-    { name: 'action', header: 'Action' }
+  columns: { name: string, header: string, display: string[] }[] = [
+    { name: 'firstname', header: 'Prénom', display: [] },
+    { name: 'lastname', header: 'Nom de famille', display: [] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
   controls: { name: string, type: string }[] = []

@@ -25,9 +25,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 export class ReviewComponent implements OnInit {
   type = 'review'
   columns = [
-    { name: 'note', header: 'Note' },
-    {name: 'userId', header: 'User'},
-    { name: 'action', header: 'Action' }
+    { name: 'note', header: 'Note', display: [] },
+    { name: 'userId', header: 'User', display: ['username'] },
+    { name: 'action', header: 'Action', display: [] }
   ]
 
   controls: { name: string, type: string }[] = []
@@ -60,7 +60,7 @@ export class ReviewComponent implements OnInit {
 
   }
 
-  submit(event: { dto: Base, isSubmit: boolean }){
+  submit(event: { dto: Base, isSubmit: boolean }) {
     this.adminService.submit(this.type, event)
   }
 }
