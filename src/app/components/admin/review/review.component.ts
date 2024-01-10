@@ -8,6 +8,7 @@ import { AdminService } from '../../../service/admin/admin.service';
 import { FormGroup, Validators } from '@angular/forms';
 import { Review } from '../../../models/review.model';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { UtilsService } from '../../../service/utils/utils.service';
 
 @Component({
   selector: 'app-review',
@@ -49,7 +50,7 @@ export class ReviewComponent implements OnInit {
     { control: 'userId', value: 'user' },
     { control: 'seriesId', value: 'series' },
   ]
-  constructor(private adminService: AdminService) { }
+  constructor(private adminService: AdminService, private utilsService: UtilsService) { }
   ngOnInit(): void {
     this.formReview = this.adminService.init(new Review(), this.controls)
     this.displayMap = this.adminService.initMap(this.displays)
@@ -57,7 +58,10 @@ export class ReviewComponent implements OnInit {
   }
 
   populate(base: Base) {
+    if (this.formReview) {
+      this.utilsService.populate(base, this.formReview, this.typeMap)
 
+    }
   }
 
   submit(event: { dto: Base, isSubmit: boolean }) {
