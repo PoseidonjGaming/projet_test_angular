@@ -69,7 +69,7 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
             const index = filteredColumns.indexOf(c)
             const relatedValue = values[index]
             this.dataSource.getData().forEach(source => {
-              relatedValue.forEach(r => {                
+              relatedValue.forEach(r => {
                 if (r['id'] == source[c.name])
                   source[c.name.slice(0, c.name.length - 2)] = this.utilsService.getDisplay(r, c.display)
                 else if (source[c.name] == 0)
@@ -101,7 +101,7 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
 
   delete(base: Base) {
     this.service.delete(this.type, base['id']).subscribe((value) => {
-      if (this.dataSource.getData().length - 1 == 0)
+      if (this.dataSource.getData().length - 1 == 0 && this.paginator.pageIndex - 1 > 0)
         this.paginator.pageIndex = this.paginator.pageIndex - 1
       this.crudService.next(value)
 
