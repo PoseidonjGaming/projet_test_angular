@@ -19,6 +19,14 @@
         <td mat-cell *matCellDef="let element"> {{element[column.name] | date: 'shortDate': undefined: locale}} </td>
     </ng-container>
     }
+    @else if (column.name.endsWith('Id')) {
+    <ng-container [matColumnDef]="column.name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} </th>
+        <td mat-cell *matCellDef="let element">
+            {{element[column.name.slice(0,column.name.length-2)]}}
+        </td>
+    </ng-container>
+    }
     @else {
     <ng-container [matColumnDef]="column.name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} </th>

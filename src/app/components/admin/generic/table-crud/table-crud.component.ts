@@ -5,13 +5,14 @@ import { Base } from '../../../../models/base.model';
 import { CrudService } from '../../../../service/admin/crud/crud.service';
 import { ApiService } from '../../../../service/api/api.service';
 import { DataSource } from '@angular/cdk/collections';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, combineLatest, mergeMap } from 'rxjs';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PageResponse } from '../../../../models/pageResponse.model';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { Sorter } from '../../../../models/Sorter.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
 import { DatePipe } from '@angular/common';
+import { UtilsService } from '../../../../service/utils/utils.service';
 
 
 @Component({
@@ -27,8 +28,9 @@ import { DatePipe } from '@angular/common';
 })
 export class TableCRUDComponent implements OnInit, OnDestroy {
 
-  @Input({ required: true }) columns: { name: string, header: string }[] = []
+  @Input({ required: true }) columns: { name: string, header: string, display: string[] }[] = []
   @Input({ required: true }) type = ''
+  @Input() typeMap = new Map<string, string>()
 
   @Output() populateEvent = new EventEmitter<Base>()
 
@@ -39,7 +41,10 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
   private sorting = { field: 'id', direction: Sorter.ASC }
   private crudSub?: Subscription
 
-  constructor(private service: ApiService, private crudService: CrudService, @Inject(LOCALE_ID) public locale: string) { }
+  constructor(private service: ApiService,
+    private crudService: CrudService,
+    private utilsService: UtilsService,
+    @Inject(LOCALE_ID) public locale: string) { }
   ngOnDestroy(): void {
     if (this.crudSub)
       this.crudSub.unsubscribe()
@@ -48,11 +53,32 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.crudSub = this.crudService.get().subscribe({
       next: () => {
-        this.sendRequest().subscribe((values: PageResponse<Base>) => {
-          this.paginator.length = values.size
-          this.dataSource.setData(values.content)
+        this.sendRequest().pipe(
+          mergeMap((values) => {
+            this.paginator.length = values.size
+            this.dataSource.setData(values.content)
+            const obs = this.columns.filter(c => c.name.endsWith('Id')).map(c => {
+              const idSet = new Set(values.content.map(e => e[c.name]))
+              return this.service.getByIds(this.typeMap.get(c.name)!, Array.from(idSet))
+            })
+            return combineLatest(obs)
+          })
+        ).subscribe(values => {
+          const filteredColumns = this.columns.filter(c => c.name.endsWith('Id'))
+          filteredColumns.forEach(c => {
+            const index = filteredColumns.indexOf(c)
+            const relatedValue = values[index]
+            this.dataSource.getData().forEach(source => {
+              relatedValue.forEach(r => {                
+                if (r['id'] == source[c.name])
+                  source[c.name.slice(0, c.name.length - 2)] = this.utilsService.getDisplay(r, c.display)
+                else if (source[c.name] == 0)
+                  source[c.name.slice(0, c.name.length - 2)] = 'Empty'
+              })
+            })
+          })
+        });
 
-        })
       }
     })
 

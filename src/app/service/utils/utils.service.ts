@@ -14,7 +14,7 @@ export class UtilsService {
   populate<E extends Base>(entity: E, form: FormGroup, typeMap?: Map<string, string>) {
     Object.keys(entity).forEach((e: string) => {
       if (e.endsWith('Ids')) {
-        const controlName = this.getRelatedName(e, 3)        
+        const controlName = this.getRelatedName(e, 3)
         let control = form.controls[controlName]
         if (control && typeMap) {
           this.service.getByIds(typeMap.get(e)!,
@@ -43,5 +43,13 @@ export class UtilsService {
 
   getRelatedName(controlRelatedName: string, removes: number) {
     return controlRelatedName.slice(0, controlRelatedName.length - removes)
+  }
+
+  getDisplay<E extends Base>(dto: E, displays: string[]) {
+    let display = ''
+    displays.forEach(d => {
+      display = display.concat(` ${dto[d]}`)
+    })
+    return display
   }
 }
