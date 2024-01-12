@@ -17,6 +17,7 @@ import { MatCardModule } from '@angular/material/card';
 import { Review } from '../../../models/review.model';
 import { MatchMode } from '../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../models/enum/StringMatcher.model';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-detail-series',
@@ -50,33 +51,33 @@ export class DetailSeriesComponent {
       }),
       mergeMap(series => {
         this.series = series
-        console.log(series.id);
-        
         return combineLatest([
           this.service.getByIds<Season>('season', this.series.seasonIds),
           this.service.getByIds<Character>('character', this.series.characterIds),
           this.service.search<Review>('review', { seriesId: series.id },
-            MatchMode.ANY, StringMatcher.EXACT, null, null)
+            MatchMode.ALL, StringMatcher.EXACT, null, null)
         ])
       }),
       switchMap(([seasonDtos, characterDtos, reviewDto]) => {
         this.characters = characterDtos
         this.seasons = seasonDtos
         this.reviews = reviewDto
-        console.log(reviewDto);
-        
         return combineLatest([
           this.service.getByIds<Actor>('actor', characterDtos.map(e => e.actorId)),
-          this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat())
+          this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat()),
+          this.service.getByIds<User>('user', reviewDto.map(r => r.userId))
         ])
       })
-    ).subscribe(([actorDtos, episodeDtos]) => {
+    ).subscribe(([actorDtos, episodeDtos, userDtos]) => {
       this.seasons.forEach(season => {
         season['episodes'] = episodeDtos.filter(e => e.seasonId == season.id)
       })
 
       this.characters.forEach(character => {
         character['actor'] = actorDtos.find(a => a.id == character.actorId)
+      })
+      this.reviews.forEach(review => {
+        review['username'] = userDtos.find(u => u['id'] == review.userId)?.username
       })
     })
 

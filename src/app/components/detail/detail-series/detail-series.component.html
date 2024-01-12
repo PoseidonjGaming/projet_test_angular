@@ -36,7 +36,8 @@
     </div>
     <div class="row">
         <div class="col-4">
-            <img class="img-fluid m-2" src="http://localhost:8081/file/load?filename={{series.poster}}" alt="affiche">
+            <img class="img-fluid m-2" style="max-height: 100vh;" src="http://localhost:8081/file/load?filename={{series.poster}}" alt="affiche">
+            <button>Test</button>
         </div>
         <div class="col">
             <div class="row m-2">
@@ -92,9 +93,15 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row m-2">
         @for (review of reviews; track $index) {
-        <p>{{review.comment}}</p>
+        <mat-card>
+            <mat-card-title> {{review['username']}} </mat-card-title>
+            <mat-card-content>
+                <p>{{review.note}}/5</p>
+                <p>{{review.comment}}</p>
+            </mat-card-content>
+        </mat-card>
         }
 
     </div>
