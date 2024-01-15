@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="example-container col">
-            <h2>Catégories de {{form.get(propertyList)!.value}}</h2>
+            <h2>Catégories de {{form.get(propertyToDisplay)!.value}}</h2>
             <div cdkDropList [cdkDropListData]="form.get(propertyList)!.value" class="example-list"
                 (cdkDropListDropped)="drop($event)">
                 @for (item of form.get(propertyList)!.value; track $index) {
