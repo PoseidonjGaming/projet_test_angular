@@ -18,6 +18,8 @@ import { Review } from '../../../models/review.model';
 import { MatchMode } from '../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../models/enum/StringMatcher.model';
 import { User } from '../../../models/user.model';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { TokenService } from '../../../service/api/token/token.service';
 
 @Component({
   selector: 'app-detail-series',
@@ -29,6 +31,7 @@ import { User } from '../../../models/user.model';
     MatCardModule,
     RouterLink,
     MenuComponent,
+    MatToolbarModule,
     DatePipe],
   templateUrl: './detail-series.component.html',
   styleUrl: './detail-series.component.css'
@@ -41,9 +44,21 @@ export class DetailSeriesComponent {
   characters: Character[] = []
   actors: Actor[] = []
   reviews: Review[] = []
+  userReview: Review = {
+    note: 0,
+    comment: '',
+    userId: 0,
+    seriesId: 0
+  }
+
+  sumReview: { avg: number, total: number } = { avg: 0, total: 0 };
 
 
-  constructor(private service: ApiService, @Inject(LOCALE_ID) public locale: string, private route: ActivatedRoute) { }
+
+  constructor(private service: ApiService,
+    private tokenService: TokenService,
+    @Inject(LOCALE_ID) public locale: string,
+    private route: ActivatedRoute) { }
   ngOnInit(): void {
     this.route.paramMap.pipe(
       mergeMap(paramMap => {
@@ -55,13 +70,18 @@ export class DetailSeriesComponent {
           this.service.getByIds<Season>('season', this.series.seasonIds),
           this.service.getByIds<Character>('character', this.series.characterIds),
           this.service.search<Review>('review', { seriesId: series.id },
+            MatchMode.ALL, StringMatcher.EXACT, null, null),
+          this.service.search<User>('user', { username: this.tokenService.getClaims().sub },
             MatchMode.ALL, StringMatcher.EXACT, null, null)
         ])
       }),
-      switchMap(([seasonDtos, characterDtos, reviewDto]) => {
+      switchMap(([seasonDtos, characterDtos, reviewDto, userDtos]) => {
         this.characters = characterDtos
         this.seasons = seasonDtos
-        this.reviews = reviewDto
+        this.reviews = reviewDto.filter(r => r.userId != userDtos[0].id)
+        this.userReview = reviewDto.find(r => r.userId == userDtos[0]['id'])!
+        this.sumReview.total = reviewDto.length
+        this.sumReview.avg = reviewDto.map(r => r.note).reduce((p, s) => p + s) / reviewDto.length
         return combineLatest([
           this.service.getByIds<Actor>('actor', characterDtos.map(e => e.actorId)),
           this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat()),
@@ -80,6 +100,9 @@ export class DetailSeriesComponent {
         review['username'] = userDtos.find(u => u['id'] == review.userId)?.username
       })
     })
+
+
+
 
   }
 }

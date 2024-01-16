@@ -1,4 +1,9 @@
 <app-menu></app-menu>
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <p>Votre note {{userReview.note}}/note</p>
+    </mat-toolbar-row>
+</mat-toolbar>
 @if(series){
 <div class="container-fluid">
     <div class="row">
@@ -31,13 +36,13 @@
             <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
         </button>
         }
-
-
     </div>
+
+ 
+
     <div class="row">
         <div class="col-4">
             <img class="img-fluid m-2" style="max-height: 100vh;" src="http://localhost:8081/file/load?filename={{series.poster}}" alt="affiche">
-            <button>Test</button>
         </div>
         <div class="col">
             <div class="row m-2">
@@ -47,6 +52,7 @@
                     </mat-card-title>
                     <mat-card-content>
                         <p><b>Nom:</b> {{series.name}}</p>
+                        <p><b>Moyenne:</b> {{sumReview.avg}}/5 sur {{sumReview.total}} avis</p>
                         <p><b>Première diffusion le </b>{{series.releaseDate | date:'shortDate': undefined: locale}}</p>
                         <p><b>Résumé:</b> <br>{{series.summary}}</p>
                         <p><b>Personnages:</b> </p>
@@ -95,7 +101,7 @@
     </div>
     <div class="row m-2">
         @for (review of reviews; track $index) {
-        <mat-card>
+        <mat-card class="m-2">
             <mat-card-title> {{review['username']}} </mat-card-title>
             <mat-card-content>
                 <p>{{review.note}}/5</p>
