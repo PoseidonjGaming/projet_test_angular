@@ -52,12 +52,10 @@ export class SearchComponent implements OnInit {
     type: new FormControl<string>('series'),
     startDate: new FormControl(null),
     endDate: new FormControl(null),
-    mode: new FormControl('all')
   })
 
   constructor(private service: ApiService,
-    private categoryService: ApiService,
-    private utilsService: UtilsService) { }
+    private categoryService: ApiService) { }
 
   ngOnInit(): void {
     this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.results = dtos)
@@ -65,14 +63,10 @@ export class SearchComponent implements OnInit {
   }
 
   submit() {
-    let dto = {}
     const value = this.formSearch.value
     if (value.type && value.categoryIds) {
-
-
-      this.service.search<Base>(value.type, dto,
-        (value.mode && value.mode === 'all') ? MatchMode.ALL : MatchMode.ANY,
-        StringMatcher.CONTAINING,
+      this.service.search<Base>(value.type, value,
+        MatchMode.ALL, StringMatcher.CONTAINING,
         value.startDate!, value.endDate!
       ).subscribe((dtos: Base[]) => {
         this.results = dtos

@@ -1,18 +1,9 @@
-<app-menu></app-menu>
+<app-menu class="sticky-top"></app-menu>
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="push" (closedStart)="isOpened=!isOpened">
         <div class="container-fluid">
-            <form [formGroup]="formSearch" (ngSubmit)="submit()">
+            <form class="sticky-top" [formGroup]="formSearch" (ngSubmit)="submit()">
                 <div class="col">
-                    <div class="row">
-                        <mat-form-field>
-                            <mat-label>Mode de recherche</mat-label>
-                            <mat-select formControlName="mode">
-                                <mat-option value="all">Correspond</mat-option>
-                                <mat-option value="any">Contient</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div>
                     <div class="row">
                         <mat-chip-listbox multiple="true" formControlName="categoryIds" class="mat-mdc-chip-set-stacked"
                             aria-label="Fish selection">
@@ -40,7 +31,6 @@
                         <button type="button" mat-raised-button (click)="reset()">Reset</button>
                     </div>
                 </div>
-
             </form>
         </div>
     </mat-sidenav>
@@ -53,7 +43,7 @@
         }
     </button>
     <div class="container-fluid">
-        <div class="row d-flex justify-content-center">
+        <div class="row  d-flex justify-content-center">
             <div class="col-4">
                 <form [formGroup]="formSearch" (ngSubmit)="submit()">
                     <div class="row">
@@ -79,7 +69,7 @@
                 </form>
             </div>
         </div>
-        <div class="row">
+        <div class="row min-vh-100">
             <p>Résulats trouvés: {{results.length}}</p>
             @for (result of results; track $index) {
             <div class="col-4">
