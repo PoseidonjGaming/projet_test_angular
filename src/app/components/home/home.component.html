@@ -1,10 +1,10 @@
-<app-menu class="sticky-top"></app-menu>
+<app-menu></app-menu>
 <div class="container-fluid">
     <div class="row">
         <h3>Dernières séries ajoutées:</h3>
         @for (serie of series; track $index) {
         <div class="col-4">
-            <mat-card class="m-2" style="width: 13vw;">
+            <mat-card class="m-2" style="width: 20vw;">
                 <mat-card-header>
                     <mat-card-title>{{serie.name}}</mat-card-title>
                 </mat-card-header>

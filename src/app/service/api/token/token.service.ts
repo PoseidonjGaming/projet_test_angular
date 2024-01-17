@@ -33,7 +33,11 @@ export class TokenService {
 
 
   getClaims(): any {
-    return (this.getToken()) ? jwtDecode(this.getToken()!) : null
+    return (this.getToken()) ? jwtDecode(this.getToken()!) : ''
+  }
+
+  getUsername() {
+    return (this.getToken()) ? this.getClaims().sub : ''
   }
 
   deleteToken() {
