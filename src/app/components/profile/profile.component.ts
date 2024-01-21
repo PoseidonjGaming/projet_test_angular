@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MenuComponent } from '../menu/menu.component';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { User } from '../../models/user.model';
 import { ApiService } from '../../service/api/api.service';
@@ -13,6 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FileService } from '../../service/api/file/file.service';
 import { CredentialService } from '../../service/api/credential/credential.service';
+import { DisplayFileDialogComponent } from '../admin/generic/form/file/display-file-dialog/display-file-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-profile',
@@ -28,22 +30,24 @@ import { CredentialService } from '../../service/api/credential/credential.servi
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent {
-  file64?: string | null | ArrayBuffer
   file?: File
+  private user: User = new User()
 
   formUser = new FormGroup({
     id: new FormControl(null),
     username: new FormControl(''),
     currentPassword: new FormControl(null),
     password: new FormControl(null),
-    confirmPassword: new FormControl(null)
+    confirmPassword: new FormControl(null),
+    avatarFile: new FormControl('')
   })
 
   constructor(private tokenService: TokenService,
     private service: ApiService,
     private credentialService: CredentialService,
     private fileService: FileService,
-    private utils: UtilsService) {
+    private utils: UtilsService,
+    private dialog: MatDialog) {
     this.formUser.controls.confirmPassword.addValidators([Password.checkNew(this.formUser.controls.password), Password.checkOld(this.formUser.controls.currentPassword)])
     this.formUser.controls.password.addValidators(Password.checkOld(this.formUser.controls.currentPassword))
   }
@@ -53,12 +57,11 @@ export class ProfileComponent {
     this.service.search<User>('user', this.tokenService.getUser(),
       MatchMode.ALL, StringMatcher.CONTAINING, null, null).subscribe((dtos: User[]) => {
         this.utils.populate(dtos[0], this.formUser)
-        this.file64 = `htts://localhost:8081/file/load/${dtos[0].avatarFile}`
+        this.user = dtos[0]
       })
   }
 
   submit() {
-    console.log(this.file);
     if (this.formUser.valid) {
       const dto = this.utils.updateValues(new User(), this.formUser)
       dto['avatarFile'] = this.file?.name
@@ -68,13 +71,16 @@ export class ProfileComponent {
   }
 
   setAvatar(event: any) {
-    let reader = new FileReader();
+    this.file = event.target.files[0] as File
+  }
 
-    reader.onload = (e: ProgressEvent<FileReader>) => {
-      this.file64 = e.target?.result
-    }
-    reader.readAsDataURL(event.target.files[0])
+  openPosterDialog() {
+    this.dialog.open(DisplayFileDialogComponent, {
+      data: this.file
+    })
+  }
 
-    this.file = event.target.files[0]
+  reset(form: FormGroupDirective) {
+    form.resetForm(this.user)
   }
 }

@@ -19,14 +19,15 @@ export class AppComponent implements OnInit {
 
   constructor(private service: ApiService, private tokenService: TokenService) { }
   ngOnInit(): void {
-    this.service.search<User>('user',
-      { username: this.tokenService.getUsername() },
-      MatchMode.ALL, StringMatcher.EXACT, null, null).subscribe(users => {
-        if (users.length == 0) {
-          this.tokenService.logout()
-        }
-        console.log(users);
-        
-      })
+    if (this.tokenService.isExist()) {
+      this.service.search<User>('user',
+        { username: this.tokenService.getUsername() },
+        MatchMode.ALL, StringMatcher.EXACT, null, null).subscribe(users => {
+          if (users.length == 0) {
+            this.tokenService.logout()
+          }
+        })
+    }
+
   }
 }

@@ -1,11 +1,8 @@
 <app-menu></app-menu>
 <div class="container-fluid">
     <div class="row m-2 ">
-        <div class="col mat-elevation-z8 p-2 d-flex justify-content-center">
-            <img [src]="file64" style="max-height: 60vh;">
-        </div>
         <div class="col mat-elevation-z8 m-2">
-            <form class="p-2" [formGroup]="formUser" (ngSubmit)="submit()">
+            <form class="p-2" [formGroup]="formUser" #form="ngForm" (ngSubmit)="submit()">
                 <div class="row">
                     <mat-form-field>
                         <mat-label>Username</mat-label>
@@ -14,7 +11,22 @@
                     </mat-form-field>
                 </div>
                 <div class="row mb-2">
-                    <input type="file" (change)="setAvatar($event);" accept="image/png, image/jpeg">
+                    <mat-form-field>
+                        <mat-label>Avatar File</mat-label>
+                        <input matInput type="text" [formControlName]="'avatarFile'" [name]="'avatarFile'"
+                            [id]="'avatarFile'" placeholder="poster" [readonly]="true">
+                    </mat-form-field>
+                    <div class="row mb-2 mx-2">
+                        <div class="col">
+                            <input type="file" (change)="setAvatar($event);" accept="image/png, image/jpeg">
+                        </div>
+                        <div class="col">
+                            <button mat-raised-button type="button" color="primary" class="m-2"
+                                (click)="openPosterDialog()">
+                                Voir poster
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <mat-form-field>
@@ -53,7 +65,10 @@
                     </mat-form-field>
                 </div>
                 <div class="row">
-                    <button mat-raised-button color="primary" type="submit">Valider</button>
+                    <div class="col">
+                        <button class="me-2" mat-raised-button color="primary" type="submit">Valider</button>
+                        <button type="button" mat-raised-button (click)="reset(form)">Reset</button>
+                    </div>
                 </div>
             </form>
         </div>
