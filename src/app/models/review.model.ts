@@ -1,6 +1,7 @@
 import { Base } from "./base.model"
 
-export class Review extends Base{
+export class Review extends Base {
+    id: number = 0
     note: number = 0
     comment: string = ''
     userId: number = 0

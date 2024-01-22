@@ -45,6 +45,7 @@ export class DetailSeriesComponent {
   actors: Actor[] = []
   reviews: Review[] = []
   userReview: Review = {
+    id: 0,
     note: 0,
     comment: '',
     userId: 0,
@@ -80,11 +81,11 @@ export class DetailSeriesComponent {
         this.seasons = seasonDtos
 
         this.reviews = reviewDto
-          
+
 
 
         this.sumReview.total = reviewDto.length
-        this.sumReview.avg = reviewDto.map(r => r.note).reduce((p, s) => p + s) / reviewDto.length        
+        this.sumReview.avg = reviewDto.map(r => r.note).reduce((p, s) => p + s) / reviewDto.length
         return combineLatest([
           this.service.getByIds<Actor>('actor', characterDtos.map(e => e.actorId)),
           this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat()),
@@ -100,7 +101,7 @@ export class DetailSeriesComponent {
         character['actor'] = actorDtos.find(a => a.id == character.actorId)
       })
 
-      
+
       this.reviews.forEach(review => {
         review['username'] = userDtos.find(u => u.id == review.userId)?.username
       })

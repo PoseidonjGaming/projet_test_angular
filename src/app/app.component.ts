@@ -14,20 +14,6 @@ import { StringMatcher } from './models/enum/StringMatcher.model';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  title = 'projet_test_angular';
-
-  constructor(private service: ApiService, private tokenService: TokenService) { }
-  ngOnInit(): void {
-    if (this.tokenService.isExist()) {
-      this.service.search<User>('user',
-        { username: this.tokenService.getUsername() },
-        MatchMode.ALL, StringMatcher.EXACT, null, null).subscribe(users => {
-          if (users.length == 0) {
-            this.tokenService.logout()
-          }
-        })
-    }
-
-  }
+export class AppComponent {
+  title = 'projet_test_angular'
 }
