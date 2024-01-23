@@ -87,10 +87,10 @@
                     <p><strong> Commantaire:</strong> <br>{{review.comment}}</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <button mat-raised-button color="accent" (click)="modifyReview(review)">
+                    <button mat-raised-button color="accent" (click)="updateReview(review)">
                         <mat-icon>edit</mat-icon>Modifier
                     </button>
-                    <button mat-raised-button color="warn">
+                    <button mat-raised-button color="warn" (click)="deleteReview(review.id)">
                         <mat-icon>delete</mat-icon>
                         Supprimer
                     </button>

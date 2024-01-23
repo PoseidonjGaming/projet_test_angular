@@ -22,6 +22,7 @@ import { MenuComponent } from '../menu/menu.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+import { NumberSymbol } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
@@ -68,7 +69,16 @@ export class ProfileComponent {
 
 
   ngOnInit(): void {
-    this.service.search<User>('user', this.tokenService.getUser(),
+    this.getReview().subscribe((seriesDtos: Series[]) => {
+      this.reviews.forEach((r: Review) => {
+        r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
+        r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster
+      })
+    })
+  }
+
+  getReview() {
+    return this.service.search<User>('user', this.tokenService.getUser(),
       MatchMode.ALL, StringMatcher.CONTAINING, null, null).pipe(
         mergeMap((dtos: User[]) => {
           this.utils.populate(dtos[0], this.formUser)
@@ -81,12 +91,7 @@ export class ProfileComponent {
           this.reviews = reviewDtos
           return this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId))
         })
-      ).subscribe((seriesDtos: Series[]) => {
-        this.reviews.forEach((r: Review) => {
-          r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
-          r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster
-        })
-      })
+      )
   }
 
   submit() {
@@ -112,7 +117,7 @@ export class ProfileComponent {
     form.resetForm(this.user)
   }
 
-  modifyReview(review: Review) {
+  updateReview(review: Review) {
     this.dialog.open(ReviewDialogComponent, {
       data: review,
       height: '45vh',
@@ -129,4 +134,17 @@ export class ProfileComponent {
       })
     })
   }
+
+  deleteReview(reviewId: number) {
+    this.service.delete<Review>('review', reviewId).pipe(
+      mergeMap(()=>this.getReview())
+    ).subscribe((seriesDtos: Series[]) => {
+      this.reviews.forEach((r: Review) => {
+        r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
+        r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster
+      })
+    })
+  }
+
+
 }
