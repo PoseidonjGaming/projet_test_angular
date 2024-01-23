@@ -82,9 +82,9 @@
                     <mat-card-title> {{review['name']}} </mat-card-title>
                 </mat-card-header>
                 <img mat-card-image src="http://localhost:8081/file/load?filename={{review['poster']}}" alt="poster">
-                <mat-card-content>
-                    <p>{{review.note}}/5</p>
-                    <p>{{review.comment}}</p>
+                <mat-card-content class="mt-2">
+                    <p>Note: {{review.note}}/5</p>
+                    <p><strong> Commantaire:</strong> <br>{{review.comment}}</p>
                 </mat-card-content>
                 <mat-card-actions>
                     <button mat-raised-button color="accent" (click)="modifyReview(review)">

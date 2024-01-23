@@ -115,8 +115,18 @@ export class ProfileComponent {
   modifyReview(review: Review) {
     this.dialog.open(ReviewDialogComponent, {
       data: review,
-      height: '90vh',
-      width: '90vh'
+      height: '45vh',
+      width: '90vw'
+    }).afterClosed().pipe(
+      mergeMap((reviewDtos: Review[]) => {
+        this.reviews = reviewDtos
+        return this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId))
+      })
+    ).subscribe((seriesDtos: Series[]) => {
+      this.reviews.forEach((r: Review) => {
+        r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
+        r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster
+      })
     })
   }
 }

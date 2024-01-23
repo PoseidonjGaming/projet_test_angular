@@ -1,9 +1,10 @@
+<h3 class="ms-2">Note:</h3>
 <mat-slider [formGroup]="formReview" discrete class="example-margin" [step]="1" [max]="5">
     <input formControlName="note" matSliderThumb>
 </mat-slider>
 
 <div class="container-fluid">
-    <form [formGroup]="formReview">
+    <form [formGroup]="formReview" (ngSubmit)="submit()">
         <div class="row">
             <mat-form-field>
                 <mat-label>Commentaire</mat-label>
@@ -24,5 +25,7 @@
                 </mat-select>
             </mat-form-field>
         </div>
+
+        <button mat-raised-button color="primary">Valider</button>
     </form>
 </div>
