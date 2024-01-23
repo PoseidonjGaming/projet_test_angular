@@ -53,8 +53,8 @@ export class MenuComponent {
     private service: CredentialService,
     private tokenService: TokenService,
     private utilsService: UtilsService,
-    private router: Router,
-    private jwt: JwtHelperService) { }
+    private jwt: JwtHelperService,
+    private router: Router) { }
 
 
   ngOnInit(): void {
@@ -90,6 +90,6 @@ export class MenuComponent {
   logout() {
     this.tokenService.logout();
     this.tokenService.nextRole()
-    this.router.navigate(['/'])
+    this.router.navigate([this.router.url])
   }
 }
