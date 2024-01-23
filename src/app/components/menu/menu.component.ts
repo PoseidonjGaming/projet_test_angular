@@ -10,13 +10,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Credential } from '../../models/credential.model';
+import { User } from '../../models/user.model';
 import { CredentialService } from '../../service/api/credential/credential.service';
 import { TokenService } from '../../service/api/token/token.service';
+import { UtilsService } from '../../service/utils/utils.service';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
-import { UtilsService } from '../../service/utils/utils.service';
-import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-menu',
@@ -42,6 +41,7 @@ export class MenuComponent {
   private rolesAdmin = ['ROLE_super_admin']
   hide = true;
   isLogged: boolean = false
+  isAdmin: boolean = false
   username: string = ''
 
   formLogin = new FormGroup({
@@ -59,9 +59,8 @@ export class MenuComponent {
 
   ngOnInit(): void {
     this.tokenService.subscribeRole().subscribe((d) => {
-
-
       this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
+      this.isAdmin = this.tokenService.isExist() && this.rolesAdmin.includes(this.tokenService.getRole())
       if (this.isLogged) {
         this.username = this.tokenService.getClaims().sub
       }

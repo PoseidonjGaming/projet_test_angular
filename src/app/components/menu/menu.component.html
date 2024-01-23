@@ -3,7 +3,7 @@
         <button mat-button routerLink="/">Les Séries</button>
         <a mat-button routerLink="/search">Recherche</a>
         <div>
-            @if (isLogged) {
+            @if (isLogged && isAdmin) {
             <button mat-button [matMenuTriggerFor]="menuAdmin">Menu</button>
             <mat-menu #menuAdmin="matMenu">
                 <button mat-menu-item routerLink="/admin/series">Gérer les séries</button>
