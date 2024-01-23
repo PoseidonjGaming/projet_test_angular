@@ -55,12 +55,11 @@ export class ReviewDialogComponent implements OnInit {
   }
 
   submit() {
-    this.service.save('review', this.utilService.updateValues<Review>(new Review(), this.formReview)).pipe(
-      mergeMap(() => this.service.search<Review>('review', { userId: this.data.userId },
-        MatchMode.ALL, StringMatcher.EXACT, null, null))
-    ).subscribe((reviews: Review[]) => {
-      this.dialogRef.close(reviews)
+    this.service.save('review', this.utilService.updateValues<Review>(new Review(), this.formReview)).subscribe(() => {
+      this.dialogRef.close()
     })
+
+
   }
 
 }

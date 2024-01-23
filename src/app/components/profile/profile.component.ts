@@ -80,6 +80,7 @@ export class ProfileComponent {
   getReview() {
     return this.service.search<User>('user', this.tokenService.getUser(),
       MatchMode.ALL, StringMatcher.CONTAINING, null, null).pipe(
+
         mergeMap((dtos: User[]) => {
           this.utils.populate(dtos[0], this.formUser)
           this.user = dtos[0]
@@ -123,6 +124,9 @@ export class ProfileComponent {
       height: '45vh',
       width: '90vw'
     }).afterClosed().pipe(
+      mergeMap(() => this.service.search<Review>('review',
+        { userId: this.user.id },
+        MatchMode.ALL, StringMatcher.EXACT, null, null)),
       mergeMap((reviewDtos: Review[]) => {
         this.reviews = reviewDtos
         return this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId))
@@ -137,7 +141,7 @@ export class ProfileComponent {
 
   deleteReview(reviewId: number) {
     this.service.delete<Review>('review', reviewId).pipe(
-      mergeMap(()=>this.getReview())
+      mergeMap(() => this.getReview())
     ).subscribe((seriesDtos: Series[]) => {
       this.reviews.forEach((r: Review) => {
         r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name

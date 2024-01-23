@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,6 +16,7 @@ import { TokenService } from '../../service/api/token/token.service';
 import { UtilsService } from '../../service/utils/utils.service';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
+
 
 @Component({
   selector: 'app-menu',
@@ -44,6 +45,9 @@ export class MenuComponent {
   isAdmin: boolean = false
   username: string = ''
 
+  @Output()
+  isLoggedEvent = new EventEmitter<boolean>()
+
   formLogin = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
@@ -60,10 +64,12 @@ export class MenuComponent {
   ngOnInit(): void {
     this.tokenService.subscribeRole().subscribe((d) => {
       this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
-      this.isAdmin = this.tokenService.isExist() && this.rolesAdmin.includes(this.tokenService.getRole())
+      this.isAdmin = this.isLogged && this.rolesAdmin.includes(this.tokenService.getRole())
       if (this.isLogged) {
         this.username = this.tokenService.getClaims().sub
       }
+
+      this.isLoggedEvent.emit(this.isLogged)
     })
     this.tokenService.nextRole()
 
@@ -83,6 +89,8 @@ export class MenuComponent {
         this.tokenService.setToken(token.token)
         this.username = this.tokenService.getClaims().sub
         this.tokenService.nextRole()
+        this.formLogin.reset()
+        this.router.navigate([this.router.url])
       })
     }
   }

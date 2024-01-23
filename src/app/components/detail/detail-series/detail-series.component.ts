@@ -20,6 +20,8 @@ import { User } from '../../../models/user.model';
 import { ApiService } from '../../../service/api/api.service';
 import { TokenService } from '../../../service/api/token/token.service';
 import { MenuComponent } from '../../menu/menu.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ReviewDialogComponent } from '../../profile/review-dialog/review-dialog.component';
 
 @Component({
   selector: 'app-detail-series',
@@ -44,13 +46,9 @@ export class DetailSeriesComponent {
   characters: Character[] = []
   actors: Actor[] = []
   reviews: Review[] = []
-  userReview: Review = {
-    id: 0,
-    note: 0,
-    comment: '',
-    userId: 0,
-    seriesId: 0
-  }
+
+  isLogged = false
+  private userId = 0
 
   sumReview: { avg: number, total: number } = { avg: 0, total: 0 };
 
@@ -59,6 +57,7 @@ export class DetailSeriesComponent {
   constructor(private service: ApiService,
     private tokenService: TokenService,
     @Inject(LOCALE_ID) public locale: string,
+    private dialog: MatDialog,
     private route: ActivatedRoute) { }
   ngOnInit(): void {
     this.route.paramMap.pipe(
@@ -82,10 +81,15 @@ export class DetailSeriesComponent {
 
         this.reviews = reviewDto
 
+        if (userDtos.length > 0) {
+          this.userId = userDtos[0].id
+        }
 
+        if (reviewDto.length > 0) {
+          this.sumReview.total = reviewDto.length
+          this.sumReview.avg = reviewDto.map(r => r.note).reduce((p, s) => p + s) / reviewDto.length
+        }
 
-        this.sumReview.total = reviewDto.length
-        this.sumReview.avg = reviewDto.map(r => r.note).reduce((p, s) => p + s) / reviewDto.length
         return combineLatest([
           this.service.getByIds<Actor>('actor', characterDtos.map(e => e.actorId)),
           this.service.getByIds<Episode>('episode', seasonDtos.map(e => e.episodeIds).flat()),
@@ -106,9 +110,47 @@ export class DetailSeriesComponent {
         review['username'] = userDtos.find(u => u.id == review.userId)?.username
       })
     })
+  }
 
 
+  seeReview() {
+    let userReview: Review | undefined = this.reviews.find(r => r.userId == this.userId)
 
 
+    if (!userReview) {
+      userReview = new Review()
+      userReview.userId = this.userId
+      userReview.seriesId = this.series.id
+    }
+
+    this.dialog.open(ReviewDialogComponent, {
+      data: userReview,
+      height: '45vh',
+      width: '90vw'
+    }).afterClosed().pipe(
+      mergeMap(() => this.service.search<Review>('review',
+        { seriesId: this.series.id },
+        MatchMode.ALL, StringMatcher.EXACT, null, null)),
+      mergeMap((reviewDtos: Review[]) => {
+        this.reviews = reviewDtos
+        return combineLatest([
+          this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId)),
+          this.service.getByIds<User>('user', reviewDtos.map(r => r.userId))
+        ])
+      })
+    ).subscribe(([seriesDtos, userDtos]) => {
+      
+      this.reviews.forEach((r: Review) => {
+        r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
+        r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster
+      })
+
+      this.reviews.forEach(review => {
+        review['username'] = userDtos.find(u => u.id == review.userId)?.username
+      })
+    })
+  }
+  getLogin(event: boolean) {
+    this.isLogged = event
   }
 }
