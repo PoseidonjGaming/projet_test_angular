@@ -1,4 +1,4 @@
-<app-menu></app-menu>
+<app-menu (isLoggedEvent)="getLog($event)"></app-menu>
 <div class="container-fluid">
     <div class="row">
         <h3>Dernières séries ajoutées:</h3>
@@ -31,6 +31,11 @@
                 </mat-card-content>
                 <mat-card-actions>
                     <a type="button" mat-button [routerLink]="['/detail/series', serie.id]">Voir les Détail</a>
+                    @if(isLogged){
+                    <button mat-icon-button
+                        (click)="updateBookmark(serie['id'])"><mat-icon>{{isInWatchlist(serie['id'])}}</mat-icon></button>
+                    }
+
                 </mat-card-actions>
             </mat-card>
         </div>

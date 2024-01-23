@@ -6,4 +6,5 @@ export class User extends Base {
     roles: string[] = []
     password: string | null = null
     avatarFile: string = ''
+    seriesIds: number[] = []
 }

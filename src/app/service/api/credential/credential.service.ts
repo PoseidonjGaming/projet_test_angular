@@ -24,8 +24,4 @@ export class CredentialService {
   updateAccount(user: User){
     return this.httpClient.post(`${this.API_BASE_URL}/user/update`, user)
   }
-
-  isExist() {
-    return this.httpClient.get<boolean>(`${this.API_BASE_URL}/user/exist?username=${this.tokenService.getClaims().sub}`)
-  }
 }
