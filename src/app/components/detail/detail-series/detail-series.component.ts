@@ -21,7 +21,7 @@ import { ApiService } from '../../../service/api/api.service';
 import { TokenService } from '../../../service/api/token/token.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { MatDialog } from '@angular/material/dialog';
-import { ReviewDialogComponent } from '../../profile/review-dialog/review-dialog.component';
+import { ReviewDialogComponent } from '../../user/profile/review-dialog/review-dialog.component';
 
 @Component({
   selector: 'app-detail-series',

@@ -14,20 +14,17 @@
                 <mat-card-content>
                     @if (slicedsummary && serie.summary) {
                     <p class="mt-2">
-                        {{serie.summary.slice(0,256)}}...
+                        {{serie.summary.slice(0,255)}}...
                         <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
                             plus</button>
                     </p>
+                    }@else if (!slicedsummary) {
+                    <p class="mt-2">
+                        {{serie.summary}}
+                        <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
+                            moins</button>
+                    </p>
                     }
-
-                    <ng-template #fullsummary>
-                        <p class="mt-2">
-                            {{serie.summary}}
-                            <button mat-button color="primary" (click)="slicedsummary=!slicedsummary">Voir
-                                moins</button>
-                        </p>
-
-                    </ng-template>
                 </mat-card-content>
                 <mat-card-actions>
                     <a type="button" mat-button [routerLink]="['/detail/series', serie.id]">Voir les Détail</a>

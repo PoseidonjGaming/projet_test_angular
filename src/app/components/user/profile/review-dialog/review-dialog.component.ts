@@ -1,18 +1,15 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatSliderModule } from '@angular/material/slider';
-import { Series } from '../../../models/series.model';
-import { ApiService } from '../../../service/api/api.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Review } from '../../../models/review.model';
-import { UtilsService } from '../../../service/utils/utils.service';
-import { MatButtonModule } from '@angular/material/button';
-import { mergeMap } from 'rxjs';
-import { MatchMode } from '../../../models/enum/MatchMode.model';
-import { StringMatcher } from '../../../models/enum/StringMatcher.model';
+import { Component, OnInit, Inject } from "@angular/core"
+import { FormsModule, ReactiveFormsModule, FormGroup, FormControl, Validators } from "@angular/forms"
+import { MatButtonModule } from "@angular/material/button"
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog"
+import { MatFormFieldModule } from "@angular/material/form-field"
+import { MatInputModule } from "@angular/material/input"
+import { MatSelectModule } from "@angular/material/select"
+import { Review } from "../../../../models/review.model"
+import { Series } from "../../../../models/series.model"
+import { ApiService } from "../../../../service/api/api.service"
+import { UtilsService } from "../../../../service/utils/utils.service"
+import {MatSliderModule} from '@angular/material/slider';
 ;
 
 @Component({
