@@ -98,6 +98,6 @@ export class MenuComponent {
   logout() {
     this.tokenService.logout();
     this.tokenService.nextRole()
-    this.router.navigate([this.router.url])
+    this.router.navigate(['/'])
   }
 }

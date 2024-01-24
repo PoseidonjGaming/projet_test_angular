@@ -13,6 +13,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { ReviewComponent } from './components/admin/review/review.component';
 import { WatchlistComponent } from './components/user/watchlist/watchlist.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
+import { adminGuard } from './guard/admin/admin.guard';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -26,7 +27,7 @@ export const routes: Routes = [
         ]
     },
     {
-        path: 'admin', canActivate: [authGuard], children: [
+        path: 'admin', canActivate: [adminGuard], children: [
             { path: 'series', component: SeriesComponent },
             { path: 'episodes', component: EpisodeComponent },
             { path: 'actors', component: ActorComponent },

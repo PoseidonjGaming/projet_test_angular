@@ -1,5 +1,5 @@
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
 
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -18,7 +18,9 @@ export const appConfig: ApplicationConfig = {
     {
       provide: LOCALE_ID, useValue: 'fr-FR'
     },
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(routes,
+      withComponentInputBinding()
+    ),
     provideClientHydration(),
     provideAnimations(),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor, errorInterceptor])),
