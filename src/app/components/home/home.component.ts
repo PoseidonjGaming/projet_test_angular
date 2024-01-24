@@ -45,7 +45,6 @@ export class HomeComponent {
       this.service.getByUsername().subscribe((userDTOS: User) => {
           if (userDTOS) {
             this.seriesIds = userDTOS.seriesIds
-            console.log(userDTOS);
           }
         })
     }
