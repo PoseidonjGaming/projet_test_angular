@@ -22,6 +22,7 @@ import { TokenService } from '../../../service/api/token/token.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ReviewDialogComponent } from '../../user/profile/review-dialog/review-dialog.component';
+import { ApiUserService } from '../../../service/api/user/api-user.service';
 
 @Component({
   selector: 'app-detail-series',
@@ -54,7 +55,7 @@ export class DetailSeriesComponent {
 
 
 
-  constructor(private service: ApiService,
+  constructor(private service: ApiUserService,
     private tokenService: TokenService,
     @Inject(LOCALE_ID) public locale: string,
     private dialog: MatDialog,
@@ -71,8 +72,7 @@ export class DetailSeriesComponent {
           this.service.getByIds<Character>('character', this.series.characterIds),
           this.service.search<Review>('review', { seriesId: series.id },
             MatchMode.ALL, StringMatcher.EXACT, null, null),
-          this.service.search<User>('user', { username: this.tokenService.getUsername() },
-            MatchMode.ALL, StringMatcher.EXACT, null, null)
+          this.service.getByUsername()
         ])
       }),
       switchMap(([seasonDtos, characterDtos, reviewDto, userDtos]) => {
@@ -81,8 +81,8 @@ export class DetailSeriesComponent {
 
         this.reviews = reviewDto
 
-        if (userDtos.length > 0) {
-          this.userId = userDtos[0].id
+        if (userDtos) {
+          this.userId = userDtos.id
         }
 
         if (reviewDto.length > 0) {
@@ -139,7 +139,7 @@ export class DetailSeriesComponent {
         ])
       })
     ).subscribe(([seriesDtos, userDtos]) => {
-      
+
       this.reviews.forEach((r: Review) => {
         r['name'] = seriesDtos.find(s => s.id == r.seriesId)?.name
         r['poster'] = seriesDtos.find(s => s.id == r.seriesId)?.poster

@@ -12,11 +12,15 @@ export class ApiUserService extends ApiService {
 
   constructor(httpClient: HttpClient, private tokenService: TokenService) { super(httpClient) }
 
+  getByUsername() {
+    return this.httpClient.get<User>(`${this.API_BASE_URL}/user/search/${this.tokenService.getUsername()}`)
+  }
+
   addToWatchlist(seriesId: number) {
     return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/add/${seriesId}?username=${this.tokenService.getUsername()}`)
   }
 
-  removeFromWatchlist(seriesId:number){
+  removeFromWatchlist(seriesId: number) {
     return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/remove/${seriesId}?username=${this.tokenService.getUsername()}`)
   }
 }

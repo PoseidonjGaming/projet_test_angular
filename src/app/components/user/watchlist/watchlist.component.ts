@@ -10,6 +10,7 @@ import { Series } from '../../../models/series.model';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { ApiUserService } from '../../../service/api/user/api-user.service';
 
 @Component({
   selector: 'app-watchlist',
@@ -27,13 +28,12 @@ export class WatchlistComponent implements OnInit {
 
   series: Series[] = []
 
-  constructor(private service: ApiService, private tokenService: TokenService) { }
+  constructor(private service: ApiUserService, private tokenService: TokenService) { }
 
 
   ngOnInit(): void {
-    this.service.search<User>('user', { username: this.tokenService.getUsername() },
-      MatchMode.ALL, StringMatcher.EXACT, null, null).pipe(
-        mergeMap((userDTOS: User[]) => this.service.getByIds<Series>('series', userDTOS[0].seriesIds))
+    this.service.getByUsername().pipe(
+        mergeMap((userDTOS: User) => this.service.getByIds<Series>('series', userDTOS.seriesIds))
       ).subscribe((seriesDTOS: Series[]) => {
         this.series = seriesDTOS
       })

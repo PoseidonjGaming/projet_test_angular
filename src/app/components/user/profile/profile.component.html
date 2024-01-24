@@ -81,7 +81,10 @@
                 <mat-card-header>
                     <mat-card-title> {{review['name']}} </mat-card-title>
                 </mat-card-header>
+                @if(review['poster']!==''){
                 <img mat-card-image src="http://localhost:8081/file/load?filename={{review['poster']}}" alt="poster">
+                }
+
                 <mat-card-content class="mt-2">
                     <p>Note: {{review.note}}/5</p>
                     <p><strong> Commantaire:</strong> <br>{{review.comment}}</p>

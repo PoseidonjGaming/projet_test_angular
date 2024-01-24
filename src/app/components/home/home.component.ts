@@ -42,11 +42,10 @@ export class HomeComponent {
 
   ngOnInit(): void {
     if (this.tokenService.isExist()) {
-      this.service.search<User>('user', { username: this.tokenService.getUsername() },
-        MatchMode.ALL, StringMatcher.EXACT, null, null).subscribe((userDTOS: User[]) => {
-          if (userDTOS[0]) {
-            this.seriesIds = userDTOS[0].seriesIds
-            console.log(userDTOS[0]);
+      this.service.getByUsername().subscribe((userDTOS: User) => {
+          if (userDTOS) {
+            this.seriesIds = userDTOS.seriesIds
+            console.log(userDTOS);
           }
         })
     }

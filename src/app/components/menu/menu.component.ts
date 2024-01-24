@@ -66,7 +66,7 @@ export class MenuComponent {
       this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
       this.isAdmin = this.isLogged && this.rolesAdmin.includes(this.tokenService.getRole())
       if (this.isLogged) {
-        this.username = this.tokenService.getClaims().sub
+        this.username = this.tokenService.getUsername()
       }
 
       this.isLoggedEvent.emit(this.isLogged)

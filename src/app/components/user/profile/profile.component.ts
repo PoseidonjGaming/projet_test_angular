@@ -22,6 +22,7 @@ import { Password } from '../../../validators/passwordValidator.validator';
 import { DisplayFileDialogComponent } from '../../admin/generic/form/file/display-file-dialog/display-file-dialog.component';
 import { MenuComponent } from '../../menu/menu.component';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+import { ApiUserService } from '../../../service/api/user/api-user.service';
 
 @Component({
   selector: 'app-profile',
@@ -57,7 +58,7 @@ export class ProfileComponent {
   })
 
   constructor(private tokenService: TokenService,
-    private service: ApiService,
+    private service: ApiUserService,
     private credentialService: CredentialService,
     private fileService: FileService,
     private utils: UtilsService,
@@ -77,21 +78,20 @@ export class ProfileComponent {
   }
 
   getReview() {
-    return this.service.search<User>('user', this.tokenService.getUser(),
-      MatchMode.ALL, StringMatcher.CONTAINING, null, null).pipe(
+    return this.service.getByUsername().pipe(
 
-        mergeMap((dtos: User[]) => {
-          this.utils.populate(dtos[0], this.formUser)
-          this.user = dtos[0]
+      mergeMap((dtos: User) => {
+        this.utils.populate(dtos, this.formUser)
+        this.user = dtos
 
-          return this.service.search<Review>('review', { userId: dtos[0].id },
-            MatchMode.ALL, StringMatcher.EXACT, null, null)
-        }),
-        mergeMap((reviewDtos: Review[]) => {
-          this.reviews = reviewDtos
-          return this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId))
-        })
-      )
+        return this.service.search<Review>('review', { userId: dtos.id },
+          MatchMode.ALL, StringMatcher.EXACT, null, null)
+      }),
+      mergeMap((reviewDtos: Review[]) => {
+        this.reviews = reviewDtos
+        return this.service.getByIds<Series>('series', reviewDtos.map(r => r.seriesId))
+      })
+    )
   }
 
   submit() {
