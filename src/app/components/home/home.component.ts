@@ -14,6 +14,7 @@ import { ApiService } from '../../service/api/api.service';
 import { TokenService } from '../../service/api/token/token.service';
 import { MenuComponent } from '../menu/menu.component';
 import { ApiUserService } from '../../service/api/user/api-user.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-home',
@@ -36,7 +37,8 @@ export class HomeComponent {
 
 
   constructor(private service: ApiUserService,
-    private tokenService: TokenService) { }
+    private tokenService: TokenService,
+    private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.tokenService.isExist()) {
@@ -69,9 +71,15 @@ export class HomeComponent {
     if (!this.seriesIds.includes(id)) {
       this.service.addToWatchlist(id).subscribe((seriesDTOS: Series[]) => {
         this.seriesIds = seriesDTOS.map(s => s['id'])
+        this.snack.open(`Série ajoutée à la watchlist de ${this.tokenService.getUsername()}`,
+          "Fermer", { duration: 5 * 1000 })
       })
-    }else {
-
+    } else {
+      this.service.removeFromWatchlist(id).subscribe((seriesDTOS: Series[]) => {
+        this.seriesIds = seriesDTOS.map(s => s['id'])
+        this.snack.open(`Série retirée de la watchlist de ${this.tokenService.getUsername()}`,
+          "Fermer", { duration: 5 * 1000 })
+      })
     }
 
   }

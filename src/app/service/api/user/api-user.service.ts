@@ -13,6 +13,10 @@ export class ApiUserService extends ApiService {
   constructor(httpClient: HttpClient, private tokenService: TokenService) { super(httpClient) }
 
   addToWatchlist(seriesId: number) {
-    return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/${seriesId}?username=${this.tokenService.getUsername()}`)
+    return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/add/${seriesId}?username=${this.tokenService.getUsername()}`)
+  }
+
+  removeFromWatchlist(seriesId:number){
+    return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/remove/${seriesId}?username=${this.tokenService.getUsername()}`)
   }
 }
