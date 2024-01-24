@@ -19,6 +19,7 @@ import { ApiService } from '../../service/api/api.service';
 import { UtilsService } from '../../service/utils/utils.service';
 import { MenuComponent } from '../menu/menu.component';
 import { MatButtonModule } from '@angular/material/button';
+import { Sorter } from '../../models/sorter.model';
 
 @Component({
   selector: 'app-search',
@@ -45,6 +46,13 @@ export class SearchComponent implements OnInit {
   categories: Category[] = []
   isOpened = false
 
+  sortOptions: Sort[] = [
+    { active: 'id', direction: Sorter.ASC, display: "Identifiant" },
+    { active: 'id', direction: Sorter.DESC, display: "Identifiant" },
+    { active: 'releaseDate', direction: Sorter.ASC, display: "Date de sortie" },
+    { active: 'releaseDate', direction: Sorter.DESC, display: "Date de sortie" }
+  ]
+
 
   formSearch = new FormGroup({
     name: new FormControl(''),
@@ -52,20 +60,22 @@ export class SearchComponent implements OnInit {
     type: new FormControl<string>('series'),
     startDate: new FormControl(null),
     endDate: new FormControl(null),
+    sort: new FormControl(this.sortOptions[0])
   })
 
   constructor(private service: ApiService,
     private categoryService: ApiService) { }
 
   ngOnInit(): void {
-    this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.results = dtos)
     this.categoryService.getAll<Category>('category').subscribe((dtos: Category[]) => this.categories = dtos)
+    this.submit()
   }
 
   submit() {
     const value = this.formSearch.value
     if (value.type && value.categoryIds) {
-      this.service.search<Base>(value.type, value,
+      this.service.sortSearch<Base>(value.type,
+        value.sort?.active!, value.sort?.direction!, value,
         MatchMode.ALL, StringMatcher.CONTAINING,
         value.startDate!, value.endDate!
       ).subscribe((dtos: Base[]) => {
@@ -74,10 +84,7 @@ export class SearchComponent implements OnInit {
     }
 
 
-  }
 
-  private isDate(date: Date | null | undefined) {
-    return (date) ? date : null
   }
 
   panel(drawer: MatSidenav) {
@@ -91,6 +98,15 @@ export class SearchComponent implements OnInit {
       name: '',
       type: 'series'
     })
-    //this.service.getAll<Series>('series').subscribe((dtos: Series[]) => this.series = dtos)
   }
+
+  getDirection(sorter: Sorter) {
+    return (sorter === 'ASC') ? 'croissant' : 'décroissant'
+  }
+}
+
+class Sort {
+  active = 'id'
+  direction: Sorter = Sorter.ASC
+  display = ''
 }

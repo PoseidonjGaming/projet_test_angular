@@ -9,7 +9,7 @@ import { Observable, ReplaySubject, Subscription, combineLatest, mergeMap } from
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { PageResponse } from '../../../../models/pageResponse.model';
 import { MatSortModule, Sort } from '@angular/material/sort';
-import { Sorter } from '../../../../models/Sorter.model';
+import { Sorter } from '../../../../models/sorter.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
 import { DatePipe } from '@angular/common';
 import { UtilsService } from '../../../../service/utils/utils.service';

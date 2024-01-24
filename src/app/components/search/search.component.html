@@ -59,7 +59,15 @@
                                     <mat-option value="movie">Movie</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <mat-form-field>
+                                <mat-select formControlName="sort">
+                                    @for (sortOption of sortOptions; track $index) {
+                                    <mat-option [value]="sortOption">Trier par {{sortOption.display}} par {{getDirection(sortOption.direction)}}</mat-option>
+                                    }
+                                </mat-select>
+                            </mat-form-field>
                         </div>
+
 
                         <div class="row">
                             <div class="col mt-2 d-flex justify-content-center">

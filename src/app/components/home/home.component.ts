@@ -4,7 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { combineLatest } from 'rxjs';
-import { Sorter } from '../../models/Sorter.model';
+import { Sorter } from '../../models/sorter.model';
 import { MatchMode } from '../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../models/enum/StringMatcher.model';
 import { Movie } from '../../models/movie.model';
