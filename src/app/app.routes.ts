@@ -14,10 +14,17 @@ import { ReviewComponent } from './components/admin/review/review.component';
 import { WatchlistComponent } from './components/user/watchlist/watchlist.component';
 import { ProfileComponent } from './components/user/profile/profile.component';
 import { adminGuard } from './guard/admin/admin.guard';
+import { DetailMovieComponent } from './components/detail/detail-movie/detail-movie.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
-    { path: 'detail/series/:id', component: DetailSeriesComponent },
+
+    {
+        path: 'detail', children: [
+            { path: 'series/:id', component: DetailSeriesComponent },
+            { path: 'movie/:id', component: DetailMovieComponent }
+        ]
+    },
     { path: 'search', component: SearchComponent },
     { path: 'registrate', component: RegistrationComponent },
     {
