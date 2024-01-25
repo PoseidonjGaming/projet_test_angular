@@ -30,7 +30,7 @@
                     <a type="button" mat-button [routerLink]="['/detail/series', serie.id]">Voir les Détail</a>
                     @if(isLogged){
                     <button mat-icon-button
-                        (click)="updateBookmark(serie['id'])"><mat-icon>{{isInWatchlist(serie['id'])}}</mat-icon></button>
+                        (click)="updateBookmark(serie['id'], 'series')"><mat-icon>{{isInWatchlistSeries(serie['id'])}}</mat-icon></button>
                     }
 
                 </mat-card-actions>
@@ -70,6 +70,10 @@
                 </mat-card-content>
                 <mat-card-actions>
                     <a type="button" mat-button [routerLink]="['/detail/movie', movie.id]">Voir les Détail</a>
+                    @if(isLogged){
+                    <button mat-icon-button
+                        (click)="updateBookmark(movie['id'], 'movie')"><mat-icon>{{isInWatchlistMovie(movie['id'])}}</mat-icon></button>
+                    }
                 </mat-card-actions>
             </mat-card>
         </div>

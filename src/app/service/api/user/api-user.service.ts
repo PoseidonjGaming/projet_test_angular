@@ -16,11 +16,11 @@ export class ApiUserService extends ApiService {
     return this.httpClient.get<User>(`${this.API_BASE_URL}/user/search/${this.tokenService.getUsername()}`)
   }
 
-  addToWatchlist(seriesId: number) {
-    return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/add/${seriesId}?username=${this.tokenService.getUsername()}`)
+  addToWatchlist(id: number, watchlist: string) {
+    return this.httpClient.get<number[]>(`${this.API_BASE_URL}/watchlist/add/${watchlist}/${id}?username=${this.tokenService.getUsername()}`)
   }
 
-  removeFromWatchlist(seriesId: number) {
-    return this.httpClient.get<Series[]>(`${this.API_BASE_URL}/user/watch/remove/${seriesId}?username=${this.tokenService.getUsername()}`)
+  removeFromWatchlist(id: number, watchlist: string) {
+    return this.httpClient.get<number[]>(`${this.API_BASE_URL}/watchlist/remove/${watchlist}/${id}?username=${this.tokenService.getUsername()}`)
   }
 }
