@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -14,12 +15,9 @@ import { Base } from '../../models/base.model';
 import { Category } from '../../models/category.model';
 import { MatchMode } from '../../models/enum/matchMode.model';
 import { StringMatcher } from '../../models/enum/stringMatcher.model';
-import { Series } from '../../models/series.model';
-import { ApiService } from '../../service/api/api.service';
-import { UtilsService } from '../../service/utils/utils.service';
-import { MenuComponent } from '../menu/menu.component';
-import { MatButtonModule } from '@angular/material/button';
 import { Sorter } from '../../models/sorter.model';
+import { ApiService } from '../../service/api/api.service';
+import { MenuComponent } from '../menu/menu.component';
 
 @Component({
   selector: 'app-search',
@@ -73,6 +71,7 @@ export class SearchComponent implements OnInit {
 
   submit() {
     const value = this.formSearch.value
+
     if (value.type && value.categoryIds) {
       this.service.sortSearch<Base>(value.type,
         value.sort?.active!, value.sort?.direction!, value,
@@ -96,8 +95,10 @@ export class SearchComponent implements OnInit {
     this.formSearch.reset({
       categoryIds: [],
       name: '',
-      type: 'series'
+      type: 'series',
+      sort: this.sortOptions[0]
     })
+    this.submit()
   }
 
   getDirection(sorter: Sorter) {
