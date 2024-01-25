@@ -52,20 +52,30 @@
                                 <mat-label>Rechercher</mat-label>
                                 <input matInput formControlName="name" type="text" name="name" id="name">
                             </mat-form-field>
-                            <mat-form-field>
-                                <mat-select formControlName="type">
-                                    <mat-option value="series">Series</mat-option>
-                                    <mat-option value="episode">Episode</mat-option>
-                                    <mat-option value="movie">Movie</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field>
-                                <mat-select formControlName="sort">
-                                    @for (sortOption of sortOptions; track $index) {
-                                    <mat-option [value]="sortOption">Trier par {{sortOption.display}} par {{getDirection(sortOption.direction)}}</mat-option>
-                                    }
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="col">
+                                <div class="row">
+                                    <mat-form-field>
+                                        <mat-select formControlName="type">
+                                            <mat-option value="series">Series</mat-option>
+                                            <mat-option value="episode">Episode</mat-option>
+                                            <mat-option value="movie">Movie</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="row">
+                                    <mat-form-field>
+                                        <mat-select formControlName="sort">
+                                            @for (sortOption of sortOptions; track $index) {
+                                            <mat-option [value]="sortOption">Trier par {{sortOption.display}} par
+                                                {{getDirection(sortOption.direction)}}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
 
 
