@@ -7,5 +7,5 @@ export class User extends Base {
     password: string | null = null
     avatarFile: string = ''
     seriesIds: number[] = []
-    moviesIds: number[] = []
+    movieIds: number[] = []
 }

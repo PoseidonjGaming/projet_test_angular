@@ -2,18 +2,23 @@
 
 <div class="container-fluid">
     <div class="row">
-        @for (serie of series; track $index) {
+        @for (watch of watchlist; track $index) {
         <div class="col-4">
             <mat-card class="m-2" style="width: 20vw;">
                 <mat-card-header>
-                    <mat-card-title>{{serie.name}}</mat-card-title>
+                    <mat-card-title>{{watch['name']}}</mat-card-title>
                 </mat-card-header>
-                <img mat-card-image src="http://localhost:8081/file/load?filename={{serie.poster}}">
+                <img mat-card-image src="http://localhost:8081/file/load?filename={{watch['poster']}}">
                 <mat-card-content>
-                    <p class="mt-2">{{serie.summary.slice(0,255)}}...</p>
+                    <p class="mt-2">{{watch['summary'].slice(0,255)}}...</p>
                 </mat-card-content>
                 <mat-card-actions>
-                    <a type="button" mat-button [routerLink]="['/detail/series', serie.id]">Voir les Détail</a>
+                    @if(watch['seasonIds']){
+                    <a type="button" mat-button [routerLink]="['/detail/series', watch['id']]">Voir les Détail</a>
+                    }@else{
+                    <a type="button" mat-button [routerLink]="['/detail/movie', watch['id']]">Voir les Détail</a>
+                    }
+
                 </mat-card-actions>
             </mat-card>
         </div>

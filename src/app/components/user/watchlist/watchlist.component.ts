@@ -5,12 +5,14 @@ import { ApiService } from '../../../service/api/api.service';
 import { User } from '../../../models/user.model';
 import { MatchMode } from '../../../models/enum/MatchMode.model';
 import { StringMatcher } from '../../../models/enum/StringMatcher.model';
-import { mergeMap } from 'rxjs';
+import { combineLatest, mergeMap, switchMap } from 'rxjs';
 import { Series } from '../../../models/series.model';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { ApiUserService } from '../../../service/api/user/api-user.service';
+import { Base } from '../../../models/base.model';
+import { Movie } from '../../../models/movie.model';
 
 @Component({
   selector: 'app-watchlist',
@@ -26,17 +28,24 @@ import { ApiUserService } from '../../../service/api/user/api-user.service';
 })
 export class WatchlistComponent implements OnInit {
 
-  series: Series[] = []
+  watchlist: Base[] = []
 
   constructor(private service: ApiUserService, private tokenService: TokenService) { }
 
 
   ngOnInit(): void {
     this.service.getByUsername().pipe(
-        mergeMap((userDTOS: User) => this.service.getByIds<Series>('series', userDTOS.seriesIds))
-      ).subscribe((seriesDTOS: Series[]) => {
-        this.series = seriesDTOS
+      switchMap((userDTOS: User) => {
+        return combineLatest([
+          this.service.getByIds<Series>('series', userDTOS.seriesIds),
+          this.service.getByIds<Movie>('movie', userDTOS.movieIds)
+        ])
       })
+
+    ).subscribe(dtos => {
+      this.watchlist = dtos.flat()
+
+    })
   }
 
 }
