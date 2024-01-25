@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Sorter } from '../../models/sorter.model';
 import { Base } from '../../models/base.model';
-import { MatchMode } from '../../models/enum/MatchMode.model';
-import { StringMatcher } from '../../models/enum/StringMatcher.model';
+import { MatchMode } from '../../models/enum/matchMode.model';
+import { StringMatcher } from '../../models/enum/stringMatcher.model';
 import { PageResponse } from '../../models/pageResponse.model';
 
 @Injectable({

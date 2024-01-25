@@ -15,8 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { mergeMap, startWith } from 'rxjs';
 import { Base } from '../../../../models/base.model';
 import { ApiService } from '../../../../service/api/api.service';
-import { MatchMode } from '../../../../models/enum/MatchMode.model';
-import { StringMatcher } from '../../../../models/enum/StringMatcher.model';
+import { MatchMode } from '../../../../models/enum/matchMode.model';
+import { StringMatcher } from '../../../../models/enum/stringMatcher.model';
 import { UtilsService } from '../../../../service/utils/utils.service';
 
 
