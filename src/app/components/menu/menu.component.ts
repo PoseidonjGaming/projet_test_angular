@@ -34,6 +34,7 @@ import { ImportDialogComponent } from './import-dialog/import-dialog.component';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    MatButtonModule
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
