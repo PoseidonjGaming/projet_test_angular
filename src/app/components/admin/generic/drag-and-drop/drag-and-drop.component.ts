@@ -28,7 +28,6 @@ import { UtilsService } from '../../../../service/utils/utils.service';
     CdkDropListGroup,
     CdkDropList,
     CdkDrag,
-    AsyncPipe,
     ReactiveFormsModule,
     FormsModule],
   templateUrl: './drag-and-drop.component.html',
@@ -36,7 +35,7 @@ import { UtilsService } from '../../../../service/utils/utils.service';
 })
 export class DragAndDropComponent implements OnInit {
 
-  @Input({ required: true }) form?: FormGroup
+  @Input({ required: true }) form: FormGroup = new FormGroup({})
   @Input({ required: true }) propertyToDisplay: string = ''
   @Input({ required: true }) property: string = ''
   @Input({ required: true }) type: string = ''
@@ -66,7 +65,7 @@ export class DragAndDropComponent implements OnInit {
 
     if (this.form) {
       this.propertyList = this.utilsService.getRelatedName(this.property, 3)
-      this.form.addControl(this.propertyList, new FormControl([]))
+      this.form.addControl(this.propertyList, new FormControl<Base[]>([]))
 
       this.service.getAll(this.type).subscribe(values => {
         this.dragList = values
@@ -102,5 +101,9 @@ export class DragAndDropComponent implements OnInit {
       }
 
     }
+  }
+
+  isAlreadyPresent(item: CdkDrag<Base>, list: CdkDropList<Base[]>) {
+    return !list.data.map(e=>e['id']).includes(item.data['id'])
   }
 }
