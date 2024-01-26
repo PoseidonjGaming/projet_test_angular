@@ -50,7 +50,7 @@ export class SeriesComponent implements OnInit {
     { control: 'nextMovieId', value: 'name' },
     { control: 'nextSeriesId', value: 'name' },
     { control: 'previousMovieId', value: 'name' },
-    { control: 'previousSeriesId', value: 'name' }
+    { control: 'previousSeriesId', value: 'name' },
   ]
 
   types: { control: string, value: string }[] = [
@@ -58,7 +58,8 @@ export class SeriesComponent implements OnInit {
     { control: 'nextSeriesId', value: 'series' },
     { control: 'previousMovieId', value: 'movie' },
     { control: 'previousSeriesId', value: 'series' },
-    { control: 'categoryIds', value: 'category' }
+    { control: 'categoryIds', value: 'category' },
+    { control: 'characterIds', value: 'character' }
   ]
 
 
@@ -92,10 +93,6 @@ export class SeriesComponent implements OnInit {
         this.fileService.upload(file, 'series').subscribe(() => { })
       this.adminService.submit(this.type, event)
     }
-
-
-
-
   }
 
   saves(bases: Base[]) {

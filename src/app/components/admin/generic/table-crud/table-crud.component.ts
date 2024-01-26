@@ -45,6 +45,7 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
     private crudService: CrudService,
     private utilsService: UtilsService,
     @Inject(LOCALE_ID) public locale: string) { }
+    
   ngOnDestroy(): void {
     if (this.crudSub)
       this.crudSub.unsubscribe()

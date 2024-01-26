@@ -19,12 +19,19 @@
                         [type]="'category'"></app-drag-and-drop>
                     }
                 </mat-tab>
+                <mat-tab label="Personnages">
+                    @if (formSeries) {
+                    <app-drag-and-drop [form]="formSeries" [property]="'characterIds'" [propertyToDisplay]="'name'"
+                        [type]="'character'"></app-drag-and-drop>
+                    }
+                </mat-tab>
             </mat-tab-group>
 
         </div>
         <div class="col m-2">
             <div class="mat-elevation-z8">
-                <app-table-crud [type]="type" [typeMap]="typeMap" [columns]="columns" (populateEvent)="populate($event)"></app-table-crud>
+                <app-table-crud [type]="type" [typeMap]="typeMap" [columns]="columns"
+                    (populateEvent)="populate($event)"></app-table-crud>
             </div>
 
         </div>
