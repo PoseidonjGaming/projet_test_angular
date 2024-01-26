@@ -13,7 +13,6 @@ import { StringMatcher } from '../../../models/enum/stringMatcher.model';
 import { Review } from '../../../models/review.model';
 import { Series } from '../../../models/series.model';
 import { User } from '../../../models/user.model';
-import { ApiService } from '../../../service/api/api.service';
 import { CredentialService } from '../../../service/api/credential/credential.service';
 import { FileService } from '../../../service/api/file/file.service';
 import { TokenService } from '../../../service/api/token/token.service';
