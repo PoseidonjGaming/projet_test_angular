@@ -29,10 +29,11 @@ export class AdminService {
   }
 
   submit<E extends Base>(type: string, event: { dto: E, isSubmit: boolean }) {
-    if (event.isSubmit)
+    if (event.isSubmit) {      
       this.service.save(type, event.dto).subscribe((entity) => {
         this.crudService.next(entity)
       })
+    }
     else
       this.toAddService.next(event.dto)
   }

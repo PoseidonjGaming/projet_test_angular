@@ -25,7 +25,6 @@ export class UtilsService {
         if (control)
           control.setValue(entity[e])
       }
-
     })
   }
 

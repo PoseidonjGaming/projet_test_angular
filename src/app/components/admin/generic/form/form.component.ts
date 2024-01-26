@@ -22,7 +22,6 @@ import { FileComponent } from './file/file.component';
     SelectComponent,
     FileComponent,
     FormsModule,
-
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
@@ -71,6 +70,13 @@ export class FormComponent implements OnInit {
   submit(ngForm: FormGroupDirective) {
     this.form?.markAllAsTouched()
     if (this.form && this.form.valid) {
+      this.controls.filter(c => c.name.endsWith('Ids')).map(c => c.name).forEach(c => {
+        const entityName = c.slice(0, -3)
+        const entities = this.form?.get(entityName)?.value.map((e: { [x: string]: any; })=>e['id'])
+
+        this.form?.get(c)?.setValue(entities)
+      })
+
       this.submitEvent.emit({ dto: this.utilsService.updateValues(this.resetDto, this.form), isSubmit: true })
       this.reset(ngForm)
     }

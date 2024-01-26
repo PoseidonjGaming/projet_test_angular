@@ -1,22 +1,18 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Base } from '../../../models/base.model';
 import { Series } from '../../../models/series.model';
+import { AdminService } from '../../../service/admin/admin.service';
+import { FileService } from '../../../service/api/file/file.service';
+import { UtilsService } from '../../../service/utils/utils.service';
 import { MenuComponent } from '../../menu/menu.component';
 import { DragAndDropComponent } from '../generic/drag-and-drop/drag-and-drop.component';
 import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
-import { UtilsService } from '../../../service/utils/utils.service';
-import { ApiService } from '../../../service/api/api.service';
-import { CrudService } from '../../../service/admin/crud/crud.service';
-import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
-import { FormService } from '../../../service/admin/form/form.service';
-import { AdminService } from '../../../service/admin/admin.service';
-import { FileService } from '../../../service/api/file/file.service';
 
 @Component({
   selector: 'app-series',
