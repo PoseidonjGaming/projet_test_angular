@@ -42,7 +42,9 @@ export class HomeComponent {
     private snack: MatSnackBar) { }
 
   ngOnInit(): void {
+
     if (this.tokenService.isExist()) {
+
       this.service.getByUsername().subscribe((userDTOS: User) => {
         if (userDTOS) {
           this.seriesIds = userDTOS.seriesIds

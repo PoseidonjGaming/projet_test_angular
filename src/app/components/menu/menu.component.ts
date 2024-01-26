@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -10,6 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, RouterLink } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Subscription } from 'rxjs';
 import { User } from '../../models/user.model';
 import { CredentialService } from '../../service/api/credential/credential.service';
 import { TokenService } from '../../service/api/token/token.service';
@@ -39,8 +40,9 @@ import { ImportDialogComponent } from './import-dialog/import-dialog.component';
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
-export class MenuComponent {
+export class MenuComponent implements OnDestroy {
   private rolesAdmin = ['ROLE_super_admin']
+  private subjectRole?: Subscription
   hide = true;
   isLogged: boolean = false
   isAdmin: boolean = false
@@ -48,11 +50,15 @@ export class MenuComponent {
 
   @Output()
   isLoggedEvent = new EventEmitter<boolean>()
+  @Output()
+  isStandardUserEvent = new EventEmitter<boolean>()
 
   formLogin = new FormGroup({
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required])
   })
+
+
 
   constructor(public dialog: MatDialog,
     private service: CredentialService,
@@ -62,16 +68,26 @@ export class MenuComponent {
     private router: Router) { }
 
 
-  ngOnInit(): void {
-    this.tokenService.subscribeRole().subscribe((d) => {
-      this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
-      this.isAdmin = this.isLogged && this.rolesAdmin.includes(this.tokenService.getRole())
-      if (this.isLogged) {
-        this.username = this.tokenService.getUsername()
-      }
+  ngOnDestroy(): void {
+    if (this.subjectRole)
+      this.subjectRole.unsubscribe()
+  }
 
-      this.isLoggedEvent.emit(this.isLogged)
-    })
+
+  ngOnInit(): void {
+    if (!this.subjectRole) {
+      this.subjectRole = this.tokenService.subscribeRole().subscribe((role) => {
+        this.isLogged = this.tokenService.isExist() && !this.jwt.isTokenExpired(this.tokenService.getToken());
+        this.isAdmin = this.isLogged && this.rolesAdmin.includes(role)
+        if (this.isLogged) {
+          this.username = this.tokenService.getUsername()
+        }
+
+        this.isLoggedEvent.emit(this.isLogged)
+        this.isStandardUserEvent.emit(this.isLogged && !this.isAdmin)
+      })
+    }
+
     this.tokenService.nextRole()
 
 
@@ -88,7 +104,7 @@ export class MenuComponent {
     if (this.formLogin.valid) {
       this.service.authenticate(this.utilsService.updateValues(new User(), this.formLogin)).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
-        this.username = this.tokenService.getClaims().sub
+        this.username = this.tokenService.getUsername()
         this.tokenService.nextRole()
         this.formLogin.reset()
         this.router.navigate([this.router.url])

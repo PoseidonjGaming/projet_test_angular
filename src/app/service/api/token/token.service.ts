@@ -13,7 +13,7 @@ export class TokenService {
   constructor() { }
 
   isExist() {
-    return this.getToken() != null
+    return this.getToken() != null && this.getToken() !== ''
   }
 
   logout() {
