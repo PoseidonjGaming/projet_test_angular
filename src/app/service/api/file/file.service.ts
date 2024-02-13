@@ -9,8 +9,8 @@ export class FileService {
 
   constructor(private httpClient: HttpClient) { }
 
-  export(bools: boolean[]) {
-    return this.httpClient.post<Blob>(`${this.API_BASE_URL}/file/export`, bools)
+  export(datas: string[]) {
+    return this.httpClient.post<any>(`${this.API_BASE_URL}/file/export`, datas)
   }
 
   upload(file: File, type: string) {

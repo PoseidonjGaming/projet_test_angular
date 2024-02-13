@@ -10,6 +10,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { routes } from './app.routes';
 import { authInterceptor } from './interceptors/auth/auth.interceptor';
 import { errorInterceptor } from './interceptors/error/error.interceptor';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 registerLocaleData(fr);
 
@@ -32,7 +33,7 @@ export const appConfig: ApplicationConfig = {
           disallowedRoutes: ['/admin']
         }
       })
-    )]
+    ), provideAnimationsAsync()]
 };
 
 export function tokenGetter() {
