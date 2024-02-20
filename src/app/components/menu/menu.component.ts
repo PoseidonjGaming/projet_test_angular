@@ -16,8 +16,7 @@ import { TokenService } from '../../service/api/token/token.service';
 import { UtilsService } from '../../service/utils/utils.service';
 import { ExportDialogComponent } from './export-dialog/export-dialog.component';
 import { ImportDialogComponent } from './import-dialog/import-dialog.component';
-import { RouterLink } from '@angular/router';
-import { Router } from 'express';
+import { Router, RouterLink } from '@angular/router';
 
 
 @Component({
