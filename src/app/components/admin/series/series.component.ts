@@ -4,7 +4,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Base } from '../../../models/base.model';
-import { Series } from '../../../models/series.model';
+import { Series, SeriesType } from '../../../models/series.model';
 import { AdminService } from '../../../service/admin/admin.service';
 import { FileService } from '../../../service/api/file/file.service';
 import { UtilsService } from '../../../service/utils/utils.service';
@@ -73,7 +73,7 @@ export class SeriesComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.formSeries = this.adminService.init(new Series(), this.controls)
+    this.formSeries = this.adminService.init(new Series(), new SeriesType(), this.controls)
 
     this.displayMap = this.adminService.initMap(this.displays)
     this.typeMap = this.adminService.initMap(this.types)

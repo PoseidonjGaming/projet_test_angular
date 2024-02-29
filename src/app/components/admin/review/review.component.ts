@@ -6,9 +6,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { FormComponent } from '../generic/form/form.component';
 import { AdminService } from '../../../service/admin/admin.service';
 import { FormGroup, Validators } from '@angular/forms';
-import { Review } from '../../../models/review.model';
+import { Review, ReviewType } from '../../../models/review.model';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { UtilsService } from '../../../service/utils/utils.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-review',
@@ -52,7 +53,7 @@ export class ReviewComponent implements OnInit {
   ]
   constructor(private adminService: AdminService, private utilsService: UtilsService) { }
   ngOnInit(): void {
-    this.formReview = this.adminService.init(new Review(), this.controls)
+    this.formReview = this.adminService.init(new Review(), new ReviewType(), this.controls)
     this.displayMap = this.adminService.initMap(this.displays)
     this.typeMap = this.adminService.initMap(this.types)
   }

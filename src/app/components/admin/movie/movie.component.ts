@@ -5,7 +5,7 @@ import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.compon
 import { FormComponent } from '../generic/form/form.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Movie } from '../../../models/movie.model';
+import { Movie, MovieType } from '../../../models/movie.model';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { Base } from '../../../models/base.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
@@ -14,6 +14,7 @@ import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
 import { AdminService } from '../../../service/admin/admin.service';
 import { FileService } from '../../../service/api/file/file.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-movie',
@@ -69,7 +70,7 @@ export class MovieComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.formMovie = this.adminService.init(new Movie(), this.controls)
+    this.formMovie = this.adminService.init(new Movie(), new MovieType(), this.controls)
 
     this.displayMap = this.adminService.initMap(this.displays)
     this.typeMap = this.adminService.initMap(this.types)

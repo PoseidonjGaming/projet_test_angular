@@ -2,8 +2,8 @@
 <div class="container-fluid p-2">
     <form [formGroup]="form" #ngForm="ngForm" (ngSubmit)="submit(ngForm)">
         @for (control of controls; track $index) {
-        @if(!control.name.endsWith('Ids')){
-        @if(control.name==='id'){
+        @if(control.type!=='ids'){
+        @if(control.type==='id'){
         <div class="row">
             <mat-form-field>
                 <mat-label>{{control.name}}</mat-label>
@@ -12,13 +12,13 @@
             </mat-form-field>
         </div>
         }
-        @else if (control.name.endsWith('Id')) {
+        @else if (control.type==='foreign_id') {
 
         <app-select [form]="form" [control]="control" [type]="typeMap.get(control.name)!"
             [propertyToDisplay]="displayMap.get(control.name)!"></app-select>
 
         }
-        @else if (control.name.toLowerCase().includes('date')) {
+        @else if (control.type==='date') {
         <div class="row">
             <mat-form-field>
                 <mat-label>{{control.name}}</mat-label>
@@ -38,7 +38,7 @@
             </mat-form-field>
         </div>
         }
-        @else if (control.name.toLowerCase().includes('summary')) {
+        @else if (control.type==='text') {
         <div class="row">
             <mat-form-field>
                 <mat-label>{{control.name}}</mat-label>
@@ -47,7 +47,7 @@
             </mat-form-field>
         </div>
         }
-        @else if (control.name.toLowerCase().includes('poster')) {
+        @else if (control.type==='file') {
         <app-file [form]="form" [control]="control"></app-file>
         }
         @else {

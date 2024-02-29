@@ -2,7 +2,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Actor } from '../../../models/actor.model';
+import { Actor, ActorType } from '../../../models/actor.model';
 import { Base } from '../../../models/base.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
@@ -14,6 +14,7 @@ import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
 import { MatButtonModule } from '@angular/material/button';
 import { AdminService } from '../../../service/admin/admin.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-actor',
@@ -49,7 +50,7 @@ export class ActorComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.formActor = this.adminService.init(new Actor(), this.controls)
+    this.formActor = this.adminService.init(new Actor(), new ActorType(), this.controls)
   }
 
   populate(series: Base) {

@@ -6,7 +6,7 @@ import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
-import { Character } from '../../../models/character.model';
+import { Character, CharacterType } from '../../../models/character.model';
 import { FormComponent } from '../generic/form/form.component';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
@@ -14,6 +14,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { DragAndDropComponent } from '../generic/drag-and-drop/drag-and-drop.component';
 import { AdminService } from '../../../service/admin/admin.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-character',
@@ -60,7 +61,7 @@ export class CharacterComponent implements OnInit {
     private utilsService: UtilsService,
     private adminService: AdminService) { }
   ngOnInit(): void {
-    this.formCharacter = this.adminService.init(new Character(), this.controls)
+    this.formCharacter = this.adminService.init(new Character(), new CharacterType(), this.controls)
     this.displayMap = this.adminService.initMap(this.displays)
     this.typeMap = this.adminService.initMap(this.types)
   }

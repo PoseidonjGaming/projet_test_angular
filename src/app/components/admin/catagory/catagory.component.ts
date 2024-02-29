@@ -5,7 +5,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TableCRUDComponent } from '../generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from '../generic/to-add-table/to-add-table.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Category } from '../../../models/category.model';
+import { Category, CategoryType } from '../../../models/category.model';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Base } from '../../../models/base.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
@@ -13,6 +13,7 @@ import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
 import { UtilsService } from '../../../service/utils/utils.service';
 import { AdminService } from '../../../service/admin/admin.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-catagory',
@@ -47,7 +48,7 @@ export class CatagoryComponent {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.formCategory = this.adminService.init(new Category(), this.controls)
+    this.formCategory = this.adminService.init(new Category(), new CategoryType(), this.controls)
   }
 
   populate(series: Base) {

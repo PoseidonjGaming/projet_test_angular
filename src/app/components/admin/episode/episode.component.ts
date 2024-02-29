@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Base } from '../../../models/base.model';
-import { Episode } from '../../../models/episode.model';
+import { Episode, EpisodeType } from '../../../models/episode.model';
 import { CrudService } from '../../../service/admin/crud/crud.service';
 import { ToAddService } from '../../../service/admin/toAdd/to-add.service';
 import { ApiService } from '../../../service/api/api.service';
@@ -18,6 +18,7 @@ import { StringMatcher } from '../../../models/enum/stringMatcher.model';
 import { Season } from '../../../models/season.model';
 import { FormService } from '../../../service/admin/form/form.service';
 import { AdminService } from '../../../service/admin/admin.service';
+import { SeriesType } from '../../../models/series.model';
 
 @Component({
   selector: 'app-episode',
@@ -64,7 +65,7 @@ export class EpisodeComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.formEpisode = this.adminService.init(new Episode(), this.controls)
+    this.formEpisode = this.adminService.init(new Episode(), new EpisodeType(), this.controls)
 
     this.formEpisode.controls['seriesId'].valueChanges.pipe(
       startWith(0),

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Base } from '../../models/base.model';
+import { Base, BaseType } from '../../models/base.model';
 import { ApiService } from '../api/api.service';
 import { CrudService } from './crud/crud.service';
 import { ToAddService } from './toAdd/to-add.service';
@@ -15,8 +15,8 @@ export class AdminService {
     private toAddService: ToAddService,
     private formService: FormService) { }
 
-  init<T extends Base>(dto: T, controls: { name: string, type: string }[]) {
-    return this.formService.createForm(dto, controls)
+  init<T extends Base, E extends BaseType>(dto: T, types: E, controls: { name: string, type: string }[]) {
+    return this.formService.createForm(dto, types, controls)
   }
 
   initMap(displays: { control: string, value: string }[]) {
@@ -29,7 +29,7 @@ export class AdminService {
   }
 
   submit<E extends Base>(type: string, event: { dto: E, isSubmit: boolean }) {
-    if (event.isSubmit) {      
+    if (event.isSubmit) {
       this.service.save(type, event.dto).subscribe((entity) => {
         this.crudService.next(entity)
       })
