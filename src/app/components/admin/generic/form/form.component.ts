@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule, Validator, ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, FormsModule, ReactiveFormsModule, ValidatorFn } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -7,12 +7,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Base } from '../../../../models/base.model';
-import { ApiService } from '../../../../service/api/api.service';
 import { UtilsService } from '../../../../service/utils/utils.service';
-import { SelectComponent } from './select/select.component';
-import { filter } from 'rxjs';
-import { FormService } from '../../../../service/admin/form/form.service';
 import { FileComponent } from './file/file.component';
+import { SelectComponent } from './select/select.component';
 
 
 @Component({
@@ -45,7 +42,7 @@ export class FormComponent implements OnInit {
 
   private resetDto = new Base()
 
-  constructor(private utilsService: UtilsService, private formService: FormService, private snack: MatSnackBar) { }
+  constructor(private utilsService: UtilsService, private snack: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.form) {
@@ -60,11 +57,7 @@ export class FormComponent implements OnInit {
           control.addValidators(validator.validators)
         }
       })
-
     }
-
-
-
   }
 
   submit(ngForm: FormGroupDirective) {
@@ -72,7 +65,7 @@ export class FormComponent implements OnInit {
     if (this.form && this.form.valid) {
       this.controls.filter(c => c.name.endsWith('Ids')).map(c => c.name).forEach(c => {
         const entityName = c.slice(0, -3)
-        const entities = this.form?.get(entityName)?.value.map((e: { [x: string]: any; })=>e['id'])
+        const entities = this.form?.get(entityName)?.value.map((e: { [x: string]: any; }) => e['id'])
 
         this.form?.get(c)?.setValue(entities)
       })

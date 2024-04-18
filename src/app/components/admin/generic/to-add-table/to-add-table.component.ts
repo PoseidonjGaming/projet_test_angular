@@ -1,13 +1,10 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Inject, Input, LOCALE_ID, OnDestroy, OnInit, Output } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Base } from '../../../../models/base.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
-import { MatButtonModule } from '@angular/material/button';
-import { CrudService } from '../../../../service/admin/crud/crud.service';
-import { ToAddService } from '../../../../service/admin/toAdd/to-add.service';
-import { ApiService } from '../../../../service/api/api.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-to-add-table',
@@ -19,7 +16,7 @@ import { DatePipe } from '@angular/common';
 export class ToAddTableComponent implements OnInit, OnDestroy {
 
 
-  @Input({ required: true }) columns: { name: string, header: string }[] = []
+  @Input({ required: true }) columns: { name: string, type: string }[] = []
   @Input({ required: true }) type = ''
 
   @Output() populateEvent = new EventEmitter<Base>()
@@ -30,7 +27,7 @@ export class ToAddTableComponent implements OnInit, OnDestroy {
   private index = 0
   private toAddSub?: Subscription
 
-  constructor(private toAddService: ToAddService, @Inject(LOCALE_ID) public locale: string) { }
+  constructor(@Inject(LOCALE_ID) public locale: string) { }
   ngOnDestroy(): void {
     if (this.toAddSub)
       this.toAddSub.unsubscribe()
@@ -38,9 +35,7 @@ export class ToAddTableComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.toAddSub = this.toAddService.get().subscribe((value) => {
-      this.dataSource.addData(value, this.index)
-    })
+    
   }
 
   save() {

@@ -13,16 +13,16 @@
                 </td>
             </ng-container>
             }
-            @else if (column.name.toLowerCase().includes('date')) {
+            @else if (column.type==='date') {
             <ng-container [matColumnDef]="column.name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.header}} </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
                 <td mat-cell *matCellDef="let element"> {{element[column.name] | date: 'shortDate': undefined: locale}}
                 </td>
             </ng-container>
             }
             @else {
             <ng-container [matColumnDef]="column.name">
-                <th mat-header-cell *matHeaderCellDef> {{column.header}} </th>
+                <th mat-header-cell *matHeaderCellDef> {{column.name}} </th>
                 <td mat-cell *matCellDef="let element"> {{element[column.name]}} </td>
             </ng-container>
             }

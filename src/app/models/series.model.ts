@@ -1,4 +1,4 @@
-import { Base, BaseType } from "./base.model"
+import { Base } from "./base.model"
 
 export class Series extends Base {
 
@@ -15,20 +15,4 @@ export class Series extends Base {
     previousMovieId: number = 0
     nextSeriesId: number = 0
     previousSeriesId: number = 0
-}
-
-export class SeriesType extends BaseType {
-    id = 'id'
-    name = 'string'
-    releaseDate = 'date'
-    summary = 'text'
-    poster = 'file'
-    trailerUrl = 'string'
-    seasonIds = 'ids'
-    categoryIds = 'ids'
-    characterIds = 'ids'
-    nextMovieId = 'foreign_id'
-    previousMovieId = 'foreign_id'
-    nextSeriesId = 'foreign_id'
-    previousSeriesId = 'foreign_id'
 }

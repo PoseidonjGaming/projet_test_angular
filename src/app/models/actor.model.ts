@@ -1,4 +1,4 @@
-import { Base, BaseType } from "./base.model";
+import { Base } from "./base.model";
 
 export class Actor extends Base {
     id: number = 0
@@ -7,9 +7,3 @@ export class Actor extends Base {
     characterIds: number[] = []
 }
 
-export class ActorType extends BaseType {
-    id = 'id'
-    lastname = 'string'
-    firstname = 'string'
-    characterIds = 'ids'
-}

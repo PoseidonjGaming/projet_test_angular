@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Sorter } from '../../models/sorter.model';
 import { Base } from '../../models/base.model';
 import { MatchMode } from '../../models/enum/matchMode.model';
 import { StringMatcher } from '../../models/enum/stringMatcher.model';
 import { PageResponse } from '../../models/pageResponse.model';
+import { Sorter } from '../../models/sorter.model';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +63,7 @@ export class ApiService {
       direction: direction
     })
   }
+
   sortPaged<E extends Base>(type: string, field: string, direction: Sorter, size: number, page: number) {
     return this.httpClient.post<PageResponse<E>>(`${this.API_BASE_URL}/${type}/paged/sort?size=${size}&page=${page}`, {
       field: field,
@@ -136,5 +137,17 @@ export class ApiService {
 
   delete<E extends Base>(type: string, id: number) {
     return this.httpClient.delete<E>(`${this.API_BASE_URL}/${type}/delete/${id}`)
+  }
+
+  structure<E extends Base>(type: string) {
+    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/structure`)
+  }
+
+  types<E extends Base>(type: string) {
+    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/type`)
+  }
+
+  display<E extends Base>(type: string) {
+    return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/display`)
   }
 }

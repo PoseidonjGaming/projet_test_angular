@@ -33,7 +33,7 @@ export class SelectComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAll(this.type).subscribe((dtos: Base[]) => {
       this.selectList = dtos
-    })
+    })    
   }
 
   getControlName() {
