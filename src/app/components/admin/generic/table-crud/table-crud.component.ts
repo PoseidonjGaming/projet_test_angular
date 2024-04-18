@@ -47,6 +47,7 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
     this.service.sortPaged(this.type, this.sorting.field, this.sorting.direction,
       this.paginator.pageSize, this.paginator.pageIndex).subscribe(page => {
         this.dataSource.setData(page.content)
+        this.paginator.length = page.size
       })
   }
 
@@ -54,12 +55,19 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
     this.paginator.pageIndex = event.pageIndex
     this.paginator.pageSize = event.pageSize
 
+    this.sendRequest().subscribe(page => {
+      this.dataSource.setData(page.content)
+      this.paginator.length = page.size
+    })
   }
 
   sort(event: Sort) {
     this.sorting.field = (event.direction === '') ? 'id' : event.active
     this.sorting.direction = (event.direction === '' || event.direction === 'asc') ? Sorter.ASC : Sorter.DESC
 
+    this.sendRequest().subscribe(value => {
+      this.dataSource.setData(value.content)
+    })
 
   }
 
