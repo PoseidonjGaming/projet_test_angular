@@ -4,12 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { Subscription, combineLatest, mergeMap } from 'rxjs';
+import { EMPTY, Subscription, combineLatest, iif, mergeMap, startWith } from 'rxjs';
 import { Base } from '../../../../models/base.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
 import { Sorter } from '../../../../models/sorter.model';
+import { AdminService } from '../../../../service/admin/admin.service';
 import { ApiService } from '../../../../service/api/api.service';
-import { UtilsService } from '../../../../service/utils/utils.service';
 
 
 @Component({
@@ -27,7 +27,8 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
 
   @Input({ required: true }) columns: { name: string, type: string }[] = []
   @Input({ required: true }) type = ''
-
+  @Input({ required: true }) typeMap = new Base()
+  @Input({ required: true }) displayMap = new Base()
   @Output() populateEvent = new EventEmitter<Base>()
 
 
@@ -36,26 +37,30 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
 
   private sorting = { field: 'id', direction: Sorter.ASC }
 
-  constructor(private service: ApiService,
+  private sub?: Subscription
+
+  constructor(private service: ApiService, private adminService: AdminService,
     @Inject(LOCALE_ID) public locale: string) { }
 
   ngOnDestroy(): void {
-
+    this.sub?.unsubscribe()
   }
 
   ngOnInit(): void {
-    this.service.sortPaged(this.type, this.sorting.field, this.sorting.direction,
-      this.paginator.pageSize, this.paginator.pageIndex).subscribe(page => {
-        this.dataSource.setData(page.content)
-        this.paginator.length = page.size
-      })
+    this.sub = this.adminService.get().pipe(
+      mergeMap((value) => iif(() => value.isPost, this.sendRequest(), EMPTY)),
+    ).subscribe(page => {
+      this.dataSource.setData(page.content)
+      this.paginator.length = page.size
+
+    })
   }
 
   paginate(event: PageEvent) {
     this.paginator.pageIndex = event.pageIndex
     this.paginator.pageSize = event.pageSize
 
-    this.sendRequest().subscribe(page => {
+    this.sendRequest().subscribe((page) => {
       this.dataSource.setData(page.content)
       this.paginator.length = page.size
     })
@@ -65,16 +70,19 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
     this.sorting.field = (event.direction === '') ? 'id' : event.active
     this.sorting.direction = (event.direction === '' || event.direction === 'asc') ? Sorter.ASC : Sorter.DESC
 
-    this.sendRequest().subscribe(value => {
-      this.dataSource.setData(value.content)
+    this.sendRequest().subscribe((page) => {
+      this.dataSource.setData(page.content)
+      this.paginator.length = page.size
     })
 
   }
 
   delete(base: Base) {
-    this.service.delete(this.type, base['id']).subscribe((value) => {
-      if (this.dataSource.getData().length - 1 == 0 && this.paginator.pageIndex - 1 > 0)
-        this.paginator.pageIndex = this.paginator.pageIndex - 1
+    this.service.delete(this.type, base['id']).subscribe(() => {
+      if (this.dataSource.getData().length-- == 0 && this.paginator.pageIndex-- > 0)
+        this.paginator.pageIndex = this.paginator.pageIndex--
+
+      this.adminService.next({dto: {},isPost: true})
     })
   }
 

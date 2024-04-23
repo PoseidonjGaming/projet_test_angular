@@ -18,10 +18,7 @@ import { ApiService } from '../../../../../service/api/api.service';
 export class SelectComponent implements OnInit {
 
   @Input({ required: true }) form?: FormGroup
-  @Input({ required: true }) control: { name: string, type: string } = {
-    name: '',
-    type: ''
-  }
+  @Input({ required: true }) control: { name: string, type: string } = { name: '', type: '' }
   @Input({ required: true }) type = ''
   @Input({ required: true }) propertyToDisplay = ''
 
@@ -33,11 +30,6 @@ export class SelectComponent implements OnInit {
   ngOnInit(): void {
     this.service.getAll(this.type).subscribe((dtos: Base[]) => {
       this.selectList = dtos
-    })    
+    })
   }
-
-  getControlName() {
-    return this.control.name.slice(0, this.control.name.length - 2)
-  }
-
 }

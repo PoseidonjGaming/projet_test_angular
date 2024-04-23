@@ -1,4 +1,4 @@
-@if(form && form.get(getControlName())){
+@if(form){
 <div class="row" [formGroup]="form">
     <mat-form-field>
         <mat-label>{{control.name}}</mat-label>
@@ -9,7 +9,6 @@
                 {{item[propertyToDisplay]}}
             </mat-option>
             }
-
         </mat-select>
     </mat-form-field>
 </div>

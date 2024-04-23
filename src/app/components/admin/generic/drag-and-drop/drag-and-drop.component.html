@@ -10,9 +10,9 @@
 
     <div class="row" cdkDropListGroup>
         <div class="example-container col">
-            <h2>Toute les catégories</h2>
-            <div id="all" cdkDropListConnectedTo="list" cdkDropList cdkDropListSortingDisabled [cdkDropListData]="dragList" class="example-list"
-                (cdkDropListDropped)="drop($event)">
+            <h2>All {{propertyList}}</h2>
+            <div cdkDropList cdkDropListSortingDisabled
+                [cdkDropListData]="dragList" class="example-list" (cdkDropListDropped)="drop($event)">
                 @for (item of dragList; track $index) {
                 <div class="example-box" cdkDrag [cdkDragData]="item">
                     {{item[propertyToDisplay]}}</div>
@@ -21,17 +21,16 @@
             </div>
         </div>
         <div class="example-container col">
-            <h2>Catégories de {{form.get(propertyToDisplay)!.value}}</h2>
-            <div id="list" cdkDropListConnectedTo="all" cdkDropList [cdkDropListData]="form.get(propertyList)!.value"
-                [cdkDropListEnterPredicate]="isAlreadyPresent" class="example-list" (cdkDropListDropped)="drop($event)">
-                @for (item of form.get(propertyList)!.value; track $index) {
+            <h2>{{form.get(currentProperty)!.value}}'s {{propertyList}}</h2>
+            <div cdkDropList [cdkDropListData]="this.form.controls[this.propertyList].value"
+                cdkDropListSortingDisabled [cdkDropListEnterPredicate]="isAlreadyPresent" class="example-list"
+                (cdkDropListDropped)="drop($event)">
+                @for (item of this.form.controls[this.propertyList].value; track $index) {
                 <div class="example-box" cdkDrag [cdkDragData]="item">
-                    {{item.name}}
+                    {{item[propertyToDisplay]}}
                 </div>
                 }
-
             </div>
-
         </div>
     </div>
 </div>

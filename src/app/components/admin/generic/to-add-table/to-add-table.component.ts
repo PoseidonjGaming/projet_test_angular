@@ -5,6 +5,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Subscription } from 'rxjs';
 import { Base } from '../../../../models/base.model';
 import { CustomDataSource } from '../../../../models/customDataSource.model';
+import { AdminService } from '../../../../service/admin/admin.service';
 
 @Component({
   selector: 'app-to-add-table',
@@ -27,19 +28,23 @@ export class ToAddTableComponent implements OnInit, OnDestroy {
   private index = 0
   private toAddSub?: Subscription
 
-  constructor(@Inject(LOCALE_ID) public locale: string) { }
+  constructor(private adminService: AdminService, @Inject(LOCALE_ID) public locale: string) { }
   ngOnDestroy(): void {
-    if (this.toAddSub)
-      this.toAddSub.unsubscribe()
+    this.toAddSub?.unsubscribe()
   }
 
 
   ngOnInit(): void {
-    
+    this.toAddSub = this.adminService.get().subscribe((value) => {
+      if (!value.isPost) {
+        this.dataSource.addData(value.dto, this.index)
+      }
+    })
   }
 
   save() {
     this.index = -1
+    this.dataSource.setData([])
     this.saveEvent.emit(this.dataSource.getData())
   }
 

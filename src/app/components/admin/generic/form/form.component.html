@@ -14,8 +14,8 @@
         }
         @else if (control.type==='foreign_id') {
         
-        <app-select [form]="form" [control]="control" [type]="typeMap.get(control.name)!"
-            [propertyToDisplay]="displayMap.get(control.name)!"></app-select>
+        <app-select [form]="form" [control]="control" [type]="typeMap[control.name]"
+            [propertyToDisplay]="displayMap[control.name]"></app-select>
         }
         @else if (control.type==='date') {
         <div class="row">

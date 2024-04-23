@@ -1,5 +1,5 @@
-import { ApplicationConfig, LOCALE_ID, importProvidersFrom } from '@angular/core';
-import { provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
+import { ApplicationConfig, Injectable, LOCALE_ID, importProvidersFrom } from '@angular/core';
+import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy, provideRouter, withComponentInputBinding, withRouterConfig } from '@angular/router';
 
 import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -14,13 +14,35 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 registerLocaleData(fr);
 
+@Injectable()
+export class RouteStrategy extends RouteReuseStrategy {
+  override shouldDetach(route: ActivatedRouteSnapshot): boolean {
+    return false;
+  }
+  override store(route: ActivatedRouteSnapshot, handle: DetachedRouteHandle | null): void {
+  }
+  override shouldAttach(route: ActivatedRouteSnapshot): boolean {
+    return false;
+  }
+  override retrieve(route: ActivatedRouteSnapshot): DetachedRouteHandle | null {
+    return null;
+  }
+  override shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
+    return false;
+  }
+
+}
+
 export const appConfig: ApplicationConfig = {
   providers: [
     {
       provide: LOCALE_ID, useValue: 'fr-FR'
     },
+    {
+      provide: RouteReuseStrategy, useClass: RouteStrategy
+    },
     provideRouter(routes,
-      withComponentInputBinding()
+      withComponentInputBinding(),
     ),
     provideClientHydration(),
     provideAnimations(),

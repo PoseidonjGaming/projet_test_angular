@@ -3,10 +3,8 @@ import {
   CdkDragDrop,
   CdkDropList,
   CdkDropListGroup,
-  moveItemInArray,
-  transferArrayItem
+  copyArrayItem
 } from '@angular/cdk/drag-drop';
-import { AsyncPipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,9 +12,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { mergeMap, startWith } from 'rxjs';
 import { Base } from '../../../../models/base.model';
-import { ApiService } from '../../../../service/api/api.service';
 import { MatchMode } from '../../../../models/enum/matchMode.model';
 import { StringMatcher } from '../../../../models/enum/stringMatcher.model';
+import { ApiService } from '../../../../service/api/api.service';
 import { UtilsService } from '../../../../service/utils/utils.service';
 
 
@@ -38,6 +36,7 @@ export class DragAndDropComponent implements OnInit {
   @Input({ required: true }) form: FormGroup = new FormGroup({})
   @Input({ required: true }) propertyToDisplay: string = ''
   @Input({ required: true }) property: string = ''
+  @Input({ required: true }) currentProperty: string = ''
   @Input({ required: true }) type: string = ''
 
   propertyList: string = ''
@@ -62,48 +61,27 @@ export class DragAndDropComponent implements OnInit {
       })
     ).subscribe((dtos: Base[]) => this.dragList = dtos)
 
-
-    if (this.form) {
-      this.propertyList = this.utilsService.getRelatedName(this.property, 3)
-      this.form.addControl(this.propertyList, new FormControl<Base[]>([]))
-
-      this.service.getAll(this.type).subscribe(values => {
-        this.dragList = values
-      })
-    }
+    this.propertyList = this.property.slice(0, -3)
+    this.form.addControl(this.propertyList, new FormControl<Base[]>([]))
 
 
+    this.service.getAll(this.type).subscribe(values => {
+      this.dragList = values
+    })
   }
 
   drop(event: CdkDragDrop<Base[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      if (event.previousContainer.data === this.dragList) {
+    if (event.previousContainer.data === this.dragList && !event.container.data.includes(event.item.data)) {
+      copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex)
+      this.form.controls[this.property].setValue(event.container.data.map(v=>v['id']))
 
-        const item = event.previousContainer.data[event.previousIndex]
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-        this.dragList.splice(event.previousIndex, 0, item)
-      }
-      else if (event.previousContainer.data === this.form?.get(this.propertyList)?.value) {
-        transferArrayItem(
-          event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex,
-        );
-        this.dragList.splice(event.currentIndex, 1)
-      }
-
+    } else if (event.previousContainer.data === this.form.controls[this.propertyList].value) {
+      this.form.controls[this.propertyList].value.splice(this.form.controls[this.propertyList].value.indexOf(event.item.data), 1)
+      this.form.controls[this.property].setValue(event.previousContainer.data.map(v => v['id']))
     }
   }
 
   isAlreadyPresent(item: CdkDrag<Base>, list: CdkDropList<Base[]>) {
-    return !list.data.map(e=>e['id']).includes(item.data['id'])
+    return !list.data.map(e => e['id']).includes(item.data['id'])
   }
 }

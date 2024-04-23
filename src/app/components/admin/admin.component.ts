@@ -1,14 +1,17 @@
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatest, mergeMap } from 'rxjs';
+import { combineLatest, mergeMap, startWith } from 'rxjs';
 import { Base } from '../../models/base.model';
+import { AdminService } from '../../service/admin/admin.service';
 import { ApiService } from '../../service/api/api.service';
 import { MenuComponent } from '../menu/menu.component';
+import { DragAndDropComponent } from './generic/drag-and-drop/drag-and-drop.component';
 import { FormComponent } from './generic/form/form.component';
 import { TableCRUDComponent } from './generic/table-crud/table-crud.component';
 import { ToAddTableComponent } from './generic/to-add-table/to-add-table.component';
@@ -21,87 +24,130 @@ import { ToAddTableComponent } from './generic/to-add-table/to-add-table.compone
     MatSidenavModule,
     MatTabsModule,
     MatCheckboxModule,
+    MatTableModule,
     ScrollingModule,
     ReactiveFormsModule,
     FormComponent,
     ToAddTableComponent,
-    TableCRUDComponent
+    TableCRUDComponent,
+    DragAndDropComponent
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit {
 
-  isOpened = false
+
+
   controls: { name: string, type: string }[] = []
+  typeMap = new Base()
+  displayMap = new Base()
   type = ''
+
   form?: FormGroup
-  typeMap = new Map<string, string>()
-  displayMap = new Map<string, string>()
+  formColumns = new FormGroup({})
+
+  resetDto = new Base()
 
   columns: { name: string, type: string }[] = []
-  formColums: FormGroup = new FormGroup({})
 
   constructor(private service: ApiService,
+    private adminService: AdminService,
     private route: ActivatedRoute,
     private formBuilder: FormBuilder
   ) { }
 
 
   ngOnInit(): void {
-
-    this.route.paramMap.pipe(
-      mergeMap(paramMap => {
-        this.type = paramMap.get('type')!
+    this.route.params.pipe(
+      mergeMap(params => {
+        this.type = params['type']
         return combineLatest([
           this.service.structure(this.type),
           this.service.types(this.type),
           this.service.display(this.type)
         ])
       })
-    ).subscribe(([str, types, display]) => {
-      this.typeMap = new Map<string, string>(Object.entries(types))
-      this.displayMap = new Map<string, string>(Object.entries(display))
-
-      Object.keys(str).forEach(s => {
-        this.controls.push({ name: s, type: str[s] })
-      })
-
-      this.form = this.formBuilder.group(str)
-
-      Object.keys(str).filter(s => s.endsWith('Id')).forEach(s => {
-        this.form?.addControl(s.replace('Id', ''), new FormControl<Base>({}))
-      })
-
-      this.form.reset()
-
-
-
+    ).subscribe(([str, type, display]) => {
+      this.controls = Object.entries(str).map(v => { return { name: v[0], type: v[1] } })
 
       this.controls.forEach(c => {
-        this.formColums.addControl(c.name,
-          (this.controls.indexOf(c) < 3) ? this.formBuilder.control(true) : this.formBuilder.control(false))
+        this.formColumns.addControl(c.name, this.formBuilder.control(this.controls.indexOf(c) < 3))
       })
 
-      this.filterColumn(this.formColums.value)
-      this.formColums.valueChanges.subscribe((value) => {
-        this.filterColumn(value) 
+      this.formColumns.valueChanges.pipe(startWith(this.formColumns.value)).subscribe((value: any) => {
+        this.columns = this.controls.filter(c => value[c.name])
+        this.columns.push({ name: 'action', type: 'action' })
       })
+
+      console.log(this.columns);
+
+
+      this.typeMap = type
+      this.displayMap = display
+
+
+      Object.entries(str).forEach(s => {
+        let value: any = ''
+        if (s[0].endsWith('Id') || s[0] === 'id') {
+          value = 0
+        }
+
+        if (s[0].endsWith('Ids')) {
+          value = []
+        }
+
+        if (s[1] === 'date') {
+          value = new Date()
+        }
+
+        this.resetDto[s[0]] = value
+      })
+
+
+      this.form = this.formBuilder.group(this.resetDto)
+
+      this.adminService.next({ dto: this.resetDto, isPost: true })
     })
-
-
-
   }
-  private filterColumn(value: any) {
-    let displayedColumn = Object.entries(value).filter(v => v[1]).map(v => v[0])    
-    this.columns = this.controls.filter(c => displayedColumn.includes(c.name))
-    this.columns.push({ name: 'action', type: 'action' })
-    if (this.columns.length > 3) {
-      Object.entries(value).filter(v => !v[1]).forEach(v => {
-        this.formColums.controls[v[0]].disable()
+
+  populate(base: Base) {
+    Object.entries(base).forEach(v => {
+      if (v[0].endsWith('Id') && !v[1]) {
+        this.form?.controls[v[0]].setValue(0)
+      } else {
+        this.form?.controls[v[0]].setValue(v[1])
+      }
+
+    })
+    const idsProperty = Object.entries(base).filter(v => v[0].endsWith('Ids'))
+    const idsObs = idsProperty.map(v => this.service.getByIds(this.typeMap[v[0]], v[1]))
+
+    combineLatest(idsObs).subscribe(value => {
+      idsProperty.forEach(v => {
+        this.form?.controls[v[0].slice(0, -3)].setValue(value[idsProperty.indexOf(v)])
+      })
+
+    })
+  }
+
+  getIdsControls() {
+    return this.controls.filter(c => c.name.endsWith('Ids'))
+  }
+
+  save(event: { dto: Base; isSubmit: boolean; }) {
+    if (event.isSubmit) {
+      this.service.save(this.type, event.dto).subscribe(value => {
+        this.adminService.next({ dto: value, isPost: true })
       })
     } else {
-      this.formColums.enable()
+      this.adminService.next({ dto: event.dto, isPost: false })
     }
+  }
+
+  saves(event: Base[]) {
+    this.service.saves(this.type, event).subscribe(() => {
+      this.adminService.next({ dto: {}, isPost: true })
+    })
   }
 }

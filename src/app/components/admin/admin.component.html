@@ -4,32 +4,43 @@
         <div class="col">
             <mat-tab-group class="mat-elevation-z8 m-2" [selectedIndex]="1">
                 <mat-tab label="Queued">
-                    <app-to-add-table [columns]="columns" [type]="type"></app-to-add-table>
+                    <app-to-add-table [columns]="columns" [type]="type"
+                        (saveEvent)="saves($event)" (populateEvent)="populate($event)"></app-to-add-table>
                 </mat-tab>
                 <mat-tab label="Form">
-                    <cdk-virtual-scroll-viewport itemSize="1" class="form-viewport m-2">
-                        <app-form [controls]="controls" [type]="type" [form]="form" [typeMap]="typeMap"
-                            [displayMap]="displayMap"></app-form>
+                    @if(form){
+                    <cdk-virtual-scroll-viewport [itemSize]="0" class="form-viewport m-2">
+                        <app-form [form]="form" [type]="type" [controls]="controls" [displayMap]="displayMap"
+                            [typeMap]="typeMap" (submitEvent)="save($event)"></app-form>
                     </cdk-virtual-scroll-viewport>
+                    }
                 </mat-tab>
+                @if(form){
+                @for (control of getIdsControls(); track $index) {
+                <mat-tab [label]="control.name">
+                    <app-drag-and-drop [currentProperty]="displayMap['current']" [property]="control.name"
+                        [propertyToDisplay]="displayMap[control.name]" [type]="typeMap[control.name]"
+                        [form]="form"></app-drag-and-drop>
+                </mat-tab>
+                }
+                }
+
             </mat-tab-group>
         </div>
         <div class="col m-2">
             <div class="mat-elevation-z8">
                 <div class="row">
-                    @if (formColums) {
-                    <form [formGroup]="formColums">
+                    <form [formGroup]="formColumns">
                         @for (control of controls; track $index) {
                         <mat-checkbox [formControlName]="control.name">
                             {{control.name}}
                         </mat-checkbox>
                         }
                     </form>
-                    }
-
                 </div>
                 <div class=" row">
-                    <app-table-crud [type]="type" [columns]="columns"></app-table-crud>
+                    <app-table-crud [type]="type" [columns]="columns" [typeMap]="typeMap" [displayMap]="displayMap"
+                        (populateEvent)="populate($event)"></app-table-crud>
                 </div>
 
             </div>
