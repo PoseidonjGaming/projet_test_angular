@@ -82,7 +82,7 @@ export class TableCRUDComponent implements OnInit, OnDestroy {
       if (this.dataSource.getData().length-- == 0 && this.paginator.pageIndex-- > 0)
         this.paginator.pageIndex = this.paginator.pageIndex--
 
-      this.adminService.next({dto: {},isPost: true})
+      this.adminService.next({ dto: { id: '' }, isPost: true })
     })
   }
 

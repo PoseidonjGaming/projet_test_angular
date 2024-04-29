@@ -7,16 +7,12 @@
         <div class="row">
             <mat-form-field>
                 <mat-label>{{control.name}}</mat-label>
-                <input matInput [formControlName]="control.name" type="number" [name]="control.name" [id]="control.name"
+                <input matInput [formControlName]="control.name" type="text" [name]="control.name" [id]="control.name"
                     [readonly]="true">
             </mat-form-field>
         </div>
         }
-        @else if (control.type==='foreign_id') {
-        
-        <app-select [form]="form" [control]="control" [type]="typeMap[control.name]"
-            [propertyToDisplay]="displayMap[control.name]"></app-select>
-        }
+
         @else if (control.type==='date') {
         <div class="row">
             <mat-form-field>
@@ -49,7 +45,7 @@
         @else if (control.type==='file') {
         <app-file [form]="form" [control]="control"></app-file>
         }
-        @else {
+        @else if(control.type==='String'){
         <div class="row">
             <mat-form-field>
                 <mat-label>{{control.name}}</mat-label>
@@ -57,6 +53,10 @@
                     [placeholder]="control.name">
             </mat-form-field>
         </div>
+        }
+        @else {
+        <app-select [form]="form" [control]="control" [type]="typeMap[control.name]"
+            [propertyToDisplay]="displayMap[control.name]"></app-select>
         }
         }
         }

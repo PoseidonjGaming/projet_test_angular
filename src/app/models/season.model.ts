@@ -1,12 +1,11 @@
 import { Base } from "./base.model";
 
 export class Season extends Base {
-    id: number = 0
-    seriesId: number = 0
+    seriesId: string = ''
     number: number = 1;
-    episodeIds: number[] = [];
+    episodeIds: string[] = [];
 
-    constructor(seriesId: number, number: number) {
+    constructor(seriesId: string, number: number) {
         super()
         this.seriesId = seriesId
         this.number = number

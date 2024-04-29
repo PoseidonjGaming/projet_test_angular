@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Subject } from 'rxjs';
 import { User } from '../../../models/user.model';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,14 @@ export class TokenService {
 
   private menu: Subject<string> = new Subject()
 
-  constructor() { }
+  constructor(private service: JwtHelperService) { }
 
   isExist() {
     return this.getToken() != null && this.getToken() !== ''
+  }
+
+  isExpired() {
+    return this.service.isTokenExpired(this.getToken())
   }
 
   logout() {

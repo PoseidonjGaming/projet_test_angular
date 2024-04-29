@@ -3,38 +3,6 @@
 @if(series){
 <div class="container-fluid">
     <div class="row">
-        @if (series.previousSeriesId>0) {
-        <button mat-button class="col" [routerLink]="['/detail/series', series.previousSeriesId]">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-            <span>Série précendente</span>
-        </button>
-        }
-
-        @if (series.nextSeriesId>0) {
-        <button mat-button class="col">
-            <span>Prochaine série</span>
-            <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
-        </button>
-        }
-
-    </div>
-    <div class="row">
-        @if (series.nextSeriesId>0) {
-        <button mat-button class="col" [routerLink]="['/detail/series', series.nextSeriesId]">
-            <mat-icon>keyboard_arrow_left</mat-icon>
-            <span>Film précendent</span>
-        </button>
-        }
-
-        @if (series.nextMovieId>0) {
-        <button mat-button class="col" [routerLink]="['/detail/movie', series.nextMovieId]">
-            <span>Prochain film</span>
-            <mat-icon iconPositionEnd>keyboard_arrow_right</mat-icon>
-        </button>
-        }
-    </div>
-
-    <div class="row">
         <div class="col-4">
             <img class="img-fluid m-2" style="max-height: 100vh;"
                 src="http://localhost:8081/file/load?filename={{series.poster}}" alt="affiche">

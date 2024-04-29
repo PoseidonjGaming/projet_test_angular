@@ -28,7 +28,7 @@ export class ApiService {
     return this.httpClient.get<E>(`${this.API_BASE_URL}/${type}/detail/${id}`)
   }
 
-  getByIds<E extends Base>(type: string, ids: number[]) {
+  getByIds<E extends Base>(type: string, ids: string[]) {
     return this.httpClient.post<E[]>(`${this.API_BASE_URL}/${type}/byIds`, ids)
   }
 
@@ -135,7 +135,7 @@ export class ApiService {
     })
   }
 
-  delete<E extends Base>(type: string, id: number) {
+  delete<E extends Base>(type: string, id: string) {
     return this.httpClient.delete<E>(`${this.API_BASE_URL}/${type}/delete/${id}`)
   }
 

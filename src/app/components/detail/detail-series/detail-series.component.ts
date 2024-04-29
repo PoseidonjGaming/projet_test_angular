@@ -49,7 +49,7 @@ export class DetailSeriesComponent {
   reviews: Review[] = []
 
   isLogged = false
-  private userId = 0
+  private userId = ''
 
   sumReview: { avg: number, total: number } = { avg: 0, total: 0 };
 
@@ -68,9 +68,9 @@ export class DetailSeriesComponent {
       mergeMap(series => {
         this.series = series
         return combineLatest([
-          this.service.getByIds<Season>('season', this.series.seasonIds),
+          this.service.getByIds<Season>('season', this.series['seasonIds']),
           this.service.getByIds<Character>('character', this.series.characterIds),
-          this.service.search<Review>('review', { seriesId: series.id },
+          this.service.search<Review>('review', { id: '', seriesId: series.id },
             MatchMode.ALL, StringMatcher.EXACT, null, null),
           this.service.getByUsername()
         ])
@@ -129,7 +129,7 @@ export class DetailSeriesComponent {
       width: '90vw'
     }).afterClosed().pipe(
       mergeMap(() => this.service.search<Review>('review',
-        { seriesId: this.series.id },
+        { id: '', seriesId: this.series.id },
         MatchMode.ALL, StringMatcher.EXACT, null, null)),
       mergeMap((reviewDtos: Review[]) => {
         this.reviews = reviewDtos

@@ -13,7 +13,7 @@ export class CredentialService {
 
   constructor(private httpClient: HttpClient, private tokenService: TokenService) { }
 
-  authenticate(credentials: Base) {
+  authenticate(credentials: Credential) {
     return this.httpClient.post(`${this.API_BASE_URL}/user/authenticate`, credentials)
   }
 

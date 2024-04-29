@@ -22,7 +22,7 @@
     <ng-container [matColumnDef]="column.name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column.name}} </th>
         <td mat-cell *matCellDef="let element">
-            {{element[column.name.slice(0, -2)]}}
+            {{element[column.name]}}
         </td>
     </ng-container>
     }

@@ -80,17 +80,13 @@ export class AdminComponent implements OnInit {
         this.columns.push({ name: 'action', type: 'action' })
       })
 
-      console.log(this.columns);
-
-
       this.typeMap = type
       this.displayMap = display
-
 
       Object.entries(str).forEach(s => {
         let value: any = ''
         if (s[0].endsWith('Id') || s[0] === 'id') {
-          value = 0
+          value = null
         }
 
         if (s[0].endsWith('Ids')) {
@@ -114,7 +110,7 @@ export class AdminComponent implements OnInit {
   populate(base: Base) {
     Object.entries(base).forEach(v => {
       if (v[0].endsWith('Id') && !v[1]) {
-        this.form?.controls[v[0]].setValue(0)
+        this.form?.controls[v[0]].setValue('')
       } else {
         this.form?.controls[v[0]].setValue(v[1])
       }
@@ -146,8 +142,10 @@ export class AdminComponent implements OnInit {
   }
 
   saves(event: Base[]) {
+    console.log(event);
+
     this.service.saves(this.type, event).subscribe(() => {
-      this.adminService.next({ dto: {}, isPost: true })
+      this.adminService.next({ dto: { id: '' }, isPost: true })
     })
   }
 }

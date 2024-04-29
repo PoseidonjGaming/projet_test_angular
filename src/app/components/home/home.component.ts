@@ -33,8 +33,8 @@ export class HomeComponent {
   movies: Movie[] = []
   slicedsummary: boolean = true;
   isLogged: boolean = false
-  private seriesIds: number[] = []
-  private moviesIds: number[] = []
+  private seriesIds: string[] = []
+  private moviesIds: string[] = []
 
 
   constructor(private service: ApiUserService,
@@ -64,18 +64,18 @@ export class HomeComponent {
     this.isLogged = event
   }
 
-  isInWatchlistSeries(id: number): string {
+  isInWatchlistSeries(id: string): string {
     return (this.seriesIds.includes(id)) ? 'bookmark' : 'bookmark_border'
   }
 
-  isInWatchlistMovie(id: number) {
+  isInWatchlistMovie(id: string) {
     return (this.moviesIds.includes(id)) ? 'bookmark' : 'bookmark_border'
   }
 
-  updateBookmark(id: number, watchlist: string) {
+  updateBookmark(id: string, watchlist: string) {
     const type = (watchlist === 'series') ? 'Série' : 'Film'
     if (!this.includes((watchlist === 'series') ? this.seriesIds : this.moviesIds, id)) {
-      this.service.addToWatchlist(id, watchlist).subscribe((ids: number[]) => {
+      this.service.addToWatchlist(id, watchlist).subscribe((ids: string[]) => {
         if (watchlist === 'series')
           this.seriesIds = ids
         else
@@ -84,7 +84,7 @@ export class HomeComponent {
           "Fermer", { duration: 5 * 1000 })
       })
     } else {
-      this.service.removeFromWatchlist(id, watchlist).subscribe((ids: number[]) => {
+      this.service.removeFromWatchlist(id, watchlist).subscribe((ids: string[]) => {
         if (watchlist === 'series')
           this.seriesIds = ids
         else
@@ -96,7 +96,7 @@ export class HomeComponent {
 
   }
 
-  private includes(ids: number[], id: number) {
+  private includes(ids: string[], id: string) {
     return ids.includes(id)
   }
 }

@@ -10,7 +10,11 @@ import { AdminService } from '../../../../service/admin/admin.service';
 @Component({
   selector: 'app-to-add-table',
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, DatePipe],
+  imports: [
+    MatTableModule,
+    MatButtonModule,
+    DatePipe
+  ],
   templateUrl: './to-add-table.component.html',
   styleUrl: './to-add-table.component.css'
 })
@@ -44,8 +48,8 @@ export class ToAddTableComponent implements OnInit, OnDestroy {
 
   save() {
     this.index = -1
-    this.dataSource.setData([])
     this.saveEvent.emit(this.dataSource.getData())
+    this.dataSource.setData([])
   }
 
   populate(dto: Base, index: number) {

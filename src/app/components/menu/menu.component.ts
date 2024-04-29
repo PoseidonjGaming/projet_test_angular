@@ -53,8 +53,8 @@ export class MenuComponent implements OnDestroy {
   isStandardUserEvent = new EventEmitter<boolean>()
 
   formLogin = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required])
+    username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl('', { nonNullable: true, validators: [Validators.required] })
   })
 
 
@@ -101,7 +101,7 @@ export class MenuComponent implements OnDestroy {
 
   submit() {
     if (this.formLogin.valid) {
-      this.service.authenticate(this.utilsService.updateValues(new User(), this.formLogin)).subscribe((token: any) => {
+      this.service.authenticate(this.formLogin.getRawValue()).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
         this.username = this.tokenService.getUsername()
         this.tokenService.nextRole()

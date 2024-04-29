@@ -42,7 +42,7 @@ export class FormComponent implements OnInit {
 
   @Input() resetDto = new Base()
 
-  constructor(private utilsService: UtilsService, private snack: MatSnackBar) { }
+  constructor(private snack: MatSnackBar) { }
 
   ngOnInit(): void {
 

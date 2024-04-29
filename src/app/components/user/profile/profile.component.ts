@@ -83,7 +83,7 @@ export class ProfileComponent {
         this.utils.populate(dtos, this.formUser)
         this.user = dtos
 
-        return this.service.search<Review>('review', { userId: dtos.id },
+        return this.service.search<Review>('review', { id: '', userId: dtos['id'] },
           MatchMode.ALL, StringMatcher.EXACT, null, null)
       }),
       mergeMap((reviewDtos: Review[]) => {
@@ -123,7 +123,7 @@ export class ProfileComponent {
       width: '90vw'
     }).afterClosed().pipe(
       mergeMap(() => this.service.search<Review>('review',
-        { userId: this.user.id },
+        { id: '', userId: this.user.id },
         MatchMode.ALL, StringMatcher.EXACT, null, null)),
       mergeMap((reviewDtos: Review[]) => {
         this.reviews = reviewDtos
@@ -137,7 +137,7 @@ export class ProfileComponent {
     })
   }
 
-  deleteReview(reviewId: number) {
+  deleteReview(reviewId: string) {
     this.service.delete<Review>('review', reviewId).pipe(
       mergeMap(() => this.getReview())
     ).subscribe((seriesDtos: Series[]) => {

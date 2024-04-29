@@ -28,8 +28,8 @@ import { Credential } from '../../models/credential.model';
 export class RegistrationComponent {
 
   form = new FormGroup({
-    username: new FormControl<string>('', [Validators.required]),
-    password: new FormControl<string>('', [Validators.required])
+    username: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    password: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] })
   })
 
   constructor(private service: CredentialService,
@@ -40,7 +40,7 @@ export class RegistrationComponent {
   submit() {
     if (this.form.valid) {
       this.service.registrate(this.utilsService.updateValues(new User(), this.form)).pipe(
-        mergeMap(() => this.service.authenticate(this.utilsService.updateValues(new Credential(), this.form)))
+        mergeMap(() => this.service.authenticate(this.form.getRawValue()))
       ).subscribe((token: any) => {
         this.tokenService.setToken(token.token)
         this.tokenService.nextRole()
